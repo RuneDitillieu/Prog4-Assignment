@@ -11,11 +11,11 @@ namespace dae
 	//class FpsComponent;
 	class Font;
 	class Texture2D;
-	class TextObject final : public GameObject
+	class TextComponent final
 	{
 	public:
-		void Update(float deltaTime) override;
-		void Render() const override;
+		void Update(float deltaTime);
+		void Render() const;
 
 		void SetText(const std::string& text);
 		void SetPosition(float x, float y);
@@ -24,12 +24,12 @@ namespace dae
 		void AddFpsComponent();
 		void RemoveFpsComponent();
 
-		TextObject(const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color = { 255, 255, 255, 255 });
-		virtual ~TextObject();
-		TextObject(const TextObject& other) = delete;
-		TextObject(TextObject&& other) = delete;
-		TextObject& operator=(const TextObject& other) = delete;
-		TextObject& operator=(TextObject&& other) = delete;
+		TextComponent(const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color = { 255, 255, 255, 255 });
+		virtual ~TextComponent();
+		TextComponent(const TextComponent& other) = delete;
+		TextComponent(TextComponent&& other) = delete;
+		TextComponent& operator=(const TextComponent& other) = delete;
+		TextComponent& operator=(TextComponent&& other) = delete;
 
 	private:
 		bool m_needsUpdate{};

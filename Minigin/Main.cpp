@@ -8,7 +8,7 @@
 #include "Minigin.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
-#include "TextObject.h"
+#include "TextComponent.h"
 #include "Scene.h"
 
 #include <filesystem>
@@ -28,16 +28,16 @@ static void load()
 	scene.Add(std::move(go));
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to = std::make_unique<dae::TextObject>("Programming 4 Assignment", font);
-	to->SetColor({ 255, 255, 255, 255 });
-	to->SetPosition(292, 20);
-	scene.Add(std::move(to));
+	go = std::make_unique<dae::GameObject>();
+	go->AddTextComponent("Programming 4 Assignment", font);
+	go->GetTextComponent()->SetPosition(292, 20);
+	scene.Add(std::move(go));
 
-	auto fpsText = std::make_unique<dae::TextObject>("FPS: 0.0", font);
-	fpsText->SetPosition(10, 10);
-	fpsText->SetColor({ 255, 255, 255, 255 });
-	fpsText->AddFpsComponent();
-	scene.Add(std::move(fpsText));
+	go = std::make_unique<dae::GameObject>();
+	go->AddTextComponent("0.0 FPS", font);
+	go->GetTextComponent()->SetPosition(10, 10);
+	go->GetTextComponent()->AddFpsComponent();
+	scene.Add(std::move(go));
 }
 
 int main(int, char*[]) {
