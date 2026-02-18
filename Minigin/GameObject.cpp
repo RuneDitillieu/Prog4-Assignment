@@ -5,7 +5,11 @@
 
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::Update(){}
+void dae::GameObject::Update(float deltaTime)
+{
+	// so that there's no warning, since they're treated as errors
+	deltaTime;
+}
 
 void dae::GameObject::Render() const
 {

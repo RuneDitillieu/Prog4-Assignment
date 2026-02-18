@@ -29,9 +29,15 @@ static void load()
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto to = std::make_unique<dae::TextObject>("Programming 4 Assignment", font);
-	to->SetColor({ 255, 255, 0, 255 });
+	to->SetColor({ 255, 255, 255, 255 });
 	to->SetPosition(292, 20);
 	scene.Add(std::move(to));
+
+	auto fpsText = std::make_unique<dae::TextObject>("FPS: 0.0", font);
+	fpsText->SetPosition(10, 10);
+	fpsText->SetColor({ 255, 255, 255, 255 });
+	fpsText->AddFpsComponent();
+	scene.Add(std::move(fpsText));
 }
 
 int main(int, char*[]) {
