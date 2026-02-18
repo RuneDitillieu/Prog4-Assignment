@@ -12,6 +12,5 @@ namespace dae
 
         float GetCurrentFps(float deltaTime);
     };
-
 }
 

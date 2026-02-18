@@ -29,14 +29,14 @@ static void load()
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	go = std::make_unique<dae::GameObject>();
-	go->AddTextComponent("Programming 4 Assignment", font);
-	go->GetTextComponent()->SetPosition(292, 20);
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Programming 4 Assignment", font));
+	go->GetComponent<dae::TextComponent>()->SetPosition(292, 20);
 	scene.Add(std::move(go));
 
 	go = std::make_unique<dae::GameObject>();
-	go->AddTextComponent("0.0 FPS", font);
-	go->GetTextComponent()->SetPosition(10, 10);
-	go->GetTextComponent()->AddFpsComponent();
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "0.0 FPS", font));
+	go->GetComponent<dae::TextComponent>()->SetPosition(10, 10);
+	go->GetComponent<dae::TextComponent>()->AddFpsComponent();
 	scene.Add(std::move(go));
 }
 

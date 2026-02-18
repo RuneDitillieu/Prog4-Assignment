@@ -4,14 +4,15 @@
 #include "Renderer.h"
 #include "TextComponent.h"
 #include "Font.h"
+#include "Component.h"
 
 dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update(float deltaTime)
 {
-	if (m_textComponent != nullptr)
+	for (auto& component : m_components)
 	{
-		m_textComponent->Update(deltaTime);
+		component->Update(deltaTime);
 	}
 }
 
@@ -23,9 +24,9 @@ void dae::GameObject::Render() const
 		Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
 	}
 
-	if (m_textComponent != nullptr)
+	for (auto& component : m_components)
 	{
-		m_textComponent->Render();
+		component->Render();
 	}
 }
 
@@ -37,19 +38,4 @@ void dae::GameObject::SetTexture(const std::string& filename)
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
-}
-
-void dae::GameObject::AddTextComponent(const std::string& text, std::shared_ptr<dae::Font> font, const SDL_Color& color)
-{
-	m_textComponent = std::make_unique<TextComponent>(text, font, color);
-}
-
-void dae::GameObject::RemoveTextComponent()
-{
-	m_textComponent.reset();
-}
-
-dae::TextComponent* dae::GameObject::GetTextComponent()
-{
-	return m_textComponent.get();
 }
