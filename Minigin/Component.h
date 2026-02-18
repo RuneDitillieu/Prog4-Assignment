@@ -3,6 +3,7 @@
 
 namespace dae
 {
+    class Transform;
     class GameObject;
     class Component
     {
@@ -11,7 +12,7 @@ namespace dae
         virtual ~Component() = default;
 
         virtual void Update(float deltaTime);
-        virtual void Render() const;
+        virtual void Render(const Transform& transform) const;
 
         virtual std::type_index GetType() const = 0;
 

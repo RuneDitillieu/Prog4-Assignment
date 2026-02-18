@@ -2,21 +2,19 @@
 #include <string>
 #include <memory>
 #include "Transform.h"
-#include "SDL3/SDL_pixels.h"
+#include "Component.h"
 
 namespace dae
 {
 	class Font;
 	class TextComponent;
 	class Texture2D;
-	class Component;
 	class GameObject final
 	{
 	public:
 		virtual void Update(float deltaTime);
 		virtual void Render() const;
 
-		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
 		// Components
@@ -28,6 +26,7 @@ namespace dae
 		template<typename T>
 		T* GetComponent()
 		{
+			// return first component of the same type
 			for (auto& component : m_components)
 			{
 				if (component->GetType() == typeid(T))
@@ -38,14 +37,10 @@ namespace dae
 		template<typename T>
 		void RemoveComponent()
 		{
-			for (auto& component : m_components)
-			{
-				if (component->GetType() == typeid(T))
-				{
-					component.reset();
-					return;
-				}
-			}
+			// remove and erase first component of the same type
+			auto it = std::remove_if(m_components.begin(), m_components.end(),
+				[](std::unique_ptr<Component>& component) { return component->GetType() == typeid(T); });
+			m_components.erase(it);
 		}
 
 		GameObject() = default;
@@ -57,7 +52,6 @@ namespace dae
 
 	private:
 		Transform m_transform{};
-		std::shared_ptr<Texture2D> m_texture{};
 
 		std::vector<std::unique_ptr<Component>> m_components;
 	};

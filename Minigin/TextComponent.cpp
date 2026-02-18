@@ -42,11 +42,11 @@ void dae::TextComponent::Update(float deltaTime)
 	}
 }
 
-void dae::TextComponent::Render() const
+void dae::TextComponent::Render(const Transform& transform) const
 {
 	if (m_textTexture != nullptr)
 	{
-		const auto& pos = m_transform.GetPosition();
+		const auto& pos = transform.GetPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }
@@ -57,10 +57,10 @@ void dae::TextComponent::SetText(const std::string& text)
 	m_needsUpdate = true;
 }
 
-void dae::TextComponent::SetPosition(const float x, const float y)
-{
-	m_transform.SetPosition(x, y);
-}
+//void dae::TextComponent::SetPosition(const float x, const float y)
+//{
+//	m_transform.SetPosition(x, y);
+//}
 
 void dae::TextComponent::SetColor(const SDL_Color& color) 
 { 
