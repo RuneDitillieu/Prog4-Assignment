@@ -2,15 +2,21 @@
 
 namespace dae
 {
-    class FpsComponent
+    class TextComponent;
+    class FpsComponent final
     {
     public:
-        FpsComponent();
-        FpsComponent(const FpsComponent&) = delete;
-        FpsComponent& operator=(const FpsComponent&) = delete;
+        FpsComponent(TextComponent* owner);
         ~FpsComponent() = default;
+        FpsComponent(const FpsComponent& other) = delete;
+        FpsComponent(FpsComponent&& other) = delete;
+        FpsComponent& operator=(const FpsComponent& other) = delete;
+        FpsComponent& operator=(FpsComponent&& other) = delete;
 
-        float GetCurrentFps(float deltaTime);
+        void Update(float deltaTime);
+
+    private:
+        TextComponent* m_owner;
     };
 }
 

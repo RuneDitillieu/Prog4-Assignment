@@ -9,8 +9,7 @@ dae::RenderComponent::RenderComponent(GameObject* owner, const std::string& file
 	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
 }
 
-dae::RenderComponent::~RenderComponent()
-{ }
+dae::RenderComponent::~RenderComponent() = default;
 
 void dae::RenderComponent::Render(const Transform& transform) const
 {

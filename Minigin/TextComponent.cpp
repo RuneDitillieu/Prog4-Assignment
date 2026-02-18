@@ -4,24 +4,19 @@
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
-#include <format>
 
 dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color)
 	: Component(owner)
 	, m_needsUpdate(true), m_text(text), m_color(color), m_font(std::move(font)), m_textTexture(nullptr)
 { }
 
-dae::TextComponent::~TextComponent()
-{
-	RemoveFpsComponent();
-}
+dae::TextComponent::~TextComponent() = default;
 
 void dae::TextComponent::Update(float deltaTime)
 {
 	if (m_fpsComponent != nullptr)
 	{
-		float fps = m_fpsComponent->GetCurrentFps(deltaTime);
-		SetText(std::format("{:.1f}", fps) + " FPS");
+		m_fpsComponent->Update(deltaTime);
 	}
 
 	if (m_needsUpdate)
@@ -70,7 +65,7 @@ void dae::TextComponent::SetColor(const SDL_Color& color)
 
 void dae::TextComponent::AddFpsComponent()
 {
-	m_fpsComponent = std::make_unique<FpsComponent>();
+	m_fpsComponent = std::make_unique<FpsComponent>(this);
 }
 
 void dae::TextComponent::RemoveFpsComponent()

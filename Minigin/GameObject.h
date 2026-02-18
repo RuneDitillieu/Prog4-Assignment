@@ -12,12 +12,20 @@ namespace dae
 	class GameObject final
 	{
 	public:
+		GameObject() = default;
+		~GameObject();
+		GameObject(const GameObject& other) = delete;
+		GameObject(GameObject&& other) = delete;
+		GameObject& operator=(const GameObject& other) = delete;
+		GameObject& operator=(GameObject&& other) = delete;
+
+		// functions
 		virtual void Update(float deltaTime);
 		virtual void Render() const;
 
 		void SetPosition(float x, float y);
 
-		// Components
+		// Component templates
 		template<typename T>
 		void AddComponent(std::unique_ptr<T>&& component)
 		{
@@ -42,13 +50,17 @@ namespace dae
 				[](std::unique_ptr<Component>& component) { return component->GetType() == typeid(T); });
 			m_components.erase(it);
 		}
-
-		GameObject() = default;
-		virtual ~GameObject();
-		GameObject(const GameObject& other) = delete;
-		GameObject(GameObject&& other) = delete;
-		GameObject& operator=(const GameObject& other) = delete;
-		GameObject& operator=(GameObject&& other) = delete;
+		template<typename T>
+		bool HasComponent()
+		{
+			// check if GameObject has a component of given type
+			for (auto& component : m_components)
+			{
+				if (component->GetType() == typeid(T))
+					return true;
+			}
+			return false;
+		}
 
 	private:
 		Transform m_transform{};
