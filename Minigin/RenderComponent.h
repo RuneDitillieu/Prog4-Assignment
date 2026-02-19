@@ -13,11 +13,13 @@ namespace dae
 	public:
 		virtual void Render(const Transform& transform) const override;
 		void SetTexture(const std::string& filename);
+		void SetTexture(std::shared_ptr<Texture2D>&& texture);
 
 		virtual std::type_index GetType() const override;
 
-		RenderComponent(GameObject* owner, const std::string& filename);
-		virtual ~RenderComponent();
+		RenderComponent(GameObject* pOwner, const std::string& filename);
+		RenderComponent(GameObject* pOwner);
+		~RenderComponent();
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;
 		RenderComponent& operator=(const RenderComponent& other) = delete;

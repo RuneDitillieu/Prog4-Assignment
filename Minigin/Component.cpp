@@ -1,16 +1,6 @@
 #include "Component.h"
 #include "GameObject.h"
 
-dae::Component::Component(GameObject* owner)
-	: m_owner(owner)
+dae::Component::Component(GameObject* pOwner)
+	: m_pOwner(pOwner)
 {}
-
-void dae::Component::Update(float deltaTime)
-{
-	deltaTime;
-}
-
-void dae::Component::Render(const Transform& transform) const
-{
-	transform;
-}

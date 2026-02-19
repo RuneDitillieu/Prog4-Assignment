@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 #include <memory>
 #include "Transform.h"
 #include "Component.h"
@@ -13,7 +12,7 @@ namespace dae
 	{
 	public:
 		GameObject() = default;
-		~GameObject();
+		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
@@ -25,11 +24,15 @@ namespace dae
 
 		void SetPosition(float x, float y);
 
+		void MarkForRemoval() { m_isMarkedForRemoval = true;  }
+		bool GetIsMarkedForRemoval() { return m_isMarkedForRemoval; }
+
 		// Component templates
 		template<typename T>
-		void AddComponent(std::unique_ptr<T>&& component)
+		T* AddComponent(std::unique_ptr<T>&& component)
 		{
 			m_components.push_back(std::move(component));
+			return static_cast<T*>(m_components[m_components.size() - 1].get());
 		}
 		template<typename T>
 		T* GetComponent()
@@ -63,6 +66,7 @@ namespace dae
 		}
 
 	private:
+		bool m_isMarkedForRemoval{ false };
 		Transform m_transform{};
 
 		std::vector<std::unique_ptr<Component>> m_components;

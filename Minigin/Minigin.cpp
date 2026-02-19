@@ -114,19 +114,9 @@ void dae::Minigin::RunOneFrame()
 	Renderer::GetInstance().Render();
 
 	// sleep so that you can have a maxFps
-	constexpr float maxFps{ 60.f };
-	const int sleepTime = static_cast<int>((currentTime * 1000.f / SDL_GetPerformanceFrequency())
-		+ (1000.f / (maxFps - 1))
-		- (SDL_GetPerformanceCounter() * 1000.f / SDL_GetPerformanceFrequency()));
+	constexpr double maxFps{ 60.0 };
+	const int sleepTime = static_cast<int>((currentTime * 1000 / SDL_GetPerformanceFrequency())
+		+ (1000 / (maxFps))
+		- (SDL_GetPerformanceCounter() * 1000 / SDL_GetPerformanceFrequency()));
 	std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
 }
-
-//float dae::Minigin::GetDeltaTime()
-//{
-//	static uint64_t previousTime{ SDL_GetPerformanceCounter() };
-//	const uint64_t currentTime{ SDL_GetPerformanceCounter() };
-//	float deltaTime{ static_cast<float>(currentTime - previousTime) / static_cast<float>(SDL_GetPerformanceFrequency()) };
-//	previousTime = currentTime;
-//
-//	return deltaTime;
-//}

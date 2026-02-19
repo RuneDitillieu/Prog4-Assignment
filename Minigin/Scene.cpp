@@ -9,13 +9,25 @@ void Scene::Add(std::unique_ptr<GameObject> object)
 	m_objects.emplace_back(std::move(object));
 }
 
-void Scene::Remove(const GameObject& object)
+//void Scene::Remove(const GameObject& object)
+//{
+//	m_objects.erase(
+//		std::remove_if(
+//			m_objects.begin(),
+//			m_objects.end(),
+//			[&object](const auto& ptr) { return ptr.get() == &object; }
+//		),
+//		m_objects.end()
+//	);
+//}
+
+void Scene::RemoveMarkedForRemoval()
 {
 	m_objects.erase(
 		std::remove_if(
 			m_objects.begin(),
 			m_objects.end(),
-			[&object](const auto& ptr) { return ptr.get() == &object; }
+			[](const auto& ptr) { return ptr.get()->GetIsMarkedForRemoval(); }
 		),
 		m_objects.end()
 	);
@@ -32,6 +44,8 @@ void Scene::Update(float deltaTime)
 	{
 		object->Update(deltaTime);
 	}
+
+	RemoveMarkedForRemoval();
 }
 
 void Scene::Render() const

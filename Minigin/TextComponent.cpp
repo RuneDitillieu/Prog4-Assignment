@@ -4,21 +4,26 @@
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
+#include "RenderComponent.h"
+#include "GameObject.h"
 
-dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color)
-	: Component(owner)
-	, m_needsUpdate(true), m_text(text), m_color(color), m_font(std::move(font)), m_textTexture(nullptr)
+dae::TextComponent::TextComponent(GameObject* pOwner, RenderComponent* pConnectedRenderComponent, const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color)
+	: Component(pOwner)
+	, m_pConnectedRenderComponent(pConnectedRenderComponent)
+	, m_needsUpdate(true), m_text(text), m_color(color), m_font(std::move(font))/*, m_textTexture(nullptr)*/
 { }
+
+dae::TextComponent::TextComponent(GameObject* pOwner, const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color)
+	: Component(pOwner)
+	, m_needsUpdate(true), m_text(text), m_color(color), m_font(std::move(font))/*, m_textTexture(nullptr)*/
+{
+	m_pConnectedRenderComponent = pOwner->AddComponent(std::make_unique<RenderComponent>(pOwner));
+}
 
 dae::TextComponent::~TextComponent() = default;
 
-void dae::TextComponent::Update(float deltaTime)
+void dae::TextComponent::Update(float)
 {
-	if (m_fpsComponent != nullptr)
-	{
-		m_fpsComponent->Update(deltaTime);
-	}
-
 	if (m_needsUpdate)
 	{
 		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), m_text.length(), m_color);
@@ -32,45 +37,25 @@ void dae::TextComponent::Update(float deltaTime)
 			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 		}
 		SDL_DestroySurface(surf);
-		m_textTexture = std::make_shared<Texture2D>(texture);
+		
+		m_pConnectedRenderComponent->SetTexture(std::make_shared<Texture2D>(texture));
 		m_needsUpdate = false;
-	}
-}
-
-void dae::TextComponent::Render(const Transform& transform) const
-{
-	if (m_textTexture != nullptr)
-	{
-		const auto& pos = transform.GetPosition();
-		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }
 
 void dae::TextComponent::SetText(const std::string& text)
 {
-	m_text = text;
-	m_needsUpdate = true;
+	if(m_text.compare(text) != 0)
+	{
+		m_text = text;
+		m_needsUpdate = true;
+	}
 }
-
-//void dae::TextComponent::SetPosition(const float x, const float y)
-//{
-//	m_transform.SetPosition(x, y);
-//}
 
 void dae::TextComponent::SetColor(const SDL_Color& color) 
 { 
 	m_color = color; 
 	m_needsUpdate = true; 
-}
-
-void dae::TextComponent::AddFpsComponent()
-{
-	m_fpsComponent = std::make_unique<FpsComponent>(this);
-}
-
-void dae::TextComponent::RemoveFpsComponent()
-{
-	m_fpsComponent.reset();
 }
 
 std::type_index dae::TextComponent::GetType() const

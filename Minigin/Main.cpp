@@ -10,6 +10,7 @@
 #include "ResourceManager.h"
 #include "TextComponent.h"
 #include "RenderComponent.h"
+#include "FpsComponent.h"
 #include "Scene.h"
 
 #include <filesystem>
@@ -35,9 +36,8 @@ static void load()
 	scene.Add(std::move(go));
 
 	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "0.0 FPS", font));
 	go->SetPosition(10, 10);
-	go->GetComponent<dae::TextComponent>()->AddFpsComponent();
+	go->AddComponent(std::make_unique<dae::FpsComponent>(go.get(), "0.0 FPS", font));
 	scene.Add(std::move(go));
 }
 

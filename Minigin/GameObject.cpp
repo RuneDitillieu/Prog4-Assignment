@@ -1,8 +1,6 @@
 #include "GameObject.h"
 #include "Component.h"
 
-dae::GameObject::~GameObject() = default;
-
 void dae::GameObject::Update(float deltaTime)
 {
 	for (auto& component : m_components)
