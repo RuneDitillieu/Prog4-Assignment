@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include <string>
 #include <vector>
 #include "GameObject.h"
 
@@ -10,7 +9,6 @@ namespace dae
 	{
 	public:
 		void Add(std::unique_ptr<GameObject> object);
-		//void Remove(const GameObject& object);
 		void RemoveMarkedForRemoval();
 		void RemoveAll();
 
@@ -27,7 +25,7 @@ namespace dae
 		friend class SceneManager;
 		explicit Scene() = default;
 
-		std::vector < std::unique_ptr<GameObject>> m_objects{};
+		std::vector<std::unique_ptr<GameObject>> m_objects{};
 	};
 
 }

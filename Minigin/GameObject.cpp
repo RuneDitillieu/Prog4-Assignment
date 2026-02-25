@@ -18,6 +18,8 @@ void dae::GameObject::Render() const
 	}
 }
 
+// position functions
+
 void dae::GameObject::SetLocalPosition(float x, float y)
 {
 	m_localTransform.SetPosition(x, y, 0.0f);
@@ -57,6 +59,8 @@ void dae::GameObject::SetPositionDirty()
 		child->SetPositionDirty();
 	}
 }
+
+// parent-child functions
 
 void dae::GameObject::SetParent(GameObject* newParent, bool keepWorldPosition)
 {

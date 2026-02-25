@@ -19,9 +19,9 @@ dae::FpsComponent::FpsComponent(GameObject* pOwner, const std::string& text, std
 
 void dae::FpsComponent::Update(float deltaTime)
 {
-    if (deltaTime > 0.0f && m_pConnectedTextComponent != nullptr)
+    if (deltaTime > 0.001f && m_pConnectedTextComponent != nullptr)
     {
-        if (m_prev10FramesFps.size() == m_prev10FramesFps.capacity() && m_prev10FramesFps.capacity() > 0)
+        if (m_prev10FramesFps.size() == m_prev10FramesFps.capacity())
         {
             float avgFps{};
             for (float fps : m_prev10FramesFps)

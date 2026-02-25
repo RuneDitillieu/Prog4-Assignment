@@ -89,10 +89,12 @@ namespace dae
 		// Parent-Child functions
 		void SetParent(GameObject* newParent, bool keepWorldPosition);
 		GameObject* GetParent() const { return m_parent; }
-		std::vector<GameObject*> GetChildren() { return m_children; }
-		bool IsParentOf(GameObject* possibleParent) const;
+		const std::vector<GameObject*>& GetChildren() { return m_children; }
+		size_t GetChildCount() const { return m_children.size(); }
+		GameObject* GetChildAt(size_t index) const { return m_children[index]; }
 
 	private:
+		bool IsParentOf(GameObject* possibleParent) const;
 		void AddChild(GameObject* newParent);
 		void RemoveChild(GameObject* newParent);
 
