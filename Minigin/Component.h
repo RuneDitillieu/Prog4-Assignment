@@ -20,6 +20,8 @@ namespace dae
 
         virtual std::type_index GetType() const = 0;
 
+        GameObject* GetOwner() const { return m_pOwner; }
+
     private:
         GameObject* m_pOwner;
     };

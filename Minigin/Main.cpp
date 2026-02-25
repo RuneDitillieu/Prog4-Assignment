@@ -11,6 +11,7 @@
 #include "TextComponent.h"
 #include "RenderComponent.h"
 #include "FpsComponent.h"
+#include "RotatorComponent.h"
 #include "Scene.h"
 
 #include <filesystem>
@@ -43,11 +44,15 @@ static void load()
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert.png"));
 	go->SetLocalPosition(200, 300);
+	go->SetScale(3.f);
+	go->AddComponent(std::make_unique<dae::RotatorComponent>(go.get(), glm::vec3{ 200.f, 280.f, 0.f }, 2.f));
 
 	auto child = std::make_unique<dae::GameObject>();
+	child->AddComponent(std::make_unique<dae::RenderComponent>(child.get(), "Q_Bert_Enemy.png"));
+	child->SetLocalPosition(50, 0);
+	child->SetScale(3.f);
+	child->AddComponent(std::make_unique<dae::RotatorComponent>(child.get(), glm::vec3{ 0.f, 0.f, 0.f }, -2.f));
 	child->SetParent(go.get(), false);
-	child->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert_Enemy.png"));
-	child->SetLocalPosition(40, 0);
 	scene.Add(std::move(go));
 	scene.Add(std::move(child));
 }

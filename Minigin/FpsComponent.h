@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include "SDL3/SDL_pixels.h"
+#include <vector>
 
 namespace dae
 {
@@ -25,7 +26,7 @@ namespace dae
 
     private:
         TextComponent* m_pConnectedTextComponent;
-        float m_prevFps{ 0.f };
+        std::vector<float> m_prev10FramesFps{};
     };
 }
 

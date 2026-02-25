@@ -9,8 +9,8 @@
 
 dae::TextComponent::TextComponent(GameObject* pOwner, RenderComponent* pConnectedRenderComponent, const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color)
 	: Component(pOwner)
-	, m_pConnectedRenderComponent(pConnectedRenderComponent)
 	, m_needsUpdate(true), m_text(text), m_color(color), m_font(std::move(font))/*, m_textTexture(nullptr)*/
+	, m_pConnectedRenderComponent(pConnectedRenderComponent)
 { }
 
 dae::TextComponent::TextComponent(GameObject* pOwner, const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color)

@@ -23,6 +23,9 @@ namespace dae
 		void Render() const;
 
 		void SetLocalPosition(float x, float y);
+		void SetLocalPosition(const glm::vec3& newPosition);
+		void SetScale(float scale) { m_localTransform.SetScale(scale); }
+		const glm::vec3& GetLocalPosition() const { return m_localTransform.GetPosition(); }
 
 		void MarkForRemoval() { m_isMarkedForRemoval = true;  }
 		bool GetIsMarkedForRemoval() { return m_isMarkedForRemoval; }
@@ -31,8 +34,15 @@ namespace dae
 		template<typename T>
 		T* AddComponent(std::unique_ptr<T>&& component)
 		{
-			m_components.push_back(std::move(component));
-			return static_cast<T*>(m_components[m_components.size() - 1].get());
+			if (component->GetOwner() == this)
+			{
+				m_components.push_back(std::move(component));
+				return static_cast<T*>(m_components[m_components.size() - 1].get());
+			}
+			else
+			{
+				return nullptr;
+			}
 		}
 		template<typename T>
 		T* GetComponent(size_t index = 0)
@@ -79,14 +89,13 @@ namespace dae
 		// Parent-Child functions
 		void SetParent(GameObject* newParent, bool keepWorldPosition);
 		GameObject* GetParent() const { return m_parent; }
-		std::vector<GameObject*>& GetChildren() { return m_children; }
+		std::vector<GameObject*> GetChildren() { return m_children; }
 		bool IsParentOf(GameObject* possibleParent) const;
 
 	private:
 		void AddChild(GameObject* newParent);
 		void RemoveChild(GameObject* newParent);
 
-		void SetLocalPosition(const glm::vec3& newPosition);
 		const glm::vec3& GetWorldPosition();
 		void UpdateWorldPosition();
 		void SetPositionDirty();

@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "Transform.h"
 #include "ResourceManager.h"
+#include "Texture2D.h"
 
 dae::RenderComponent::RenderComponent(GameObject* pOwner, const std::string& filename)
 	: Component(pOwner)
@@ -22,7 +23,8 @@ void dae::RenderComponent::Render(const Transform& transform) const
 	if (m_texture != nullptr)
 	{
 		const auto& pos = transform.GetPosition();
-		Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+		Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, 
+			m_texture->GetSize().x * transform.GetScale(), m_texture->GetSize().y * transform.GetScale());
 	}
 }
 

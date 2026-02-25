@@ -6,23 +6,36 @@
 dae::FpsComponent::FpsComponent(GameObject* pOwner, TextComponent* pConnectedTextComponent)
     : Component(pOwner)
     , m_pConnectedTextComponent(pConnectedTextComponent)
-{ }
+{
+    m_prev10FramesFps.reserve(10);
+}
 
 dae::FpsComponent::FpsComponent(GameObject* pOwner, const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color)
     : Component(pOwner)
 { 
     m_pConnectedTextComponent = pOwner->AddComponent(std::make_unique<TextComponent>(pOwner, text, font, color));
+    m_prev10FramesFps.reserve(10);
 }
 
 void dae::FpsComponent::Update(float deltaTime)
 {
     if (deltaTime > 0.0f && m_pConnectedTextComponent != nullptr)
     {
-        float fps{ 1.f / deltaTime };
-        if (abs(fps - m_prevFps) >= 0.1f) // only SetText if fps is actually different from last frame
+        if (m_prev10FramesFps.size() == m_prev10FramesFps.capacity() && m_prev10FramesFps.capacity() > 0)
         {
-            m_pConnectedTextComponent->SetText(std::format("{:.1f}", fps) + " FPS");
-            m_prevFps = fps;
+            float avgFps{};
+            for (float fps : m_prev10FramesFps)
+            {
+                avgFps += fps;
+            }
+            avgFps /= m_prev10FramesFps.size();
+
+            m_pConnectedTextComponent->SetText(std::format("{:.1f}", avgFps) + " FPS");
+            m_prev10FramesFps.clear();
+        }
+        else
+        {
+            m_prev10FramesFps.emplace_back(1.f / deltaTime);
         }
     }
 }

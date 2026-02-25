@@ -11,3 +11,8 @@ void dae::Transform::SetPosition(const glm::vec3& position)
 { 
 	m_position = position; 
 }
+
+void dae::Transform::SetScale(float scale)
+{
+	m_scale = scale;
+}

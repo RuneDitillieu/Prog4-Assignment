@@ -11,11 +11,11 @@ namespace dae
 	class RenderComponent final : public Component
 	{
 	public:
-		virtual void Render(const Transform& transform) const override;
+		void Render(const Transform& transform) const override;
 		void SetTexture(const std::string& filename);
 		void SetTexture(std::shared_ptr<Texture2D>&& texture);
 
-		virtual std::type_index GetType() const override;
+		std::type_index GetType() const override;
 
 		RenderComponent(GameObject* pOwner, const std::string& filename);
 		RenderComponent(GameObject* pOwner);
