@@ -19,8 +19,8 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 		// functions
-		virtual void Update(float deltaTime);
-		virtual void Render() const;
+		void Update(float deltaTime);
+		void Render() const;
 
 		void SetPosition(float x, float y);
 
@@ -35,23 +35,34 @@ namespace dae
 			return static_cast<T*>(m_components[m_components.size() - 1].get());
 		}
 		template<typename T>
-		T* GetComponent()
+		T* GetComponent(size_t index = 0)
 		{
-			// return first component of the same type
+			// get the index'th component of the given type, with the first one being default
+			size_t nextIndex{ 0 };
 			for (auto& component : m_components)
 			{
 				if (component->GetType() == typeid(T))
-					return static_cast<T*>(component.get());
+				{
+					if (nextIndex == index)
+						return static_cast<T*>(component.get());
+					else
+						++nextIndex;
+				}
 			}
 			return nullptr;
 		}
 		template<typename T>
-		void RemoveComponent()
+		void RemoveComponent(size_t index = 0)
 		{
-			// remove and erase first component of the same type
+			// place all components of this type in the back
 			auto it = std::remove_if(m_components.begin(), m_components.end(),
 				[](std::unique_ptr<Component>& component) { return component->GetType() == typeid(T); });
-			m_components.erase(it);
+
+			// if there is an index'th component then remove it, else remove the first one
+			if(it + index < m_components.size())
+				m_components.erase(it + index);
+			else
+				m_components.erase(it);
 		}
 		template<typename T>
 		bool HasComponent()
@@ -65,10 +76,21 @@ namespace dae
 			return false;
 		}
 
+		// Parent-Child functions
+		void SetParent(GameObject* newParent);
+		GameObject* GetParent() const { return m_parent; }
+		std::vector<GameObject*>& GetChildren() { return m_children; }
+		bool IsParentOf(GameObject* possibleParent) const;
+
 	private:
+		void AddChild(GameObject* newParent);
+		void RemoveChild(GameObject* newParent);
+
 		bool m_isMarkedForRemoval{ false };
 		Transform m_transform{};
 
 		std::vector<std::unique_ptr<Component>> m_components;
+		GameObject* m_parent{ nullptr };		// non-owning
+		std::vector<GameObject*> m_children;	// non-owning
 	};
 }

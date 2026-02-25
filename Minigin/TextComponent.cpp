@@ -38,7 +38,8 @@ void dae::TextComponent::Update(float)
 		}
 		SDL_DestroySurface(surf);
 		
-		m_pConnectedRenderComponent->SetTexture(std::make_shared<Texture2D>(texture));
+		if(m_pConnectedRenderComponent != nullptr)
+			m_pConnectedRenderComponent->SetTexture(std::make_shared<Texture2D>(texture));
 		m_needsUpdate = false;
 	}
 }

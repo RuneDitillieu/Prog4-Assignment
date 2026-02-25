@@ -16,7 +16,7 @@ dae::FpsComponent::FpsComponent(GameObject* pOwner, const std::string& text, std
 
 void dae::FpsComponent::Update(float deltaTime)
 {
-    if (deltaTime > 0.0f)
+    if (deltaTime > 0.0f && m_pConnectedTextComponent != nullptr)
     {
         float fps{ 1.f / deltaTime };
         if (abs(fps - m_prevFps) >= 0.1f) // only SetText if fps is actually different from last frame
