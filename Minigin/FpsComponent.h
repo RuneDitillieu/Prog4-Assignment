@@ -20,7 +20,7 @@ namespace dae
         FpsComponent& operator=(const FpsComponent& other) = delete;
         FpsComponent& operator=(FpsComponent&& other) = delete;
 
-        void Update(float deltaTime);
+        void Update(float deltaTime) override;
         std::type_index GetType() const override;
 
     private:

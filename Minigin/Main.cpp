@@ -26,19 +26,30 @@ static void load()
 
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "logo.png"));
-	go->SetPosition(358, 180);
+	go->SetLocalPosition(358, 180);
 	scene.Add(std::move(go));
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Programming 4 Assignment", font));
-	go->SetPosition(292, 20);
+	go->SetLocalPosition(292, 20);
 	scene.Add(std::move(go));
 
 	go = std::make_unique<dae::GameObject>();
-	go->SetPosition(10, 10);
+	go->SetLocalPosition(10, 10);
 	go->AddComponent(std::make_unique<dae::FpsComponent>(go.get(), "0.0 FPS", font));
 	scene.Add(std::move(go));
+
+	go = std::make_unique<dae::GameObject>();
+	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert.png"));
+	go->SetLocalPosition(200, 300);
+
+	auto child = std::make_unique<dae::GameObject>();
+	child->SetParent(go.get(), false);
+	child->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert_Enemy.png"));
+	child->SetLocalPosition(40, 0);
+	scene.Add(std::move(go));
+	scene.Add(std::move(child));
 }
 
 int main(int, char*[]) {

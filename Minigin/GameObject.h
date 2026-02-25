@@ -22,7 +22,7 @@ namespace dae
 		void Update(float deltaTime);
 		void Render() const;
 
-		void SetPosition(float x, float y);
+		void SetLocalPosition(float x, float y);
 
 		void MarkForRemoval() { m_isMarkedForRemoval = true;  }
 		bool GetIsMarkedForRemoval() { return m_isMarkedForRemoval; }
@@ -77,7 +77,7 @@ namespace dae
 		}
 
 		// Parent-Child functions
-		void SetParent(GameObject* newParent);
+		void SetParent(GameObject* newParent, bool keepWorldPosition);
 		GameObject* GetParent() const { return m_parent; }
 		std::vector<GameObject*>& GetChildren() { return m_children; }
 		bool IsParentOf(GameObject* possibleParent) const;
@@ -86,8 +86,15 @@ namespace dae
 		void AddChild(GameObject* newParent);
 		void RemoveChild(GameObject* newParent);
 
+		void SetLocalPosition(const glm::vec3& newPosition);
+		const glm::vec3& GetWorldPosition();
+		void UpdateWorldPosition();
+		void SetPositionDirty();
+
 		bool m_isMarkedForRemoval{ false };
-		Transform m_transform{};
+		Transform m_localTransform{};
+		Transform m_worldTransform{};
+		bool m_posIsDirty{ false };
 
 		std::vector<std::unique_ptr<Component>> m_components;
 		GameObject* m_parent{ nullptr };		// non-owning
