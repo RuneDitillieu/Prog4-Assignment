@@ -29,7 +29,8 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   Minigin/Transform.cpp
   Minigin/FpsComponent.cpp 
   Minigin/RenderComponent.cpp 
-  Minigin/RotatorComponent.cpp)
+  Minigin/RotatorComponent.cpp
+  Minigin/imgui_plot.cpp)
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
@@ -130,6 +131,19 @@ target_link_libraries(imgui PUBLIC SDL3::SDL3)
 # enable c++20 features
 target_compile_features(imgui PUBLIC cxx_std_20)
 
+# ImGui Plotting
+#set(IMGUI_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/imgui)
+#FetchContent_Declare(
+#    imgui_plot
+#    GIT_REPOSITORY https://github.com/soulthreads/imgui-plot.git
+#    GIT_TAG v0.1.0
+#    EXCLUDE_FROM_ALL
+#)
+#FetchContent_MakeAvailable(imgui_plot)
+# ...
+#target_link_libraries(imgui_plot PRIVATE ${PROJECT_NAME})
+
+
 if (WIN32)
   # Add VLD (Visual Leak Detector) for memory leak detection on Windows
   find_package(VLD CONFIG)
@@ -154,6 +168,7 @@ target_link_libraries("${TARGET_NAME}" PUBLIC
   SDL3_ttf::SDL3_ttf
   glm::glm
   imgui
+#  imgui_plot
   ${VLD_LIBRARIES}
 )
 
