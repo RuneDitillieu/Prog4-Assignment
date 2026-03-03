@@ -8,7 +8,7 @@ namespace dae
 	class RotatorComponent final : public Component
 	{
 	public:
-		RotatorComponent(GameObject* pOwner, const glm::vec3& pivot, float clockwiseDirection);
+		RotatorComponent(GameObject* pOwner, float clockwiseSpeed);
 		~RotatorComponent() = default;
 		RotatorComponent(const RotatorComponent& other) = delete;
 		RotatorComponent(RotatorComponent&& other) = delete;
@@ -20,8 +20,7 @@ namespace dae
 		std::type_index GetType() const override;
 
 	private:
-		glm::vec3 m_pivot;	// local space
-		float m_clockwiseDirection;
+		float m_clockwiseSpeed;
 		float m_angle{ 0.f };
 		float m_distance;
 	};

@@ -1,17 +1,25 @@
 #include "GameObject.h"
 #include "Component.h"
 
+dae::GameObject::~GameObject()
+{
+	for (auto child : m_children)
+	{
+		child->MarkForRemoval();
+	}
+}
+
 void dae::GameObject::Update(float deltaTime)
 {
-	UpdateWorldPosition();
 	for (auto& component : m_components)
 	{
 		component->Update(deltaTime);
 	}
 }
 
-void dae::GameObject::Render() const
+void dae::GameObject::Render()
 {
+	UpdateWorldPosition();
 	for (auto& component : m_components)
 	{
 		component->Render(m_worldTransform);

@@ -12,7 +12,7 @@ namespace dae
 	{
 	public:
 		GameObject() = default;
-		~GameObject() = default;
+		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
@@ -20,7 +20,7 @@ namespace dae
 
 		// functions
 		void Update(float deltaTime);
-		void Render() const;
+		void Render();
 
 		void SetLocalPosition(float x, float y);
 		void SetLocalPosition(const glm::vec3& newPosition);

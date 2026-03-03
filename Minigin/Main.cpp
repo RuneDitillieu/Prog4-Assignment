@@ -21,38 +21,49 @@ static void load()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene();
 
+	// background
 	auto go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "background.png"));
 	scene.Add(std::move(go));
 
+	// logo
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "logo.png"));
 	go->SetLocalPosition(358, 180);
 	scene.Add(std::move(go));
 
+	// title
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Programming 4 Assignment", font));
 	go->SetLocalPosition(292, 20);
 	scene.Add(std::move(go));
 
+	// fps
 	go = std::make_unique<dae::GameObject>();
 	go->SetLocalPosition(10, 10);
 	go->AddComponent(std::make_unique<dae::FpsComponent>(go.get(), "0.0 FPS", font));
 	scene.Add(std::move(go));
 
+	auto emptyParent = std::make_unique<dae::GameObject>();
+	emptyParent->SetLocalPosition(200, 300);
+
+	// Q*Bert (parent)
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert.png"));
-	go->SetLocalPosition(200, 300);
+	go->SetLocalPosition(30, 0);
 	go->SetScale(3.f);
-	go->AddComponent(std::make_unique<dae::RotatorComponent>(go.get(), glm::vec3{ 200.f, 280.f, 0.f }, 3.f));
+	go->AddComponent(std::make_unique<dae::RotatorComponent>(go.get(), 3.f));
+	go->SetParent(emptyParent.get(), false);
 
+	// Q*Bert enemy (child)
 	auto child = std::make_unique<dae::GameObject>();
 	child->AddComponent(std::make_unique<dae::RenderComponent>(child.get(), "Q_Bert_Enemy.png"));
 	child->SetLocalPosition(70, 0);
 	child->SetScale(3.f);
-	child->AddComponent(std::make_unique<dae::RotatorComponent>(child.get(), glm::vec3{ 0.f, 0.f, 0.f }, -2.f));
+	child->AddComponent(std::make_unique<dae::RotatorComponent>(child.get(), -2.f));
 	child->SetParent(go.get(), false);
+	scene.Add(std::move(emptyParent));
 	scene.Add(std::move(go));
 	scene.Add(std::move(child));
 }

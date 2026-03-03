@@ -17,6 +17,8 @@ namespace dae
 		~Texture2D();
 
 		glm::vec2 GetSize() const;
+		int GetWidth() const { return m_texture->w;  }
+		int GetHeight() const { return m_texture->h;  }
 
 		Texture2D(const Texture2D &) = delete;
 		Texture2D(Texture2D &&) = delete;

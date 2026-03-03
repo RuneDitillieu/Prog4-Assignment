@@ -1,18 +1,28 @@
 #include "RotatorComponent.h"
 #include "GameObject.h"
 
-dae::RotatorComponent::RotatorComponent(GameObject* pOwner, const glm::vec3& pivot, float clockwiseDirection)
+dae::RotatorComponent::RotatorComponent(GameObject* pOwner, float clockwiseSpeed)
 	: Component(pOwner)
-	, m_pivot(pivot), m_clockwiseDirection(clockwiseDirection), m_distance(static_cast<float>(glm::length((GetOwner()->GetLocalPosition() - m_pivot))))
+	, m_clockwiseSpeed(clockwiseSpeed), m_distance(static_cast<float>(glm::length((GetOwner()->GetLocalPosition()))))
 {
 }
 
 void dae::RotatorComponent::Update(float deltaTime)
 {
-	m_angle += deltaTime * m_clockwiseDirection;
+	m_angle += deltaTime * m_clockwiseSpeed;
+
+	if (m_angle > 360)
+	{
+		m_angle -= 360.f;
+	}
+	else if (m_angle < -360)
+	{
+		m_angle += 360.f;
+	}
+
 	float x{ cos(m_angle) * m_distance };
 	float y{ sin(m_angle) * m_distance };
-	glm::vec3 newPos{ m_pivot + glm::vec3{ x, y, 0 } };
+	glm::vec3 newPos{ glm::vec3{ x, y, 0 } };
 	GetOwner()->SetLocalPosition(newPos);
 }
 
