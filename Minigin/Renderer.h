@@ -28,7 +28,6 @@ namespace dae
 		void SetBackgroundColor(const SDL_Color& color) { m_clearColor = color; }
 
 	private:
-		void RenderExercise1() const;
 		ImGuiRenderer* m_ImGuiRenderer;
 	};
 }
