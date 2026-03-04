@@ -151,11 +151,11 @@ void dae::ImGuiRenderer::Calculate(int exerciseNr)
 		std::vector<float> results{};
 		results.reserve(m_amountSamples);
 
-		for (size_t stepsize = 1; stepsize <= 1024; stepsize *= 2)
+		for (int stepsize = 1; stepsize <= 1024; stepsize *= 2)
 		{
 			auto start = std::chrono::high_resolution_clock::now();
 
-			for (size_t idx = 0; idx < m_amountOfData; idx += stepsize)
+			for (int idx = 0; idx < m_amountOfData; idx += stepsize)
 			{
 				switch (exerciseNr)
 				{
