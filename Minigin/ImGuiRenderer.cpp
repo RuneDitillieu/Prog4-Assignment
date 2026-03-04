@@ -22,7 +22,7 @@ dae::ImGuiRenderer::ImGuiRenderer(SDL_Window* window, SDL_Renderer* renderer)
 	ImGui_ImplSDL3_InitForSDLRenderer(window, renderer);
 	ImGui_ImplSDLRenderer3_Init(renderer);
 
-	size_t amountSamples{ 100000 };
+	size_t amountSamples{ 1000 };
 	m_dataInt.reserve(amountSamples);
 	for (size_t idx{ 0 }; idx < m_dataInt.capacity(); ++idx)
 	{
@@ -137,12 +137,12 @@ void dae::ImGuiRenderer::CalcExercise2(bool doAlt)
 		m_avgResultsObj.clear();
 	m_results.clear();
 
-	for (size_t loopNr{ 0 }; loopNr < m_amountSamples; ++loopNr)
+	for (int loopNr{ 0 }; loopNr < m_amountSamples; ++loopNr)
 	{
 		std::vector<float> results{};
 		results.reserve(m_amountSamples);
 
-		for (size_t stepsize = 1; stepsize <= 1024; stepsize *= 2)
+		for (int stepsize = 1; stepsize <= 1024; stepsize *= 2)
 		{
 			auto start = std::chrono::high_resolution_clock::now();
 
@@ -184,7 +184,7 @@ void dae::ImGuiRenderer::GetAverageResults(std::vector<float>& avgResultsVec)
 		float smallestResult{ m_results[0][idx] };
 		float biggestResult{ };
 
-		for (size_t loopNr{ 0 }; loopNr < m_amountSamples; ++loopNr)
+		for (int loopNr{ 0 }; loopNr < m_amountSamples; ++loopNr)
 		{
 			float nr{ m_results[loopNr][idx] };
 			avgResult += nr;
