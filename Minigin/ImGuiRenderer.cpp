@@ -22,7 +22,7 @@ dae::ImGuiRenderer::ImGuiRenderer(SDL_Window* window, SDL_Renderer* renderer)
 	ImGui_ImplSDL3_InitForSDLRenderer(window, renderer);
 	ImGui_ImplSDLRenderer3_Init(renderer);
 
-	size_t amountSamples{ 1000 };
+	size_t amountSamples{ 100000 };
 	m_dataInt.reserve(amountSamples);
 	for (size_t idx{ 0 }; idx < m_dataInt.capacity(); ++idx)
 	{
@@ -103,7 +103,7 @@ void dae::ImGuiRenderer::CalcExercise1()
 	m_avgResultsInt.clear();
 	m_results.clear();
 
-	for (size_t loopNr{ 0 }; loopNr < m_amountSamples; ++loopNr)
+	for (int loopNr{ 0 }; loopNr < m_amountSamples; ++loopNr)
 	{
 		std::vector<float> results{};
 		results.reserve(m_amountSamples);
