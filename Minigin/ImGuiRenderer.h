@@ -36,12 +36,12 @@ namespace dae
 		void RenderData(SDL_Renderer* renderer);
 
 	private:
-		void CalcExercise1();
-		void CalcExercise2(bool doAlt);
+		void Calculate(int exerciseNr);
 		void RenderPlot(const std::vector<float>& results, int exerciseNr);
 		void GetAverageResults(std::vector<float>& avgResultsVec);
 
 		int m_amountSamples{ 10 };
+		const int m_amountOfData{ 100000 };
 		std::vector<int> m_dataInt;
 		std::vector<GameObject3D> m_dataObj;
 		std::vector<GameObject3DAlt> m_dataObjAlt;

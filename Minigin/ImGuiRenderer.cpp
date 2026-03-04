@@ -22,19 +22,18 @@ dae::ImGuiRenderer::ImGuiRenderer(SDL_Window* window, SDL_Renderer* renderer)
 	ImGui_ImplSDL3_InitForSDLRenderer(window, renderer);
 	ImGui_ImplSDLRenderer3_Init(renderer);
 
-	size_t amountSamples{ 100000 };
-	m_dataInt.reserve(amountSamples);
+	m_dataInt.reserve(m_amountOfData);
 	for (size_t idx{ 0 }; idx < m_dataInt.capacity(); ++idx)
 	{
 		m_dataInt.emplace_back(rand());
 	}
-	m_dataObj.reserve(amountSamples);
+	m_dataObj.reserve(m_amountOfData);
 	for (size_t idx{ 0 }; idx < m_dataObj.capacity(); ++idx)
 	{
 		m_dataObj.emplace_back(GameObject3D());
 	}
-	m_dataObjAlt.reserve(amountSamples);
-	for (size_t idx{ 0 }; idx < m_dataObj.capacity(); ++idx)
+	m_dataObjAlt.reserve(m_amountOfData);
+	for (size_t idx{ 0 }; idx < m_dataObjAlt.capacity(); ++idx)
 	{
 		m_dataObjAlt.emplace_back(GameObject3DAlt());
 	}
@@ -71,8 +70,8 @@ void dae::ImGuiRenderer::Render()
 
 	ImGui::Spacing();
 
-	if(ImGui::Button("Calculate ex.1"))
-		CalcExercise1();
+	if (ImGui::Button("Calculate ex.1"))
+		Calculate(1);
 
 	ImGui::Spacing();
 
@@ -98,7 +97,7 @@ void dae::ImGuiRenderer::Render()
 	ImGui::Spacing();
 
 	if (ImGui::Button("Calculate ex.2"))
-		CalcExercise2(false);
+		Calculate(2);
 
 	ImGui::Spacing();
 
@@ -113,7 +112,7 @@ void dae::ImGuiRenderer::Render()
 	ImGui::Spacing();
 
 	if (ImGui::Button("Calculate ex.2.1"))
-		CalcExercise2(true);
+		Calculate(3);
 
 	ImGui::Spacing();
 
@@ -128,9 +127,23 @@ void dae::ImGuiRenderer::RenderData(SDL_Renderer* renderer)
 	ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer);
 }
 
-void dae::ImGuiRenderer::CalcExercise1()
+void dae::ImGuiRenderer::Calculate(int exerciseNr)
 {
-	m_avgResultsInt.clear();
+	switch (exerciseNr)
+	{
+	case 1:
+		m_avgResultsInt.clear();
+		break;
+	case 2:
+		m_avgResultsObj.clear();
+		break;
+	case 3:
+		m_avgResultsObjAlt.clear();
+		break;
+	default:
+		return;
+	}
+
 	m_results.clear();
 
 	for (int loopNr{ 0 }; loopNr < m_amountSamples; ++loopNr)
@@ -142,52 +155,19 @@ void dae::ImGuiRenderer::CalcExercise1()
 		{
 			auto start = std::chrono::high_resolution_clock::now();
 
-			for (size_t idx = 0; idx < m_dataInt.size(); idx += stepsize)
+			for (size_t idx = 0; idx < m_amountOfData; idx += stepsize)
 			{
-				m_dataInt[idx] += 2;
-			}
-
-			auto end = std::chrono::high_resolution_clock::now();
-			auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-
-			results.emplace_back(static_cast<float>(duration));
-		}
-
-		m_results.emplace_back(std::move(results));
-	}
-
-	GetAverageResults(m_avgResultsInt);
-}
-
-void dae::ImGuiRenderer::CalcExercise2(bool doAlt)
-{
-	if(doAlt)
-		m_avgResultsObjAlt.clear();
-	else
-		m_avgResultsObj.clear();
-	m_results.clear();
-
-	for (int loopNr{ 0 }; loopNr < m_amountSamples; ++loopNr)
-	{
-		std::vector<float> results{};
-		results.reserve(m_amountSamples);
-
-		for (int stepsize = 1; stepsize <= 1024; stepsize *= 2)
-		{
-			auto start = std::chrono::high_resolution_clock::now();
-
-			if (doAlt)
-			{
-				for (size_t idx = 0; idx < m_dataObjAlt.size(); idx += stepsize)
+				switch (exerciseNr)
 				{
-					m_dataObjAlt[idx].ID += 2;
-				}
-			}
-			else
-			{
-				for (size_t idx = 0; idx < m_dataObj.size(); idx += stepsize)
-				{
+				case 1:
+					m_dataInt[idx] += 2;
+					break;
+				case 2:
 					m_dataObj[idx].ID += 2;
+					break;
+				case 3:
+					m_dataObjAlt[idx].ID += 2;
+					break;
 				}
 			}
 
@@ -200,10 +180,18 @@ void dae::ImGuiRenderer::CalcExercise2(bool doAlt)
 		m_results.emplace_back(std::move(results));
 	}
 
-	if (doAlt)
-		GetAverageResults(m_avgResultsObjAlt);
-	else
+	switch (exerciseNr)
+	{
+	case 1:
+		GetAverageResults(m_avgResultsInt);
+		break;
+	case 2:
 		GetAverageResults(m_avgResultsObj);
+		break;
+	case 3:
+		GetAverageResults(m_avgResultsObjAlt);
+		break;
+	}
 }
 
 void dae::ImGuiRenderer::GetAverageResults(std::vector<float>& avgResultsVec)
