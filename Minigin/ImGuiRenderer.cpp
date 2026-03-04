@@ -54,28 +54,54 @@ void dae::ImGuiRenderer::Render()
 	ImGui_ImplSDL3_NewFrame();
 	ImGui::NewFrame();
 	
+	// exercise 1
+	ImGui::SetNextWindowPos(ImVec2(80, 100));
+	ImGui::SetNextWindowSize(ImVec2(300, 250));
+	ImGui::Begin("Exercise 1");
+
 	ImGui::Spacing();
-	ImGui::SliderInt("Amount of Samples", &m_amountSamples, 3, 50);
+
+	ImGui::SliderInt(" # Samples", &m_amountSamples, 3, 50);
 
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
+
 	ImGui::Text("Thrash the Cash with integers");
+
 	ImGui::Spacing();
+
 	if(ImGui::Button("Calculate ex.1"))
 		CalcExercise1();
+
 	ImGui::Spacing();
+
 	RenderPlot(m_avgResultsInt, 1);
+	ImGui::End();
+
+
+	// exercise 2
+	ImGui::SetNextWindowPos(ImVec2(400, 100));
+	ImGui::SetNextWindowSize(ImVec2(300, 400));
+	ImGui::Begin("Exercise 2");
+
+	ImGui::Spacing();
+
+	ImGui::SliderInt(" # Samples", &m_amountSamples, 3, 50);
 
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
 
 	ImGui::Text("Thrash the Cash with GameObjects");
+
 	ImGui::Spacing();
+
 	if (ImGui::Button("Calculate ex.2"))
 		CalcExercise2(false);
+
 	ImGui::Spacing();
+
 	RenderPlot(m_avgResultsObj, 2);
 
 	ImGui::Spacing();
@@ -83,12 +109,16 @@ void dae::ImGuiRenderer::Render()
 	ImGui::Spacing();
 
 	ImGui::Text("Thrash the Cash with GameObjectAlts");
+
 	ImGui::Spacing();
+
 	if (ImGui::Button("Calculate ex.2.1"))
 		CalcExercise2(true);
-	ImGui::Spacing();
-	RenderPlot(m_avgResultsObjAlt, 3);
 
+	ImGui::Spacing();
+
+	RenderPlot(m_avgResultsObjAlt, 3);
+	ImGui::End();
 
 	ImGui::Render();
 }
