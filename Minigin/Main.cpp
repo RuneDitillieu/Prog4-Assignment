@@ -44,28 +44,6 @@ static void load()
 	go->SetLocalPosition(10, 10);
 	go->AddComponent(std::make_unique<dae::FpsComponent>(go.get(), "0.0 FPS", font));
 	scene.Add(std::move(go));
-
-	auto emptyParent = std::make_unique<dae::GameObject>();
-	emptyParent->SetLocalPosition(200, 300);
-
-	// Q*Bert (parent)
-	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert.png"));
-	go->SetLocalPosition(30, 0);
-	go->SetScale(3.f);
-	go->AddComponent(std::make_unique<dae::RotatorComponent>(go.get(), 3.f));
-	go->SetParent(emptyParent.get(), false);
-
-	// Q*Bert enemy (child)
-	auto child = std::make_unique<dae::GameObject>();
-	child->AddComponent(std::make_unique<dae::RenderComponent>(child.get(), "Q_Bert_Enemy.png"));
-	child->SetLocalPosition(70, 0);
-	child->SetScale(3.f);
-	child->AddComponent(std::make_unique<dae::RotatorComponent>(child.get(), -2.f));
-	child->SetParent(go.get(), false);
-	scene.Add(std::move(emptyParent));
-	scene.Add(std::move(go));
-	scene.Add(std::move(child));
 }
 
 int main(int, char*[]) {
