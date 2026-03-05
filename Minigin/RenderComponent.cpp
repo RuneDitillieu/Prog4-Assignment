@@ -18,7 +18,7 @@ dae::RenderComponent::RenderComponent(GameObject* pOwner)
 
 dae::RenderComponent::~RenderComponent() = default;
 
-void dae::RenderComponent::Render(const Transform& transform) const
+void dae::RenderComponent::Render(const Transform& transform)
 {
 	if (m_texture != nullptr)
 	{

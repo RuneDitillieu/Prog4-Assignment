@@ -13,6 +13,7 @@
 #include "FpsComponent.h"
 #include "RotatorComponent.h"
 #include "Scene.h"
+#include "ImGuiComponent.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -43,6 +44,11 @@ static void load()
 	go = std::make_unique<dae::GameObject>();
 	go->SetLocalPosition(10, 10);
 	go->AddComponent(std::make_unique<dae::FpsComponent>(go.get(), "0.0 FPS", font));
+	scene.Add(std::move(go));
+
+	go = std::make_unique<dae::GameObject>();
+	go->SetLocalPosition(80, 100);
+	go->AddComponent(std::make_unique<dae::ImGuiComponent>(go.get()));
 	scene.Add(std::move(go));
 }
 

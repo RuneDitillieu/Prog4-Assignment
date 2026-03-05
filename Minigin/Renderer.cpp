@@ -4,11 +4,9 @@
 #include "Renderer.h"
 #include "SceneManager.h"
 #include "Texture2D.h"
-#include "imgui.h"
+#include <imgui.h>
 #include <backends/imgui_impl_sdl3.h>
 #include <backends/imgui_impl_sdlrenderer3.h>
-#include "imgui_plot.h"
-#include <chrono>
 
 void dae::Renderer::Init(SDL_Window* window)
 {
@@ -28,27 +26,37 @@ void dae::Renderer::Init(SDL_Window* window)
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
 
-	m_ImGuiRenderer = new ImGuiRenderer(window, m_renderer);
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+#if __EMSCRIPTEN__
+	// For an Emscripten build we are disabling file-system access, so let's not attempt to do a fopen() of the imgui.ini file.
+	// You may manually call LoadIniSettingsFromMemory() to load settings from your own storage.
+	io.IniFilename = NULL;
+#endif
+
+	ImGui_ImplSDL3_InitForSDLRenderer(window, m_renderer);
+	ImGui_ImplSDLRenderer3_Init(m_renderer);
 }
 
 void dae::Renderer::Render() const
 {
-	m_ImGuiRenderer->Render();
-
 	const auto& color = GetBackgroundColor();
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_renderer);
 
 	SceneManager::GetInstance().Render();
 
-	m_ImGuiRenderer->RenderData(m_renderer);
-
 	SDL_RenderPresent(m_renderer);
 }
 
 void dae::Renderer::Destroy()
 {
-	delete m_ImGuiRenderer;
+	ImGui_ImplSDLRenderer3_Shutdown();
+	ImGui_ImplSDL3_Shutdown();
+	ImGui::DestroyContext();
 
 	if (m_renderer != nullptr)
 	{

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <SDL3/SDL.h>
+#include "Component.h"
 
 namespace dae
 {
@@ -27,13 +28,15 @@ namespace dae
 		int ID{ 1 };
 	};
 
-	class ImGuiRenderer final
+	class GameObject;
+	class Transform;
+	class ImGuiComponent final : public Component
 	{
 	public:
-		ImGuiRenderer(SDL_Window* window, SDL_Renderer* renderer);
-		~ImGuiRenderer();
-		void Render();
-		void RenderData(SDL_Renderer* renderer);
+		ImGuiComponent(GameObject* pOwner);
+		~ImGuiComponent() = default;
+		void Render(const Transform& transform);
+		std::type_index GetType() const override;
 
 	private:
 		void Calculate(int exerciseNr);
@@ -49,5 +52,7 @@ namespace dae
 		std::vector<float> m_avgResultsObj;
 		std::vector<float> m_avgResultsObjAlt;
 		std::vector<std::vector<float>> m_results;
+
+		SDL_Renderer* m_sdlRenderer{ nullptr }; // non-owning
 	};
 }

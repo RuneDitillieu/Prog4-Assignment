@@ -15,7 +15,7 @@ namespace dae
         Component& operator=(Component&& other) = delete;
 
         virtual void Update(float) {}
-        virtual void Render(const Transform&) const {}
+        virtual void Render(const Transform&) {}
 
         virtual std::type_index GetType() const = 0;
 

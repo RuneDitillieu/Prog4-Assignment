@@ -11,7 +11,7 @@ namespace dae
 	class RenderComponent final : public Component
 	{
 	public:
-		void Render(const Transform& transform) const override;
+		void Render(const Transform& transform) override;
 		void SetTexture(const std::string& filename);
 		void SetTexture(std::shared_ptr<Texture2D>&& texture);
 

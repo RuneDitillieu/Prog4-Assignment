@@ -1,26 +1,17 @@
-#include "ImGuiRenderer.h"
+#include "ImGuiComponent.h"
 #include <imgui.h>
 #include <backends/imgui_impl_sdl3.h>
 #include <backends/imgui_impl_sdlrenderer3.h>
-#include "imgui_plot.h"
+#include "ImGuiPlot.h"
 #include <chrono>
 #include <string>
+#include "Transform.h"
+#include "Renderer.h"
 
-dae::ImGuiRenderer::ImGuiRenderer(SDL_Window* window, SDL_Renderer* renderer)
+dae::ImGuiComponent::ImGuiComponent(GameObject* pOwner)
+	: Component(pOwner)
 {
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-#if __EMSCRIPTEN__
-	// For an Emscripten build we are disabling file-system access, so let's not attempt to do a fopen() of the imgui.ini file.
-	// You may manually call LoadIniSettingsFromMemory() to load settings from your own storage.
-	io.IniFilename = NULL;
-#endif
-
-	ImGui_ImplSDL3_InitForSDLRenderer(window, renderer);
-	ImGui_ImplSDLRenderer3_Init(renderer);
+	m_sdlRenderer = Renderer::GetInstance().GetSDLRenderer();
 
 	m_dataInt.reserve(m_amountOfData);
 	for (size_t idx{ 0 }; idx < m_dataInt.capacity(); ++idx)
@@ -40,21 +31,14 @@ dae::ImGuiRenderer::ImGuiRenderer(SDL_Window* window, SDL_Renderer* renderer)
 	m_results.reserve(11);
 }
 
-dae::ImGuiRenderer::~ImGuiRenderer()
-{
-	ImGui_ImplSDLRenderer3_Shutdown();
-	ImGui_ImplSDL3_Shutdown();
-	ImGui::DestroyContext();
-}
-
-void dae::ImGuiRenderer::Render()
+void dae::ImGuiComponent::Render(const Transform& transform)
 {
 	ImGui_ImplSDLRenderer3_NewFrame();
 	ImGui_ImplSDL3_NewFrame();
 	ImGui::NewFrame();
 	
 	// exercise 1
-	ImGui::SetNextWindowPos(ImVec2(80, 100));
+	ImGui::SetNextWindowPos(ImVec2(transform.GetPosition().x, transform.GetPosition().y)); 
 	ImGui::SetNextWindowSize(ImVec2(300, 250));
 	ImGui::Begin("Exercise 1");
 
@@ -80,7 +64,7 @@ void dae::ImGuiRenderer::Render()
 
 
 	// exercise 2
-	ImGui::SetNextWindowPos(ImVec2(400, 100));
+	ImGui::SetNextWindowPos(ImVec2(transform.GetPosition().x + 320, transform.GetPosition().y)); 
 	ImGui::SetNextWindowSize(ImVec2(300, 400));
 	ImGui::Begin("Exercise 2");
 
@@ -120,14 +104,11 @@ void dae::ImGuiRenderer::Render()
 	ImGui::End();
 
 	ImGui::Render();
+
+	ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), m_sdlRenderer);
 }
 
-void dae::ImGuiRenderer::RenderData(SDL_Renderer* renderer)
-{
-	ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer);
-}
-
-void dae::ImGuiRenderer::Calculate(int exerciseNr)
+void dae::ImGuiComponent::Calculate(int exerciseNr)
 {
 	switch (exerciseNr)
 	{
@@ -194,7 +175,7 @@ void dae::ImGuiRenderer::Calculate(int exerciseNr)
 	}
 }
 
-void dae::ImGuiRenderer::GetAverageResults(std::vector<float>& avgResultsVec)
+void dae::ImGuiComponent::GetAverageResults(std::vector<float>& avgResultsVec)
 {
 	for (size_t idx{ 0 }; idx < 11; ++idx)
 	{
@@ -219,7 +200,7 @@ void dae::ImGuiRenderer::GetAverageResults(std::vector<float>& avgResultsVec)
 	}
 }
 
-void dae::ImGuiRenderer::RenderPlot(const std::vector<float>& results, int exerciseNr)
+void dae::ImGuiComponent::RenderPlot(const std::vector<float>& results, int exerciseNr)
 {
 	if (results.size() > 0)
 	{
@@ -257,4 +238,9 @@ void dae::ImGuiRenderer::RenderPlot(const std::vector<float>& results, int exerc
 
 		ImGui::Plot(config.overlay_text, config);
 	}
+}
+
+std::type_index dae::ImGuiComponent::GetType() const
+{
+	return typeid(ImGuiComponent);
 }
