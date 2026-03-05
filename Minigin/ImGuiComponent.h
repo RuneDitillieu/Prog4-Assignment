@@ -35,7 +35,7 @@ namespace dae
 	public:
 		ImGuiComponent(GameObject* pOwner);
 		~ImGuiComponent() = default;
-		void Render(const Transform& transform);
+		void Render(const Transform& transform) override;
 		std::type_index GetType() const override;
 
 	private:
