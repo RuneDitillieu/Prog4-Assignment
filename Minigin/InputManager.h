@@ -33,7 +33,10 @@ namespace dae
 		InputManager();
 		bool ProcessInput();
 		void BindCommand(std::unique_ptr<Command>&& command, SDL_Scancode scanCode, SDL_EventType eventType);
+#if defined(__EMSCRIPTEN__)
+#else
 		void BindCommand(std::unique_ptr<Command>&& command, SHORT button, int controllerId);
+#endif
 
 	private:
 		std::vector<CommandBindingKeyboard> m_commandsKeyboard;

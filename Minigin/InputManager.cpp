@@ -2,7 +2,10 @@
 #include "InputManager.h"
 #include <backends/imgui_impl_sdl3.h>
 
+#if defined(__EMSCRIPTEN__)
+#else
 #pragma comment(lib, "xinput.lib")
+#endif
 
 dae::InputManager::InputManager()
 {
