@@ -18,11 +18,14 @@ namespace dae
 		SDL_EventType eventType;
 	};
 
+#if defined(__EMSCRIPTEN__)
+#else
 	struct CommandBindingController
 	{
 		std::unique_ptr<Command> command;
 		SHORT button;
 	};
+#endif
 
 	class InputManager final : public Singleton<InputManager>
 	{
@@ -34,7 +37,11 @@ namespace dae
 
 	private:
 		std::vector<CommandBindingKeyboard> m_commandsKeyboard;
+
+#if defined(__EMSCRIPTEN__)
+#else
 		std::vector<std::vector<CommandBindingController>> m_commandsController{};
+#endif
 	};
 
 }

@@ -6,10 +6,13 @@
 
 dae::InputManager::InputManager()
 {
+#if defined(__EMSCRIPTEN__)
+#else
 	for (int idx{ 0 }; idx < 4; ++idx)
 	{
 		m_commandsController.emplace_back();
 	}
+#endif
 }
 
 bool dae::InputManager::ProcessInput()
@@ -82,6 +85,8 @@ void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SDL_Scan
 	}
 }
 
+#if defined(__EMSCRIPTEN__)
+#else
 void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SHORT button, int controllerId)
 {
 	auto it = std::find_if(m_commandsController[controllerId].begin(), m_commandsController[controllerId].end(), [&command](const CommandBindingController& commandBinding) { return commandBinding.command == command; });
@@ -97,3 +102,4 @@ void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SHORT bu
 		m_commandsController[controllerId].emplace_back(CommandBindingController(std::move(command), button));
 	}
 }
+#endif
