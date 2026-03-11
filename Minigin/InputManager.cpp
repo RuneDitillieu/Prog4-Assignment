@@ -37,6 +37,9 @@ bool dae::InputManager::ProcessInput()
 		ImGui_ImplSDL3_ProcessEvent(&e);
 	}
 
+#if defined(__EMSCRIPTEN__)
+	return true;
+#else
 	DWORD dwResult;
 	for (DWORD controllerId = 0; controllerId < XUSER_MAX_COUNT; controllerId++)
 	{
@@ -59,6 +62,7 @@ bool dae::InputManager::ProcessInput()
 	}
 
 	return true;
+#endif
 }
 
 void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SDL_Scancode scanCode, SDL_EventType eventType)

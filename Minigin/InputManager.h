@@ -2,8 +2,12 @@
 #include "Singleton.h"
 #include <memory>
 #include "Commands.h"
+
+#if defined(__EMSCRIPTEN__)
+#else
 #include "Windows.h"
 #include "Xinput.h"
+#endif
 
 namespace dae
 {
