@@ -54,7 +54,7 @@ static void load()
 	// player
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert.png"));
-	go->SetLocalPosition(100, 100);
+	go->SetLocalPosition(100, 300);
 	go->SetScale(3.f);
 	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
 
@@ -68,15 +68,34 @@ static void load()
 
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert_Enemy.png"));
-	go->SetLocalPosition(300, 200);
+	go->SetLocalPosition(300, 300);
 	go->SetScale(3.f);
 	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
 
+#if defined(__EMSCRIPTEN__)
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
+#else
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), XINPUT_GAMEPAD_DPAD_UP, 0);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), XINPUT_GAMEPAD_DPAD_DOWN, 0);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), XINPUT_GAMEPAD_DPAD_LEFT, 0);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), XINPUT_GAMEPAD_DPAD_RIGHT, 0);
+#endif // !EMSCRIPTEN
 
+
+	scene.Add(std::move(go));
+
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
+	go = std::make_unique<dae::GameObject>();
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use WASD to move Q*Bert", font));
+	go->SetLocalPosition(15, 150);
+	scene.Add(std::move(go));
+
+	go = std::make_unique<dae::GameObject>();
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use DPAD to move the green guy", font));
+	go->SetLocalPosition(15, 200);
 	scene.Add(std::move(go));
 }
 
