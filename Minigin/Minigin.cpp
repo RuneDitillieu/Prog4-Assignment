@@ -108,6 +108,10 @@ void dae::Minigin::RunOneFrame()
 	const float deltaTime{ static_cast<float>(currentTime - previousTime) / static_cast<float>(SDL_GetPerformanceFrequency()) };
 	previousTime = currentTime;
 
+	/*const auto currentTime{ std::chrono::high_resolution_clock::now() };
+	const float deltaTime{ std::chrono::duration<float>(currentTime - m_prevTime).count() };
+	m_prevTime = currentTime*/;
+
 	// run frame
 	m_quit = !InputManager::GetInstance().ProcessInput();
 	SceneManager::GetInstance().Update(deltaTime);
@@ -119,4 +123,9 @@ void dae::Minigin::RunOneFrame()
 		+ (1000 / (maxFps))
 		- (SDL_GetPerformanceCounter() * 1000 / SDL_GetPerformanceFrequency()));
 	std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
+
+	/*const int maxFps{ 60 };
+	const std::chrono::milliseconds msPerFrame(1000 / maxFps);
+	std::chrono::duration<float, std::nano> sleepTime{ (currentTime + msPerFrame) - std::chrono::high_resolution_clock::now() };
+	std::this_thread::sleep_for(sleepTime);*/
 }

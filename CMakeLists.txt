@@ -30,8 +30,8 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   Minigin/FpsComponent.cpp 
   Minigin/RenderComponent.cpp 
   Minigin/RotatorComponent.cpp
-  "Minigin/ImGuiPlot.cpp" 
-  "Minigin/ImGuiComponent.cpp")
+  Minigin/ImGuiPlot.cpp 
+  Minigin/ImGuiComponent.cpp "Minigin/MovementComponent.cpp")
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
@@ -158,6 +158,7 @@ target_link_libraries("${TARGET_NAME}" PUBLIC
   glm::glm
   imgui
   ${VLD_LIBRARIES}
+  #xinput.lib
 )
 
 if(MSVC)

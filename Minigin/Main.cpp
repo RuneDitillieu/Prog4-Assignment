@@ -8,12 +8,17 @@
 #include "Minigin.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
+#include "Scene.h"
+#include "InputManager.h"
+
 #include "TextComponent.h"
 #include "RenderComponent.h"
 #include "FpsComponent.h"
 #include "RotatorComponent.h"
-#include "Scene.h"
 #include "ImGuiComponent.h"
+#include "MovementComponent.h"
+
+#include "Commands.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -46,9 +51,18 @@ static void load()
 	go->AddComponent(std::make_unique<dae::FpsComponent>(go.get(), "0.0 FPS", font));
 	scene.Add(std::move(go));
 
+	// player
 	go = std::make_unique<dae::GameObject>();
-	go->SetLocalPosition(80, 100);
-	go->AddComponent(std::make_unique<dae::ImGuiComponent>(go.get()));
+	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert.png"));
+	go->SetLocalPosition(100, 100);
+	go->SetScale(3.f);
+	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
+
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN, SDL_EVENT_KEY_UP);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN, SDL_EVENT_KEY_UP);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN, SDL_EVENT_KEY_UP);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN, SDL_EVENT_KEY_UP);
+
 	scene.Add(std::move(go));
 }
 
