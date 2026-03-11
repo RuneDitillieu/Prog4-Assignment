@@ -16,17 +16,12 @@ void dae::MovementComponent::Update(float deltaTime)
 	GetOwner()->SetLocalPosition(GetOwner()->GetLocalPosition() + (m_direction * m_speed * deltaTime));
 
 	// reset direction bc need to stop moving when button isn't pressed
-	//m_direction = glm::vec3(0, 0, 0);
+	m_direction = glm::vec3(0, 0, 0);
 }
 
 void dae::MovementComponent::Move(const glm::vec3& direction)
 {
 	m_direction += direction;
-}
-
-void dae::MovementComponent::Stop()
-{
-	m_direction = glm::vec3(0, 0, 0);
 }
 
 std::type_index dae::MovementComponent::GetType() const

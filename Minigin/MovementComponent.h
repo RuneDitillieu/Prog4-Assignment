@@ -18,7 +18,6 @@ namespace dae
 
 		void Update(float deltaTime) override;
 		void Move(const glm::vec3& direction);
-		void Stop();
 
 		std::type_index GetType() const override;
 

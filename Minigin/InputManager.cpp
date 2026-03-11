@@ -2,6 +2,16 @@
 #include "InputManager.h"
 #include <backends/imgui_impl_sdl3.h>
 
+#pragma comment(lib, "xinput.lib")
+
+dae::InputManager::InputManager()
+{
+	for (int idx{ 0 }; idx < 4; ++idx)
+	{
+		m_commandsController.emplace_back();
+	}
+}
+
 bool dae::InputManager::ProcessInput()
 {
 	SDL_Event e;
@@ -12,29 +22,13 @@ bool dae::InputManager::ProcessInput()
 		{
 			return false;
 		}
-		/*if (e.type == SDL_EVENT_KEY_DOWN) 
-		{
-			for (const auto& commandBinding : m_commands)
-			{
-				if (e.key.scancode == commandBinding.key)
-				{
-					commandBinding.command->Execute();
-				}
-			}
-		}
-		if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN) 
-		{
-			
-		}*/
 
-		for (const auto& commandBinding : m_commands)
+		for (const auto& commandBinding : m_commandsKeyboard)
 		{
-			if (e.key.scancode == commandBinding.key)
+			if (e.type == static_cast<Uint32>(commandBinding.eventType)
+				&& e.key.scancode == commandBinding.key)
 			{
-				if (e.type == static_cast<Uint32>(commandBinding.triggerEvent))
-					commandBinding.command->Execute();
-				else if (e.type == static_cast<Uint32>(commandBinding.releaseEvent))
-					commandBinding.command->Release();
+				commandBinding.command->Execute();
 			}
 		}
 		// etc...
@@ -43,23 +37,59 @@ bool dae::InputManager::ProcessInput()
 		ImGui_ImplSDL3_ProcessEvent(&e);
 	}
 
+	DWORD dwResult;
+	for (DWORD controllerId = 0; controllerId < XUSER_MAX_COUNT; controllerId++)
+	{
+		XINPUT_STATE state;
+		ZeroMemory(&state, sizeof(XINPUT_STATE));
+
+		// Simply get the state of the controller from XInput.
+		dwResult = XInputGetState(controllerId, &state);
+
+		if (dwResult == ERROR_SUCCESS)
+		{
+			for (const auto& commandBinding : m_commandsController[controllerId])
+			{
+				if (state.Gamepad.wButtons == commandBinding.button)
+				{
+					commandBinding.command->Execute();
+				}
+			}
+		}
+	}
+
 	return true;
 }
 
-void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SDL_Scancode scanCode, SDL_EventType triggerEvent, SDL_EventType releaseEvent)
+void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SDL_Scancode scanCode, SDL_EventType eventType)
 {
-	auto it = std::find_if(m_commands.begin(), m_commands.end(), [&command](const CommandBinding& commandBinding) { return commandBinding.command == command; });
+	auto it = std::find_if(m_commandsKeyboard.begin(), m_commandsKeyboard.end(), [&command](const CommandBindingKeyboard& commandBinding) { return commandBinding.command == command; });
 
 	// if binding already exists, replace keybind
-	if (it != m_commands.end())
+	if (it != m_commandsKeyboard.end())
 	{
 		it->key = scanCode;
-		it->triggerEvent = triggerEvent;
-		it->releaseEvent = releaseEvent;
+		it->eventType = eventType;
 	}
 	// else create a new binding
 	else
 	{
-		m_commands.emplace_back(CommandBinding(std::move(command), scanCode, triggerEvent, releaseEvent));
+		m_commandsKeyboard.emplace_back(CommandBindingKeyboard(std::move(command), scanCode, eventType));
+	}
+}
+
+void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SHORT button, int controllerId)
+{
+	auto it = std::find_if(m_commandsController[controllerId].begin(), m_commandsController[controllerId].end(), [&command](const CommandBindingController& commandBinding) { return commandBinding.command == command; });
+
+	// if binding already exists, replace keybind
+	if (it != m_commandsController[controllerId].end())
+	{
+		it->button = button;
+	}
+	// else create a new binding
+	else
+	{
+		m_commandsController[controllerId].emplace_back(CommandBindingController(std::move(command), button));
 	}
 }

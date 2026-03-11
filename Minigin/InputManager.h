@@ -7,23 +7,30 @@
 
 namespace dae
 {
-	struct CommandBinding
+	struct CommandBindingKeyboard
 	{
 		std::unique_ptr<Command> command;
 		SDL_Scancode key;
-		SDL_EventType triggerEvent;
-		SDL_EventType releaseEvent;
+		SDL_EventType eventType;
+	};
+
+	struct CommandBindingController
+	{
+		std::unique_ptr<Command> command;
+		SHORT button;
 	};
 
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
+		InputManager();
 		bool ProcessInput();
-		void BindCommand(std::unique_ptr<Command>&& command, SDL_Scancode scanCode, SDL_EventType eventType, SDL_EventType releaseEvent);
+		void BindCommand(std::unique_ptr<Command>&& command, SDL_Scancode scanCode, SDL_EventType eventType);
+		void BindCommand(std::unique_ptr<Command>&& command, SHORT button, int controllerId);
 
 	private:
-		//std::unordered_map<std::unique_ptr<Command>, SDL_Scancode> m_commands;
-		std::vector<CommandBinding> m_commands;
+		std::vector<CommandBindingKeyboard> m_commandsKeyboard;
+		std::vector<std::vector<CommandBindingController>> m_commandsController{};
 	};
 
 }

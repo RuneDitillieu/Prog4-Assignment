@@ -11,7 +11,6 @@ namespace dae
 	public:
 		virtual ~Command() = default;
 		virtual void Execute() = 0;
-		virtual void Release() {}
 	};
 
 
@@ -41,11 +40,6 @@ namespace dae
 		void Execute() override
 		{  
 			m_moveComp->Move(m_moveDirection);
-		}
-
-		void Release() override
-		{
-			m_moveComp->Stop();
 		}
 
 	private:
