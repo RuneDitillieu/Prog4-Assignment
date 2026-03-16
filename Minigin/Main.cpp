@@ -17,6 +17,7 @@
 #include "RotatorComponent.h"
 #include "ImGuiComponent.h"
 #include "MovementComponent.h"
+#include "HealthComponent.h"
 
 #include "Commands.h"
 
@@ -57,6 +58,7 @@ static void load()
 	go->SetLocalPosition(100, 300);
 	go->SetScale(3.f);
 	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
+	go->AddComponent(std::make_unique<dae::HealthComponent>(go.get(), 3));
 
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
