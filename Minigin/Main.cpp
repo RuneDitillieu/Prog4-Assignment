@@ -132,13 +132,13 @@ static void load()
 	scene.Add(std::move(go));
 
 	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use WASD to move Q*Bert, Q to inflict damage, R to turn tiles", font));
-	go->SetLocalPosition(15, 150);
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use WASD to move Q*Bert, E to take damage, R to turn tiles", font));
+	go->SetLocalPosition(15, 130);
 	scene.Add(std::move(go));
 
 	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use DPAD to move the green guy, E to inflict damage, T to turn tiles", font));
-	go->SetLocalPosition(15, 200);
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use DPAD to move the green guy, Q to take damage, T to turn tiles", font));
+	go->SetLocalPosition(15, 170);
 	scene.Add(std::move(go));
 
 	scene.Add(std::move(uiLives));
