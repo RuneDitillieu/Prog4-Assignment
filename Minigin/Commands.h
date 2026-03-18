@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "Components/MovementComponent.h"
 #include "Components/HealthComponent.h"
+#include "Components/ScoreComponent.h"
+
 #include <glm/glm.hpp>
 
 namespace dae
@@ -66,5 +68,25 @@ namespace dae
 	private:
 		int m_damage;
 		dae::HealthComponent* m_healthComp;
+	};
+
+
+	class TurnTileCommand final : public GameActorCommand
+	{
+	public:
+		TurnTileCommand(GameObject* actor, int scoreIncrease)
+			: GameActorCommand(actor), m_scoreIncrease(scoreIncrease)
+		{
+			m_scoreComp = GetGameActor()->GetComponent<dae::ScoreComponent>();
+		}
+
+		void Execute() override
+		{
+			m_scoreComp->AddToScore(m_scoreIncrease);
+		}
+
+	private:
+		int m_scoreIncrease;
+		dae::ScoreComponent* m_scoreComp;
 	};
 }

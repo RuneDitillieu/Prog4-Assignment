@@ -28,18 +28,9 @@ namespace dae
 	class ScoreDisplay : public IObserver
 	{
 	public:
-		ScoreDisplay(GameObject* textObject) : IObserver(), m_textObject(textObject) {}
+		ScoreDisplay(GameObject* textObject);
 
-		void Notify(Event event, Subject*) override
-		{
-			switch (event.id)
-			{
-			case make_sdbm_hash("SCORE_CHANGED"):
-				//TextComponent* textComp = m_textObject->GetComponent<TextComponent>();
-				//textComp->SetText("Score: ");
-				break;
-			}
-		}
+		void Notify(Event event, Subject*) override;
 
 	private:
 		GameObject* m_textObject;
