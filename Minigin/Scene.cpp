@@ -9,6 +9,12 @@ void Scene::Add(std::unique_ptr<GameObject> object)
 	m_objects.emplace_back(std::move(object));
 }
 
+void Scene::Add(std::unique_ptr<IObserver> observer)
+{
+	assert(observer != nullptr && "Cannot add a null GameObject to the scene.");
+	m_observers.emplace_back(std::move(observer));
+}
+
 void Scene::RemoveMarkedForRemoval()
 {
 	m_objects.erase(

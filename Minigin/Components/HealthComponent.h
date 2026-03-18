@@ -4,7 +4,7 @@
 namespace dae
 {
     class GameObject;
-    class HealthComponent : public Component
+    class HealthComponent final : public Component
     {
     public:
         HealthComponent(GameObject* pOwner, int maxHealth);

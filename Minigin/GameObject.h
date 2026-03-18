@@ -2,6 +2,7 @@
 #include <memory>
 #include "Transform.h"
 #include "Component.h"
+#include "Subject.h"
 
 namespace dae
 {
@@ -93,6 +94,10 @@ namespace dae
 		size_t GetChildCount() const { return m_children.size(); }
 		GameObject* GetChildAt(size_t index) const { return m_children[index]; }
 
+		// Subject functions
+		void InitSubject() { m_subject = std::make_unique<Subject>(); }
+		Subject* GetSubject() { return m_subject.get(); }
+
 	private:
 		bool IsParentOf(GameObject* possibleParent) const;
 		void AddChild(GameObject* newParent);
@@ -110,5 +115,7 @@ namespace dae
 		std::vector<std::unique_ptr<Component>> m_components;
 		GameObject* m_parent{ nullptr };		// non-owning
 		std::vector<GameObject*> m_children;	// non-owning
+
+		std::unique_ptr<Subject> m_subject;
 	};
 }

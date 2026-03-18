@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include "GameObject.h"
+#include "Observers.h"
 
 namespace dae
 {
@@ -9,6 +10,7 @@ namespace dae
 	{
 	public:
 		void Add(std::unique_ptr<GameObject> object);
+		void Add(std::unique_ptr<IObserver> observer);
 		void RemoveMarkedForRemoval();
 		void RemoveAll();
 
@@ -26,6 +28,6 @@ namespace dae
 		explicit Scene() = default;
 
 		std::vector<std::unique_ptr<GameObject>> m_objects{};
+		std::vector<std::unique_ptr<IObserver>> m_observers{};
 	};
-
 }
