@@ -24,7 +24,7 @@ namespace dae
         const int m_maxHealth;
         int m_curHealth;
 
-        const int m_maxLives;
+        //const int m_maxLives;
         int m_remainingLives;
     };
 }

@@ -7,7 +7,6 @@ dae::HealthComponent::HealthComponent(GameObject* pOwner, int maxHealth, int max
 	: Component(pOwner)
 	, m_maxHealth(maxHealth)
 	, m_curHealth(maxHealth)
-	, m_maxLives(maxLives)
 	, m_remainingLives(maxLives)
 { }
 
