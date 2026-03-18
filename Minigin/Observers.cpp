@@ -25,7 +25,7 @@ void dae::ScoreDisplay::Notify(Event event, Subject*)
 	{
 	case make_sdbm_hash("SCORE_CHANGED"):
 		TextComponent* textComp = m_textObject->GetComponent<TextComponent>();
-		textComp->SetText("Score: " + std::to_string(event.args[0].nr));
+		textComp->SetText("score: " + std::to_string(event.args[0].nr));
 		break;
 	}
 }

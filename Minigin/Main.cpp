@@ -71,6 +71,7 @@ static void load()
 	go->AddComponent(std::make_unique<dae::ScoreComponent>(go.get()));
 	go->InitSubject();
 	go->GetSubject()->AddObserver(livesDisplay.get());
+	go->GetSubject()->AddObserver(scoreDisplay.get());
 
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
@@ -106,6 +107,7 @@ static void load()
 	go->AddComponent(std::make_unique<dae::ScoreComponent>(go.get()));
 	go->InitSubject();
 	go->GetSubject()->AddObserver(livesDisplay.get());
+	go->GetSubject()->AddObserver(scoreDisplay.get());
 
 #if defined(__EMSCRIPTEN__)
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
@@ -130,12 +132,12 @@ static void load()
 	scene.Add(std::move(go));
 
 	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use WASD to move Q*Bert, Q to inflict damage", font));
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use WASD to move Q*Bert, Q to inflict damage, R to turn tiles", font));
 	go->SetLocalPosition(15, 150);
 	scene.Add(std::move(go));
 
 	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use DPAD to move the green guy, E to inflict damage", font));
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use DPAD to move the green guy, E to inflict damage, T to turn tiles", font));
 	go->SetLocalPosition(15, 200);
 	scene.Add(std::move(go));
 
