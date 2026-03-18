@@ -11,13 +11,7 @@
 #include "Scene.h"
 #include "InputManager.h"
 
-#include "TextComponent.h"
-#include "RenderComponent.h"
-#include "FpsComponent.h"
-#include "RotatorComponent.h"
-#include "ImGuiComponent.h"
-#include "MovementComponent.h"
-#include "HealthComponent.h"
+#include "Components/ComponentsInclude.h"
 
 #include "Commands.h"
 

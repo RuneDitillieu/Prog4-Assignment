@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
 #include "GameObject.h"
-#include "MovementComponent.h"
+#include "Components/MovementComponent.h"
 #include <glm/glm.hpp>
 
 namespace dae

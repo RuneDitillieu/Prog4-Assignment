@@ -3,8 +3,7 @@
 #include <memory>
 #include "Commands.h"
 
-#if defined(__EMSCRIPTEN__)
-#else
+#ifndef __EMSCRIPTEN__
 #include "Windows.h"
 #include "Xinput.h"
 #endif
@@ -18,8 +17,7 @@ namespace dae
 		SDL_EventType eventType;
 	};
 
-#if defined(__EMSCRIPTEN__)
-#else
+#ifndef __EMSCRIPTEN__
 	struct CommandBindingController
 	{
 		std::unique_ptr<Command> command;
@@ -33,16 +31,14 @@ namespace dae
 		InputManager();
 		bool ProcessInput();
 		void BindCommand(std::unique_ptr<Command>&& command, SDL_Scancode scanCode, SDL_EventType eventType);
-#if defined(__EMSCRIPTEN__)
-#else
+#ifndef __EMSCRIPTEN__
 		void BindCommand(std::unique_ptr<Command>&& command, SHORT button, int controllerId);
 #endif
 
 	private:
 		std::vector<CommandBindingKeyboard> m_commandsKeyboard;
 
-#if defined(__EMSCRIPTEN__)
-#else
+#ifndef __EMSCRIPTEN__
 		std::vector<std::vector<CommandBindingController>> m_commandsController{};
 #endif
 	};

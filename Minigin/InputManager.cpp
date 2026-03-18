@@ -2,15 +2,13 @@
 #include "InputManager.h"
 #include <backends/imgui_impl_sdl3.h>
 
-#if defined(__EMSCRIPTEN__)
-#else
+#ifndef __EMSCRIPTEN__
 #pragma comment(lib, "xinput.lib")
 #endif
 
 dae::InputManager::InputManager()
 {
-#if defined(__EMSCRIPTEN__)
-#else
+#ifndef __EMSCRIPTEN__
 	for (int idx{ 0 }; idx < 4; ++idx)
 	{
 		m_commandsController.emplace_back();
@@ -59,7 +57,7 @@ bool dae::InputManager::ProcessInput()
 		{
 			for (const auto& commandBinding : m_commandsController[controllerId])
 			{
-				if (state.Gamepad.wButtons == commandBinding.button)
+				if (state.Gamepad.wButtons & commandBinding.button)
 				{
 					commandBinding.command->Execute();
 				}
@@ -88,8 +86,7 @@ void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SDL_Scan
 	}
 }
 
-#if defined(__EMSCRIPTEN__)
-#else
+#ifndef __EMSCRIPTEN__
 void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SHORT button, int controllerId)
 {
 	auto it = std::find_if(m_commandsController[controllerId].begin(), m_commandsController[controllerId].end(), [&command](const CommandBindingController& commandBinding) { return commandBinding.command == command; });
