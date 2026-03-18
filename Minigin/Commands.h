@@ -2,6 +2,7 @@
 #include <SDL3/SDL.h>
 #include "GameObject.h"
 #include "Components/MovementComponent.h"
+#include "Components/HealthComponent.h"
 #include <glm/glm.hpp>
 
 namespace dae
@@ -45,5 +46,25 @@ namespace dae
 	private:
 		glm::vec3 m_moveDirection;
 		dae::MovementComponent* m_moveComp;
+	};
+
+	class TakeDamageCommand final : public GameActorCommand
+	{
+	public:
+		TakeDamageCommand(GameObject* actor, int damage)
+			: GameActorCommand(actor), m_damage(damage)
+		{ 
+			m_healthComp = GetGameActor()->GetComponent<dae::HealthComponent>();
+		}
+		~TakeDamageCommand() = default;
+
+		void Execute() override
+		{
+			m_healthComp->TakeDamage(m_damage);
+		}
+
+	private:
+		int m_damage;
+		dae::HealthComponent* m_healthComp;
 	};
 }

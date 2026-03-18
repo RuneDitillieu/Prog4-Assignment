@@ -1,17 +1,8 @@
 #pragma once
+#include <cstdint>
 
 namespace dae
 {
-	/*unsigned int sdbm_hash(const char* str)
-	{
-		unsigned int hash = 0;
-		int c;
-		while ((c = *str++)) {
-			hash = c + (hash << 6) + (hash << 16) - hash;
-		}
-		return hash;
-	}*/
-
 	template <int length> struct sdbm_hash
 	{
 		consteval static unsigned int _calculate(const char* const text, unsigned int& value)
@@ -39,7 +30,9 @@ namespace dae
 	};
 
 
-	struct EventArg {};
+	struct EventArg {
+		int nr;
+	};
 	using EventId = unsigned int;
 
 	struct Event

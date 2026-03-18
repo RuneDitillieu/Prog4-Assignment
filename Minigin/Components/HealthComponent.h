@@ -7,7 +7,7 @@ namespace dae
     class HealthComponent final : public Component
     {
     public:
-        HealthComponent(GameObject* pOwner, int maxHealth);
+        HealthComponent(GameObject* pOwner, int maxHealth, int maxLives);
         ~HealthComponent() = default;
         HealthComponent(const HealthComponent& other) = delete;
         HealthComponent(HealthComponent&& other) = delete;
@@ -23,5 +23,8 @@ namespace dae
     private:
         const int m_maxHealth;
         int m_curHealth;
+
+        const int m_maxLives;
+        int m_remainingLives;
     };
 }

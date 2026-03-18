@@ -1,28 +1,22 @@
 #pragma once
-#include "Observers.h"
+//#include "Observers.h"
 #include <vector>
 #include "GameObject.h"
+#include "Events.h"
 
 namespace dae
 {
+	class IObserver;
 	class Subject
 	{
 	public:
-		void AddObserver(IObserver* observer) 
-		{
-			m_observers.push_back(observer);
-		}
+		Subject() = default;
 
-		void RemoveObserver(IObserver* observer) 
-		{
-			m_observers.erase(std::remove(m_observers.begin(), m_observers.end(), observer));
-		}
+		void AddObserver(IObserver* observer);
 
-		void NotifyObservers(Event event) 
-		{
-			for (auto observer : m_observers)
-				observer->Notify(event, this);
-		}
+		void RemoveObserver(IObserver* observer);
+
+		void NotifyObservers(Event event);
 
 	private:
 		std::vector<IObserver*> m_observers;

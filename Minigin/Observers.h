@@ -17,33 +17,26 @@ namespace dae
 	class RemainingLivesDisplay : public IObserver
 	{
 	public:
-		RemainingLivesDisplay(GameObject* textObject) : m_textObject(textObject) {}
+		RemainingLivesDisplay(GameObject* textObject);
 
-		void Notify(Event event, Subject*) override
-		{
-			switch (event.id)
-			{
-			case make_sdbm_hash("PLAYER_DIED"):
-				m_textObject->GetComponent<dae::TextComponent>()->SetText("# lives: ");
-				break;
-			}
-		}
+		void Notify(Event event, Subject*) override;
 
 	private:
-		GameObject* m_textObject;
+		GameObject* m_textObject{ nullptr };
 	};
 
 	class ScoreDisplay : public IObserver
 	{
 	public:
-		ScoreDisplay(GameObject* textObject) : m_textObject(textObject) {}
+		ScoreDisplay(GameObject* textObject) : IObserver(), m_textObject(textObject) {}
 
 		void Notify(Event event, Subject*) override
 		{
 			switch (event.id)
 			{
 			case make_sdbm_hash("SCORE_CHANGED"):
-				m_textObject->GetComponent<dae::TextComponent>()->SetText("Score: ");
+				//TextComponent* textComp = m_textObject->GetComponent<TextComponent>();
+				//textComp->SetText("Score: ");
 				break;
 			}
 		}

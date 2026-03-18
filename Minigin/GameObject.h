@@ -2,10 +2,11 @@
 #include <memory>
 #include "Transform.h"
 #include "Component.h"
-#include "Subject.h"
+//#include "Subject.h"
 
 namespace dae
 {
+	class Subject;
 	class Font;
 	class TextComponent;
 	class Texture2D;
@@ -95,8 +96,8 @@ namespace dae
 		GameObject* GetChildAt(size_t index) const { return m_children[index]; }
 
 		// Subject functions
-		void InitSubject() { m_subject = std::make_unique<Subject>(); }
-		Subject* GetSubject() { return m_subject.get(); }
+		void InitSubject();
+		Subject* GetSubject(); 
 
 	private:
 		bool IsParentOf(GameObject* possibleParent) const;

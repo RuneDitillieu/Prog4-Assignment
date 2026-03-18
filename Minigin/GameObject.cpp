@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Component.h"
+#include "Subject.h"
 
 dae::GameObject::~GameObject()
 {
@@ -135,3 +136,12 @@ void dae::GameObject::RemoveChild(GameObject* childToRemove)
 	);
 }
 
+void dae::GameObject::InitSubject() 
+{ 
+	m_subject = std::make_unique<Subject>();
+}
+
+dae::Subject* dae::GameObject::GetSubject() 
+{ 
+	return m_subject.get();
+}
