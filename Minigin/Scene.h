@@ -14,7 +14,7 @@ namespace dae
 		void RemoveMarkedForRemoval();
 		void RemoveAll();
 
-		void Update(float deltaTime);
+		void Update();
 		void Render() const;
 
 		~Scene() = default;

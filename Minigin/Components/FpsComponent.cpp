@@ -2,6 +2,7 @@
 #include "TextComponent.h"
 #include <format>
 #include "GameObject.h"
+#include "DeltaTime.h"
 
 dae::FpsComponent::FpsComponent(GameObject* pOwner, TextComponent* pConnectedTextComponent)
     : Component(pOwner)
@@ -17,8 +18,10 @@ dae::FpsComponent::FpsComponent(GameObject* pOwner, const std::string& text, std
     m_prev10FramesFps.reserve(30);
 }
 
-void dae::FpsComponent::Update(float deltaTime)
+void dae::FpsComponent::Update()
 {
+    float deltaTime{ dae::DeltaTime::GetInstance().GetDeltaTime() };
+
     if (deltaTime > 0.001f && m_pConnectedTextComponent != nullptr)
     {
         if (m_prev10FramesFps.size() == m_prev10FramesFps.capacity())

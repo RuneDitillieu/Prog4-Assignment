@@ -19,8 +19,5 @@ namespace dae
 		Minigin(Minigin&& other) = delete;
 		Minigin& operator=(const Minigin& other) = delete;
 		Minigin& operator=(Minigin&& other) = delete;
-
-	private:
-		std::chrono::steady_clock::time_point m_prevTime{ std::chrono::high_resolution_clock::now() };
 	};
 }

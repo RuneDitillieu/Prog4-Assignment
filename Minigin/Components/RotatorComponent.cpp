@@ -1,5 +1,6 @@
 #include "RotatorComponent.h"
 #include "GameObject.h"
+#include "DeltaTime.h"
 
 dae::RotatorComponent::RotatorComponent(GameObject* pOwner, float clockwiseSpeed)
 	: Component(pOwner)
@@ -7,9 +8,9 @@ dae::RotatorComponent::RotatorComponent(GameObject* pOwner, float clockwiseSpeed
 {
 }
 
-void dae::RotatorComponent::Update(float deltaTime)
+void dae::RotatorComponent::Update()
 {
-	m_angle += deltaTime * m_clockwiseSpeed;
+	m_angle += dae::DeltaTime::GetInstance().GetDeltaTime() * m_clockwiseSpeed;
 
 	if (m_angle > 360)
 	{

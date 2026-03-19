@@ -17,6 +17,7 @@
 #include "ResourceManager.h"
 #include <chrono>
 #include <thread>
+#include "DeltaTime.h"
 
 SDL_Window* g_window{};
 
@@ -102,19 +103,18 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 void dae::Minigin::RunOneFrame()
 {
-	// calc deltaTime
-	static uint64_t previousTime{ SDL_GetPerformanceCounter() };
-	const uint64_t currentTime{ SDL_GetPerformanceCounter() };
-	const float deltaTime{ static_cast<float>(currentTime - previousTime) / static_cast<float>(SDL_GetPerformanceFrequency()) };
-	previousTime = currentTime;
+	dae::DeltaTime::GetInstance().CalculateDeltaTime();
 
-	/*const auto currentTime{ std::chrono::high_resolution_clock::now() };
-	const float deltaTime{ std::chrono::duration<float>(currentTime - m_prevTime).count() };
+	// calc deltaTime
+	const uint64_t currentTime{ SDL_GetPerformanceCounter() };
+
+	//const auto currentTime{ std::chrono::high_resolution_clock::now() };
+	/*const float deltaTime{std::chrono::duration<float>(currentTime - m_prevTime).count()};
 	m_prevTime = currentTime*/;
 
 	// run frame
 	m_quit = !InputManager::GetInstance().ProcessInput();
-	SceneManager::GetInstance().Update(deltaTime);
+	SceneManager::GetInstance().Update();
 	Renderer::GetInstance().Render();
 
 	// sleep so that you can have a maxFps
@@ -124,8 +124,8 @@ void dae::Minigin::RunOneFrame()
 		- (SDL_GetPerformanceCounter() * 1000 / SDL_GetPerformanceFrequency()));
 	std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
 
-	/*const int maxFps{ 60 };
-	const std::chrono::milliseconds msPerFrame(1000 / maxFps);
+	//const int maxFps{ 60 };
+	/*const std::chrono::milliseconds msPerFrame{ int(1000 / maxFps) };
 	std::chrono::duration<float, std::nano> sleepTime{ (currentTime + msPerFrame) - std::chrono::high_resolution_clock::now() };
 	std::this_thread::sleep_for(sleepTime);*/
 }

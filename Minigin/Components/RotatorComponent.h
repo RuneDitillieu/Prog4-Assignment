@@ -15,7 +15,7 @@ namespace dae
 		RotatorComponent& operator=(const RotatorComponent& other) = delete;
 		RotatorComponent& operator=(RotatorComponent&& other) = delete;
 
-		void Update(float deltaTime) override;
+		void Update() override;
 
 		std::type_index GetType() const override;
 

@@ -16,7 +16,7 @@ namespace dae
 		MovementComponent& operator=(const MovementComponent& other) = delete;
 		MovementComponent& operator=(MovementComponent&& other) = delete;
 
-		void Update(float deltaTime) override;
+		void Update() override;
 		void Move(const glm::vec3& direction);
 
 		std::type_index GetType() const override;

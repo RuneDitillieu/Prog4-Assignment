@@ -21,7 +21,7 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 		// functions
-		void Update(float deltaTime);
+		void Update();
 		void Render();
 
 		void SetLocalPosition(float x, float y);

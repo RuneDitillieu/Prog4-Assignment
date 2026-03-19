@@ -22,7 +22,7 @@ dae::TextComponent::TextComponent(GameObject* pOwner, const std::string& text, s
 
 dae::TextComponent::~TextComponent() = default;
 
-void dae::TextComponent::Update(float)
+void dae::TextComponent::Update()
 {
 	if (m_needsUpdate)
 	{
