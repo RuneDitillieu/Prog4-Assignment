@@ -4,6 +4,7 @@
 #include "Components/MovementComponent.h"
 #include "Components/HealthComponent.h"
 #include "Components/ScoreComponent.h"
+#include "ServiceLocator.h"
 
 #include <glm/glm.hpp>
 
@@ -83,6 +84,7 @@ namespace dae
 		void Execute() override
 		{
 			m_scoreComp->AddToScore(m_scoreIncrease);
+			dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(dae::SoundSystem::Sound::Jump1), 0.8f);
 		}
 
 	private:

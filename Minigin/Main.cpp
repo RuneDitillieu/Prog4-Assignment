@@ -22,10 +22,13 @@
 #include <filesystem>
 namespace fs = std::filesystem;
 
+std::unique_ptr<dae::SoundSystem> dae::ServiceLocator::_ss_instance{ std::make_unique<dae::NullSoundSystem>() };
+
 static void load()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene();
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SdlSoundSystem>());
+	dae::ServiceLocator::GetSoundSystem().Init();
 
 	// background
 	auto go = std::make_unique<dae::GameObject>();
@@ -144,14 +147,18 @@ static void load()
 	go->SetLocalPosition(15, 170);
 	scene.Add(std::move(go));
 
+	go = std::make_unique<dae::GameObject>();
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Turning tiles plays a sound", font));
+	go->SetLocalPosition(15, 210);
+	scene.Add(std::move(go));
+
 	scene.Add(std::move(uiLives));
 	scene.Add(std::move(uiScore));
 	scene.Add(std::move(livesDisplay));
 	scene.Add(std::move(scoreDisplay));
 
-	dae::ServiceLocator::GetSoundSystem().Init();
-	dae::ServiceLocator::GetSoundSystem().AddSound(0, "./Data/Sounds/coin.mp3");
-	dae::ServiceLocator::GetSoundSystem().Play(0, 0.8f);
+	dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(dae::SoundSystem::Sound::Jump1), "./Data/Sounds/jump.mp3");
+	//dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(dae::SoundSystem::Sound::Jump1), 0.8f);
 }
 
 int main(int, char*[]) {

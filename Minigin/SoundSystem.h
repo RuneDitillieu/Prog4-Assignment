@@ -12,6 +12,17 @@ namespace dae
 		virtual void Init() = 0;
 		virtual void Play(const SoundId id, const float volume) = 0;
 		virtual void AddSound(SoundId id, std::string path) = 0;
+
+		enum class Sound
+		{
+			Coin,
+			Fall,
+			Jump1,
+			Jump2,
+			Jump3,
+			Jump4
+		};
+
 	};
 
 	class NullSoundSystem final : public SoundSystem

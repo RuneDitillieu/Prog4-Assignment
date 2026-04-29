@@ -16,6 +16,4 @@ namespace dae
 	private:
 		static std::unique_ptr<SoundSystem> _ss_instance;
 	};
-
-	std::unique_ptr<dae::SoundSystem> dae::ServiceLocator::_ss_instance{ std::make_unique<dae::NullSoundSystem>() };
 }
