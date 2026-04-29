@@ -14,6 +14,7 @@ namespace dae
 		virtual void Notify(Event event, Subject*) = 0;
 	};
 
+
 	class RemainingLivesDisplay : public IObserver
 	{
 	public:
@@ -24,6 +25,7 @@ namespace dae
 	private:
 		GameObject* m_textObject{ nullptr };
 	};
+
 
 	class ScoreDisplay : public IObserver
 	{

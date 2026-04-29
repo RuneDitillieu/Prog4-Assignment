@@ -36,7 +36,7 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Minigin/Components/HealthComponent.cpp" 
   "Minigin/Observers.cpp" 
   "Minigin/Subject.cpp" 
-  "Minigin/Components/ScoreComponent.cpp")
+  "Minigin/Components/ScoreComponent.cpp" "Minigin/ServiceLocator.h" "Minigin/SoundSystem.h")
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
@@ -113,6 +113,40 @@ if(NOT SDL3_ttf_FOUND)
   endif()
 endif()
 
+# Add SDL3_mixer
+find_package(SDL3_mixer 3.2.0 CONFIG QUIET)
+if(NOT SDL3_mixer_FOUND)
+  if (WIN32)
+    FetchContent_Declare(
+      SDL3_mixer
+      URL https://github.com/libsdl-org/SDL_mixer/releases/download/release-3.2.0/SDL3_mixer-devel-3.2.0-VC.zip
+      DOWNLOAD_NO_PROGRESS ON
+      DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+    )
+    FetchContent_MakeAvailable(SDL3_mixer)
+    list(PREPEND CMAKE_PREFIX_PATH "${sdl3_mixer_SOURCE_DIR}")
+    find_package(SDL3_mixer CONFIG REQUIRED)
+  else()
+    FetchContent_Declare(
+      SDL3_mixer
+      GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer.git
+      GIT_TAG release-3.2.0
+      GIT_SHALLOW TRUE
+      GIT_PROGRESS TRUE
+    )
+    set(SDL3MIXER_INSTALL OFF)
+    if(EMSCRIPTEN)
+      list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/emscripten")
+      set(SDL3MIXER_USE_SYSTEM_FREETYPE ON)
+      set(SDL3MIXER_VENDORED OFF)
+      set(SDL3MIXER_PLUTOSVG OFF)
+      add_compile_options(-sUSE_FREETYPE=1 -sUSE_HARFBUZZ=1)
+      add_link_options(-sUSE_FREETYPE=1 -sUSE_HARFBUZZ=1)
+    endif()
+    FetchContent_MakeAvailable(SDL3_mixer)
+  endif()
+endif()
+
 # Dear ImGui
 FetchContent_Declare(
   imgui
@@ -153,6 +187,7 @@ target_include_directories("${TARGET_NAME}" PUBLIC
   ${sdl3_SOURCE_DIR}/include
   ${sdl3_image_SOURCE_DIR}/include
   ${sdl3_ttf_SOURCE_DIR}/include
+  ${sdl3_mixer_SOURCE_DIR}/include
   ${imgui_SOURCE_DIR}
   ${VLD_INCLUDE_DIR}
 )
@@ -160,10 +195,10 @@ target_include_directories("${TARGET_NAME}" PUBLIC
 target_link_libraries("${TARGET_NAME}" PUBLIC 
   SDL3::SDL3 
   SDL3_ttf::SDL3_ttf
+  SDL3_mixer::SDL3_mixer
   glm::glm
   imgui
   ${VLD_LIBRARIES}
-  #xinput.lib
 )
 
 if(MSVC)

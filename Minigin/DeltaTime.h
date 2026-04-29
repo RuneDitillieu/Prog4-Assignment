@@ -9,15 +9,14 @@ namespace dae
 	public:
 		void CalculateDeltaTime()
 		{
-			//static uint64_t previousTime{ SDL_GetPerformanceCounter() };
+			static uint64_t prevTime{ SDL_GetPerformanceCounter() };
 			const uint64_t currentTime{ SDL_GetPerformanceCounter() };
-			m_deltaTime = static_cast<float>(currentTime - m_prevTime) / static_cast<float>(SDL_GetPerformanceFrequency());
-			m_prevTime = currentTime;
+			m_deltaTime = static_cast<float>(currentTime - prevTime) / static_cast<float>(SDL_GetPerformanceFrequency());
+			prevTime = currentTime;
 		}
 		float GetDeltaTime() { return m_deltaTime; }
 
 	private:
-		float m_deltaTime{};
-		uint64_t m_prevTime{ SDL_GetPerformanceCounter() };
+		float m_deltaTime;
 	};
 }
