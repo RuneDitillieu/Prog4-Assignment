@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.26)
 project(Minigin)
 
+# Use C++20
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED)
+
 if(EMSCRIPTEN)
   message("Using Emscripten!")
 endif()
@@ -36,7 +40,8 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Minigin/Components/HealthComponent.cpp" 
   "Minigin/Observers.cpp" 
   "Minigin/Subject.cpp" 
-  "Minigin/Components/ScoreComponent.cpp" "Minigin/ServiceLocator.h" "Minigin/SoundSystem.h")
+  "Minigin/Components/ScoreComponent.cpp" 
+  "Minigin/SdlSoundSystem.cpp")
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
@@ -238,6 +243,7 @@ elseif(WIN32)
   set(SDL_RUNTIME_DLLS
     SDL3::SDL3
     SDL3_ttf::SDL3_ttf
+    SDL3_mixer::SDL3_mixer
   )
 
   foreach(dllTarget IN LISTS SDL_RUNTIME_DLLS)

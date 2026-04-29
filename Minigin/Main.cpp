@@ -16,6 +16,8 @@
 #include "Observers.h"
 
 #include "Commands.h"
+#include "ServiceLocator.h"
+#include "SdlSoundSystem.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -23,6 +25,7 @@ namespace fs = std::filesystem;
 static void load()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene();
+	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SdlSoundSystem>());
 
 	// background
 	auto go = std::make_unique<dae::GameObject>();
@@ -145,6 +148,10 @@ static void load()
 	scene.Add(std::move(uiScore));
 	scene.Add(std::move(livesDisplay));
 	scene.Add(std::move(scoreDisplay));
+
+	dae::ServiceLocator::GetSoundSystem().Init();
+	dae::ServiceLocator::GetSoundSystem().AddSound(0, "./Data/Sounds/coin.mp3");
+	dae::ServiceLocator::GetSoundSystem().Play(0, 0.8f);
 }
 
 int main(int, char*[]) {
