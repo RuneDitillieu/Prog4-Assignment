@@ -41,7 +41,7 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Minigin/Observers.cpp" 
   "Minigin/Subject.cpp" 
   "Minigin/Components/ScoreComponent.cpp" 
-  "Minigin/SdlSoundSystem.cpp" )
+  "Minigin/Sound/SdlSoundSystem.cpp" )
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)

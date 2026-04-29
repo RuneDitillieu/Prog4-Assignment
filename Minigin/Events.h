@@ -24,7 +24,7 @@ namespace dae
 		consteval static int _calculate(const char* const text, unsigned int&) { return text[0]; }
 	};
 
-	template <size_t N> consteval unsigned int make_sdbm_hash(const char(&text)[N])
+	template <unsigned int N> consteval unsigned int make_sdbm_hash(const char(&text)[N])
 	{
 		return sdbm_hash<N - 1>::calculate(text);
 	};

@@ -16,8 +16,8 @@
 #include "Observers.h"
 
 #include "Commands.h"
-#include "ServiceLocator.h"
-#include "SdlSoundSystem.h"
+#include "Sound/ServiceLocator.h"
+#include "Sound/SdlSoundSystem.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
