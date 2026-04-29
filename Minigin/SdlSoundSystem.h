@@ -28,11 +28,9 @@ namespace dae
 		bool m_IsLoaded = false;
 	};
 
-	class SdlSoundSystem : public SoundSystem
+	class SdlSoundSystem final : public SoundSystem
 	{
 	public:
-		SDL_AudioDeviceID m_pDevice = 0;
-		MIX_Mixer* m_pMixer = nullptr;
 
 		void Init() override;
 
@@ -44,7 +42,7 @@ namespace dae
 	private:
 		std::unordered_map<SoundId, std::unique_ptr<AudioClip>> m_AudioClips{};
 
-		const float m_MinVolume{ 0.f };
-		const float m_MaxVolume{ 100.f };
+		SDL_AudioDeviceID m_pDevice = 0;
+		MIX_Mixer* m_pMixer = nullptr;
 	};
 }

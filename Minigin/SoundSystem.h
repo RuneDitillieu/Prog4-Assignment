@@ -28,7 +28,7 @@ namespace dae
 	class NullSoundSystem final : public SoundSystem
 	{
 		void Play(const SoundId, const float) override {}
-		void AddSound(SoundId, std::string) {}
+		void AddSound(SoundId, std::string) override {}
 		void Init() override {}
 	};
 }
