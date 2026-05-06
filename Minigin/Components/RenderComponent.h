@@ -2,6 +2,7 @@
 #include "Component.h"
 #include <memory>
 #include <string>
+#include <glm/glm.hpp>
 
 namespace dae
 {
@@ -14,6 +15,7 @@ namespace dae
 		void Render(const Transform& transform) override;
 		void SetTexture(const std::string& filename);
 		void SetTexture(std::shared_ptr<Texture2D>&& texture);
+		glm::vec2 GetSize() const;
 
 		std::type_index GetType() const override;
 

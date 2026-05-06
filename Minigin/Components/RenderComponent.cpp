@@ -38,6 +38,11 @@ void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D>&& texture)
 	m_texture = texture;
 }
 
+glm::vec2 dae::RenderComponent::GetSize() const
+{
+	return m_texture->GetSize();
+}
+
 std::type_index dae::RenderComponent::GetType() const
 {
 	return typeid(RenderComponent);

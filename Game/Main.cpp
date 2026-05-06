@@ -20,6 +20,7 @@
 #include "SdlSoundSystem.h"
 
 #include "Coily.h"
+#include "RectColliderComponent.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -74,6 +75,8 @@ static void load()
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert.png"));
 	go->SetLocalPosition(100, 300);
 	go->SetScale(3.f);
+	glm::vec2 texSize{ go->GetComponent<dae::RenderComponent>()->GetSize() * go->GetScale() };
+	go->AddComponent(std::make_unique<dae::RectColliderComp>(go.get(), go->GetLocalPosition(), go->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
 	go->AddComponent(std::make_unique<dae::HealthComponent>(go.get(), 3, 3));
 	go->AddComponent(std::make_unique<dae::ScoreComponent>(go.get()));
@@ -111,6 +114,8 @@ static void load()
 	go->SetLocalPosition(300, 300);
 	go->AddComponent(std::make_unique<QBert::Coily>(go.get()));
 	go->SetScale(3.f);
+	glm::vec2 texSize{ go->GetComponent<dae::RenderComponent>()->GetSize() * go->GetScale() };
+	go->AddComponent(std::make_unique<dae::RectColliderComp>(go.get(), go->GetLocalPosition(), go->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
 	go->AddComponent(std::make_unique<dae::HealthComponent>(go.get(), 3, 3));
 	go->AddComponent(std::make_unique<dae::ScoreComponent>(go.get()));

@@ -49,7 +49,7 @@ add_library(${ENGINE_NAME} STATIC
   "Minigin/EventHandlers/Observers.cpp"
   "Minigin/EventHandlers/Subject.cpp"
 
-  "Minigin/Sound/SdlSoundSystem.cpp")
+  "Minigin/Sound/SdlSoundSystem.cpp"  "Minigin/Components/CircleColliderComponent.cpp" "Minigin/Components/RectColliderComponent.cpp")
 
 target_include_directories(${ENGINE_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/Minigin)
 
