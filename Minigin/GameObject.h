@@ -28,7 +28,7 @@ namespace dae
 		void SetLocalPosition(const glm::vec3& newPosition);
 		void SetScale(float scale) { m_localTransform.SetScale(scale); }
 		const glm::vec3& GetLocalPosition() const { return m_localTransform.GetPosition(); }
-		const float GetScale() const { return m_localTransform.GetScale(); }
+		float GetScale() const { return m_localTransform.GetScale(); }
 
 		void MarkForRemoval() { m_isMarkedForRemoval = true;  }
 		bool GetIsMarkedForRemoval() { return m_isMarkedForRemoval; }

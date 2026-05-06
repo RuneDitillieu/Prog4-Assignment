@@ -49,7 +49,9 @@ add_library(${ENGINE_NAME} STATIC
   "Minigin/EventHandlers/Observers.cpp"
   "Minigin/EventHandlers/Subject.cpp"
 
-  "Minigin/Sound/SdlSoundSystem.cpp"  "Minigin/Components/CircleColliderComponent.cpp" "Minigin/Components/RectColliderComponent.cpp")
+  "Minigin/Sound/SdlSoundSystem.cpp"  
+  "Minigin/Components/CircleColliderComponent.cpp" 
+  "Minigin/Components/RectColliderComponent.cpp")
 
 target_include_directories(${ENGINE_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/Minigin)
 
@@ -186,7 +188,7 @@ add_library(imgui STATIC
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp
 )
 
-target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR} ${sdl3_SOURCE_DIR}/include)
+target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR})
 target_link_libraries(imgui PUBLIC SDL3::SDL3)
 # enable c++20 features
 target_compile_features(imgui PUBLIC cxx_std_20)
