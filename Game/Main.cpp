@@ -11,13 +11,15 @@
 #include "Scene.h"
 #include "InputManager.h"
 
-#include "Components/ComponentsInclude.h"
+#include "ComponentsInclude.h"
 #include "Subject.h"
 #include "Observers.h"
 
 #include "Commands.h"
-#include "Sound/ServiceLocator.h"
-#include "Sound/SdlSoundSystem.h"
+#include "ServiceLocator.h"
+#include "SdlSoundSystem.h"
+
+#include "Coily.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -105,8 +107,9 @@ static void load()
 	scoreDisplay = std::make_unique<dae::ScoreDisplay>(uiScore.get());
 
 	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert_Enemy.png"));
+	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
 	go->SetLocalPosition(300, 300);
+	go->AddComponent(std::make_unique<QBert::Coily>(go.get()));
 	go->SetScale(3.f);
 	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
 	go->AddComponent(std::make_unique<dae::HealthComponent>(go.get(), 3, 3));
@@ -143,7 +146,7 @@ static void load()
 	scene.Add(std::move(go));
 
 	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use DPAD to move the green guy, Q to take damage, T to turn tiles", font));
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use DPAD to move Coily, Q to take damage, T to turn tiles", font));
 	go->SetLocalPosition(15, 170);
 	scene.Add(std::move(go));
 
@@ -158,7 +161,6 @@ static void load()
 	scene.Add(std::move(scoreDisplay));
 
 	dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(dae::SoundSystem::Sound::Jump1), "./Data/Sounds/jump.mp3");
-	//dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(dae::SoundSystem::Sound::Jump1), 0.8f);
 }
 
 int main(int, char*[]) {

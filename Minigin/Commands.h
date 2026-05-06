@@ -1,10 +1,10 @@
 #pragma once
 #include <SDL3/SDL.h>
 #include "GameObject.h"
-#include "Components/MovementComponent.h"
-#include "Components/HealthComponent.h"
-#include "Components/ScoreComponent.h"
-#include "Sound/ServiceLocator.h"
+#include "MovementComponent.h"
+#include "HealthComponent.h"
+#include "ScoreComponent.h"
+#include "ServiceLocator.h"
 
 #include <glm/glm.hpp>
 

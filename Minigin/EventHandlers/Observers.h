@@ -1,7 +1,7 @@
 #pragma once
 #include "Events.h"
 #include "GameObject.h"
-#include "Components/TextComponent.h"
+#include "TextComponent.h"
 //#include "Subject.h"
 
 namespace dae

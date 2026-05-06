@@ -25,30 +25,36 @@ endif()
 
 # list source files
 add_library(${ENGINE_NAME} STATIC
-  Minigin/Font.cpp
-  Minigin/GameObject.cpp
-  Minigin/InputManager.cpp
-  Minigin/Minigin.cpp
-  Minigin/Renderer.cpp
-  Minigin/ResourceManager.cpp
-  Minigin/Scene.cpp
-  Minigin/SceneManager.cpp
-  Minigin/Texture2D.cpp
-  Minigin/Transform.cpp
-  Minigin/ImGuiPlot.cpp 
-  Minigin/Components/TextComponent.cpp
-  Minigin/Components/FpsComponent.cpp
-  Minigin/Components/RenderComponent.cpp
-  Minigin/Components/RotatorComponent.cpp
-  Minigin/Components/ImGuiComponent.cpp
-  Minigin/Components/MovementComponent.cpp
-  Minigin/Components/HealthComponent.cpp
-  Minigin/Observers.cpp
-  Minigin/Subject.cpp
-  Minigin/Components/ScoreComponent.cpp
-  Minigin/Sound/SdlSoundSystem.cpp )
+  "Minigin/Font.cpp"
+  "Minigin/GameObject.cpp"
+  "Minigin/InputManager.cpp"
+  "Minigin/Minigin.cpp"
+  "Minigin/Renderer.cpp"
+  "Minigin/ResourceManager.cpp"
+  "Minigin/Scene.cpp"
+  "Minigin/SceneManager.cpp"
+  "Minigin/Texture2D.cpp"
+  "Minigin/Transform.cpp"
+  "Minigin/ImGuiPlot.cpp"
+
+  "Minigin/Components/TextComponent.cpp"
+  "Minigin/Components/FpsComponent.cpp"
+  "Minigin/Components/RenderComponent.cpp"
+  "Minigin/Components/RotatorComponent.cpp"
+  "Minigin/Components/ImGuiComponent.cpp"
+  "Minigin/Components/MovementComponent.cpp"
+  "Minigin/Components/HealthComponent.cpp"
+  "Minigin/Components/ScoreComponent.cpp"
+
+  "Minigin/EventHandlers/Observers.cpp"
+  "Minigin/EventHandlers/Subject.cpp"
+
+  "Minigin/Sound/SdlSoundSystem.cpp")
 
 target_include_directories(${ENGINE_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/Minigin)
+
+set(ENGINE_DIRS Minigin/Components Minigin/Sound Minigin/EventHandlers)
+target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_DIRS})
 
 # enable c++20 features
 target_compile_features(${ENGINE_NAME} PUBLIC cxx_std_20)
@@ -219,9 +225,14 @@ target_link_libraries("${ENGINE_NAME}" PUBLIC
 
 # list source files
 add_executable(${GAME_NAME} ${TARGET_PARAM}
-  Game/Main.cpp
-)
+  "Game/Main.cpp"
+  "Game/States/CoilyStateEgg.cpp"
+  "Game/States/CoilyStateSnake.cpp" 
+  "Game/Actors/Coily.h" 
+  "Game/Actors/Coily.cpp")
 
+set(GAME_DIRS Game/States Game/Actors)
+target_include_directories(${GAME_NAME} PRIVATE ${GAME_DIRS})
 target_compile_features(${GAME_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${GAME_NAME} PRIVATE ${ENGINE_NAME})
 
@@ -251,7 +262,7 @@ if(EMSCRIPTEN)
   )
 
   add_custom_command(TARGET ${GAME_NAME} POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/web" "$<TARGET_FILE_DIR:${TARGET_NAME}>/"
+    COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/web" "$<TARGET_FILE_DIR:${GAME_NAME}>/"
   )
 
   # Have emscripten generate a html page too.
@@ -272,10 +283,10 @@ elseif(WIN32)
 
   foreach(dllTarget IN LISTS SDL_RUNTIME_DLLS)
     add_custom_command(
-      TARGET ${GAME_NAME} POST_BUILD
+      TARGET ${ENGINE_NAME} POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy_if_different
           "$<TARGET_FILE:${dllTarget}>"
-          "$<TARGET_FILE_DIR:${GAME_NAME}>"
+          "$<TARGET_FILE_DIR:${ENGINE_NAME}>"
       VERBATIM
     )
   endforeach()
@@ -300,12 +311,12 @@ elseif(APPLE)
     INSTALL_RPATH "@executable_path/../Frameworks"
     BUILD_WITH_INSTALL_RPATH TRUE
   )
-  add_custom_command(TARGET ${GAME_NAME} POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E make_directory "$<TARGET_BUNDLE_DIR:${GAME_NAME}>/Contents/Frameworks"
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL3::SDL3-shared>" "$<TARGET_BUNDLE_DIR:${GAME_NAME}>/Contents/Frameworks/"
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL3_ttf::SDL3_ttf-shared>" "$<TARGET_BUNDLE_DIR:${GAME_NAME}>/Contents/Frameworks/"
-    COMMAND install_name_tool -change "@rpath/libSDL3_ttf.0.dylib" "@executable_path/../Frameworks/libSDL3_ttf.0.2.2.dylib" "$<TARGET_FILE:${GAME_NAME}>"
-    COMMAND install_name_tool -change "@rpath/libSDL3.0.dylib" "@executable_path/../Frameworks/libSDL3.0.dylib" "$<TARGET_FILE:${GAME_NAME}>"
+  add_custom_command(TARGET ${ENGINE_NAME} POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "$<TARGET_BUNDLE_DIR:${ENGINE_NAME}>/Contents/Frameworks"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL3::SDL3-shared>" "$<TARGET_BUNDLE_DIR:${ENGINE_NAME}>/Contents/Frameworks/"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL3_ttf::SDL3_ttf-shared>" "$<TARGET_BUNDLE_DIR:${ENGINE_NAME}>/Contents/Frameworks/"
+    COMMAND install_name_tool -change "@rpath/libSDL3_ttf.0.dylib" "@executable_path/../Frameworks/libSDL3_ttf.0.2.2.dylib" "$<TARGET_FILE:${ENGINE_NAME}>"
+    COMMAND install_name_tool -change "@rpath/libSDL3.0.dylib" "@executable_path/../Frameworks/libSDL3.0.dylib" "$<TARGET_FILE:${ENGINE_NAME}>"
   )
 
   if(Steamworks_FOUND)
