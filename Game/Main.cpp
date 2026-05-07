@@ -171,7 +171,7 @@ static void load()
 	go->SetScale(3.f);
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "PlayerTextSprites.png"));
 	auto rc = go->GetComponent<dae::RenderComponent>();
-	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), rc, "PlayerTextSprites.png", 1, 6, rc->GetSize().x / 2.f, rc->GetSize().y / 6.f));
+	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), rc, "PlayerTextSprites.png", 1, 6, rc->GetSize().x / 2.f, rc->GetSize().y / 6.f, glm::vec2(rc->GetSize().x / 2.f, 0)));
 
 	scene.Add(std::move(go));
 
