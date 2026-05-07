@@ -13,15 +13,17 @@ endif()
 set(ENGINE_NAME Minigin)
 
 if(EMSCRIPTEN)
-  set(GAME_NAME minigin_web)
+  set(GAME_NAME qbert_web)
   set(TARGET_PARAM )
 else()
-  set(GAME_NAME minigin)
+  set(GAME_NAME QBert)
   set(TARGET_PARAM WIN32)
 endif()
 
 
+# -----------------
 # ENGINE
+# -----------------
 
 # list source files
 add_library(${ENGINE_NAME} STATIC
@@ -45,13 +47,13 @@ add_library(${ENGINE_NAME} STATIC
   "Minigin/Components/MovementComponent.cpp"
   "Minigin/Components/HealthComponent.cpp"
   "Minigin/Components/ScoreComponent.cpp"
+  "Minigin/Components/CircleColliderComponent.cpp" 
+  "Minigin/Components/RectColliderComponent.cpp"
 
   "Minigin/EventHandlers/Observers.cpp"
   "Minigin/EventHandlers/Subject.cpp"
 
-  "Minigin/Sound/SdlSoundSystem.cpp"  
-  "Minigin/Components/CircleColliderComponent.cpp" 
-  "Minigin/Components/RectColliderComponent.cpp")
+  "Minigin/Sound/SdlSoundSystem.cpp")
 
 target_include_directories(${ENGINE_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/Minigin)
 
@@ -61,7 +63,10 @@ target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_DIRS})
 # enable c++20 features
 target_compile_features(${ENGINE_NAME} PUBLIC cxx_std_20)
 
-# dependencies
+
+# -----------------
+# Fetchcontent
+# -----------------
 
 include(FetchContent)
 # add glm
@@ -223,7 +228,9 @@ target_link_libraries(${ENGINE_NAME} PUBLIC
 )
 
 
+# -----------------
 # GAME
+# -----------------
 
 # list source files
 add_executable(${GAME_NAME} ${TARGET_PARAM}
