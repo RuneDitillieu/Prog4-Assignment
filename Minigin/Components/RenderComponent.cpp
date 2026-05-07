@@ -23,8 +23,19 @@ void dae::RenderComponent::Render(const Transform& transform)
 	if (m_texture != nullptr)
 	{
 		const auto& pos = transform.GetPosition();
-		Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, 
-			m_texture->GetSize().x * transform.GetScale(), m_texture->GetSize().y * transform.GetScale());
+
+		if (m_useSourceRect)
+		{
+			SDL_FRect dstRect{ pos.x, pos.y,
+			m_sourceRect.w * transform.GetScale(), m_sourceRect.h * transform.GetScale() };
+			Renderer::GetInstance().RenderTexture(*m_texture, m_sourceRect, dstRect);
+		}
+		else
+		{
+			SDL_FRect dstRect{ pos.x, pos.y,
+			m_texture->GetSize().x * transform.GetScale(), m_texture->GetSize().y * transform.GetScale() };
+			Renderer::GetInstance().RenderTexture(*m_texture, dstRect);
+		}
 	}
 }
 
@@ -36,6 +47,22 @@ void dae::RenderComponent::SetTexture(const std::string& filename)
 void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D>&& texture)
 {
 	m_texture = texture;
+}
+
+void dae::RenderComponent::SetSourceRect(const SDL_FRect& src)
+{
+	if (src.w != 0 && src.h != 0)
+		m_useSourceRect = true;
+	else
+		m_useSourceRect = false;
+
+	m_sourceRect = src;
+}
+
+void dae::RenderComponent::SetSourceRect(float x, float y, float width, float height)
+{
+	SDL_FRect srcRect{ x, y, width, height };
+	SetSourceRect(srcRect);
 }
 
 glm::vec2 dae::RenderComponent::GetSize() const

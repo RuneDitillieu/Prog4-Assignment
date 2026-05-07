@@ -18,6 +18,14 @@ void dae::GameObject::Update()
 	}
 }
 
+void dae::GameObject::LateUpdate()
+{
+	for (auto& component : m_components)
+	{
+		component->LateUpdate();
+	}
+}
+
 void dae::GameObject::Render()
 {
 	UpdateWorldPosition();

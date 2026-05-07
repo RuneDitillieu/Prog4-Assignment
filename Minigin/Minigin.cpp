@@ -115,6 +115,7 @@ void dae::Minigin::RunOneFrame()
 	// run frame
 	m_quit = !InputManager::GetInstance().ProcessInput();
 	SceneManager::GetInstance().Update();
+	SceneManager::GetInstance().LateUpdate();
 	Renderer::GetInstance().Render();
 
 	// sleep so that you can have a maxFps

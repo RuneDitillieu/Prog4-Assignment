@@ -22,6 +22,7 @@ namespace dae
 
 		// functions
 		void Update();
+		void LateUpdate();
 		void Render();
 
 		void SetLocalPosition(float x, float y);

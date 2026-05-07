@@ -21,6 +21,7 @@
 
 #include "Coily.h"
 #include "RectColliderComponent.h"
+#include "SpriteComponent.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -164,6 +165,15 @@ static void load()
 	scene.Add(std::move(uiScore));
 	scene.Add(std::move(livesDisplay));
 	scene.Add(std::move(scoreDisplay));
+
+	go = std::make_unique<dae::GameObject>();
+	go->SetLocalPosition(50.f, 80.f);
+	go->SetScale(3.f);
+	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "PlayerTextSprites.png"));
+	auto rc = go->GetComponent<dae::RenderComponent>();
+	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), rc, "PlayerTextSprites.png", 1, 6, rc->GetSize().x / 2.f, rc->GetSize().y / 6.f));
+
+	scene.Add(std::move(go));
 
 	dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(dae::SoundSystem::Sound::Jump1), "./Data/Sounds/jump.mp3");
 }

@@ -27,17 +27,19 @@ endif()
 
 # list source files
 add_library(${ENGINE_NAME} STATIC
-  "Minigin/Font.cpp"
   "Minigin/GameObject.cpp"
   "Minigin/InputManager.cpp"
   "Minigin/Minigin.cpp"
   "Minigin/Renderer.cpp"
-  "Minigin/ResourceManager.cpp"
-  "Minigin/Scene.cpp"
-  "Minigin/SceneManager.cpp"
-  "Minigin/Texture2D.cpp"
   "Minigin/Transform.cpp"
   "Minigin/ImGuiPlot.cpp"
+
+  "Minigin/Scenes/Scene.cpp"
+  "Minigin/Scenes/SceneManager.cpp"
+
+  "Minigin/Resources/Texture2D.cpp"
+  "Minigin/Resources/Font.cpp"
+  "Minigin/Resources/ResourceManager.cpp"
 
   "Minigin/Components/TextComponent.cpp"
   "Minigin/Components/FpsComponent.cpp"
@@ -53,11 +55,11 @@ add_library(${ENGINE_NAME} STATIC
   "Minigin/EventHandlers/Observers.cpp"
   "Minigin/EventHandlers/Subject.cpp"
 
-  "Minigin/Sound/SdlSoundSystem.cpp")
+  "Minigin/Sound/SdlSoundSystem.cpp" "Minigin/Components/SpriteComponent.cpp")
 
 target_include_directories(${ENGINE_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/Minigin)
 
-set(ENGINE_DIRS Minigin/Components Minigin/Sound Minigin/EventHandlers)
+set(ENGINE_DIRS Minigin/Components Minigin/Sound Minigin/EventHandlers Minigin/Scenes Minigin/Resources)
 target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_DIRS})
 
 # enable c++20 features
