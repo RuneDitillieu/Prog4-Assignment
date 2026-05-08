@@ -43,23 +43,27 @@ add_library(${ENGINE_NAME} STATIC
 
   "Minigin/Components/TextComponent.cpp"
   "Minigin/Components/FpsComponent.cpp"
-  "Minigin/Components/RenderComponent.cpp"
+  "Minigin/Components/Basics/RenderComponent.cpp"
   "Minigin/Components/RotatorComponent.cpp"
   "Minigin/Components/ImGuiComponent.cpp"
   "Minigin/Components/MovementComponent.cpp"
   "Minigin/Components/HealthComponent.cpp"
   "Minigin/Components/ScoreComponent.cpp"
-  "Minigin/Components/CircleColliderComponent.cpp" 
-  "Minigin/Components/RectColliderComponent.cpp"
+
+  "Minigin/Components/Colliders/CircleColliderComponent.cpp" 
+  "Minigin/Components/Colliders/RectColliderComponent.cpp"
+  "Minigin/Components/Basics/SpriteComponent.cpp"
 
   "Minigin/EventHandlers/Observers.cpp"
   "Minigin/EventHandlers/Subject.cpp"
 
-  "Minigin/Sound/SdlSoundSystem.cpp" "Minigin/Components/SpriteComponent.cpp")
+  "Minigin/Sound/SdlSoundSystem.cpp" 
+)
 
 target_include_directories(${ENGINE_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/Minigin)
 
-set(ENGINE_DIRS Minigin/Components Minigin/Sound Minigin/EventHandlers Minigin/Scenes Minigin/Resources)
+set(ENGINE_DIRS Minigin/Components Minigin/Sound Minigin/EventHandlers Minigin/Scenes Minigin/Resources
+        Minigin/Components/Basics Minigin/Components/Colliders)
 target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_DIRS})
 
 # enable c++20 features

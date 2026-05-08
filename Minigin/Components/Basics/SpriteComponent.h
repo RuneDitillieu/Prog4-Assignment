@@ -28,8 +28,8 @@ namespace dae
 		dae::RenderComponent* m_pConnectedRenderComponent;
 		std::string m_fileName;
 
-		int m_rows;
 		int m_cols;
+		int m_rows;
 		int m_curFrame{ 0 };
 		int m_nrFrames;
 		float m_frameW;
