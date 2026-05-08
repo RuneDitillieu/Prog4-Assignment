@@ -73,7 +73,9 @@ static void load()
 
 	// player
 	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "Q_Bert.png"));
+	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "QBertSprites.png"));
+	auto rc = go->GetComponent<dae::RenderComponent>();
+	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), "QBertSprites.png", 8, 1, false));
 	go->SetLocalPosition(100, 300);
 	go->SetScale(3.f);
 	glm::vec2 texSize{ go->GetComponent<dae::RenderComponent>()->GetSize() * go->GetScale() };
@@ -116,6 +118,8 @@ static void load()
 	go->AddComponent(std::make_unique<QBert::Coily>(go.get()));
 	go->SetScale(3.f);
 	texSize = go->GetComponent<dae::RenderComponent>()->GetSize() * go->GetScale();
+	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), "Eggs.png", 6, 1, false));
+	go->GetComponent<dae::SpriteComp>()->SetCurFrame(4);
 	go->AddComponent(std::make_unique<dae::RectColliderComp>(go.get(), go->GetLocalPosition(), go->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
 	go->AddComponent(std::make_unique<dae::HealthComponent>(go.get(), 3, 3));
@@ -170,7 +174,7 @@ static void load()
 	go->SetLocalPosition(50.f, 80.f);
 	go->SetScale(3.f);
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "PlayerTextSprites.png"));
-	auto rc = go->GetComponent<dae::RenderComponent>();
+	rc = go->GetComponent<dae::RenderComponent>();
 	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), rc, "PlayerTextSprites.png", 1, 6, rc->GetSize().x / 2.f, rc->GetSize().y / 6.f, glm::vec2(rc->GetSize().x / 2.f, 0)));
 
 	scene.Add(std::move(go));

@@ -21,6 +21,7 @@ namespace dae
 
 		void LateUpdate() override;
 		void SetCurFrame(int frameIdx);
+		void Set(int cols, int rows, float frameW, float frameH, const glm::vec2& startPos, bool autoUpdate = true);
 
 		std::type_index GetType() const override;
 
@@ -35,7 +36,7 @@ namespace dae
 		float m_frameW;
 		float m_frameH;
 		float m_accuSec{ 0.f };
-		float m_frameSec{ 0.2f };
+		const float m_frameSec{ 0.2f };
 
 		glm::vec2 m_startPos;
 		bool m_doUpdate;

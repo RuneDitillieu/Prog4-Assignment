@@ -8,7 +8,7 @@ QBert::EggState::EggState(dae::GameObject* coily)
 
 void QBert::EggState::OnEnter()
 {
-	m_coily->GetComponent<dae::RenderComponent>()->SetTexture("CoilyEgg.png");
+	m_coily->GetComponent<dae::RenderComponent>()->SetTexture("Eggs.png");
 	m_goalLocation = m_coily->GetLocalPosition() + glm::vec3(0, 50.f, 0);
 }
 

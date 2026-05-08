@@ -39,14 +39,15 @@ dae::SpriteComp::SpriteComp(dae::GameObject* pOwner, dae::RenderComponent* pConn
 
 void dae::SpriteComp::LateUpdate()
 {
-	if (!m_doUpdate) return;
-
-	m_accuSec += DeltaTime::GetInstance().GetDeltaTime();
-	if (m_accuSec >= m_frameSec)
+	if (m_doUpdate)
 	{
-		m_accuSec -= m_frameSec;
-		++m_curFrame;
-		m_curFrame %= m_nrFrames;
+		m_accuSec += DeltaTime::GetInstance().GetDeltaTime();
+		if (m_accuSec >= m_frameSec)
+		{
+			m_accuSec -= m_frameSec;
+			++m_curFrame;
+			m_curFrame %= m_nrFrames;
+		}
 	}
 
 	const int curCol{ m_curFrame % m_cols };
@@ -59,6 +60,19 @@ void dae::SpriteComp::LateUpdate()
 void dae::SpriteComp::SetCurFrame(int frameIdx)
 {
 	m_curFrame = frameIdx;
+}
+
+void dae::SpriteComp::Set(int cols, int rows, float frameW, float frameH, const glm::vec2& startPos, bool autoUpdate)
+{
+	m_cols = cols;
+	m_rows = rows;
+	m_frameW = frameW;
+	m_frameH = frameH;
+	m_startPos = startPos;
+	m_doUpdate = autoUpdate;
+
+	m_curFrame = 0;
+	m_accuSec = 0.f;
 }
 
 std::type_index dae::SpriteComp::GetType() const

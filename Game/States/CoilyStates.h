@@ -18,6 +18,7 @@ namespace QBert
 		dae::GameObject* m_coily;
 	};
 
+
 	class EggState : public CoilyState
 	{
 	public:
@@ -30,6 +31,7 @@ namespace QBert
 	private:
 		glm::vec3 m_goalLocation{};
 	};
+
 
 	class SnakeState : public CoilyState
 	{
