@@ -3,12 +3,17 @@
 #include <vector>
 #include "GameObject.h"
 #include "Observers.h"
+#include <functional>
 
 namespace dae
 {
 	class Scene final
 	{
 	public:
+		void SetLoadFunc(std::function<void()> func);
+		void Load();
+		void UnLoad();
+
 		void Add(std::unique_ptr<GameObject> object);
 		void Add(std::unique_ptr<IObserver> observer);
 		void RemoveMarkedForRemoval();
@@ -30,6 +35,7 @@ namespace dae
 		friend class SceneManager;
 		explicit Scene() = default;
 
+		std::function<void()> m_loadFunc{};
 		std::vector<std::unique_ptr<GameObject>> m_objects{};
 		std::vector<std::unique_ptr<IObserver>> m_observers{};
 	};

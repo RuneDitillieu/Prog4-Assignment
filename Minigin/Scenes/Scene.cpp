@@ -4,6 +4,22 @@
 
 using namespace dae;
 
+void Scene::SetLoadFunc(std::function<void()> func)
+{
+	m_loadFunc = func;
+}
+
+void Scene::Load()
+{
+	m_loadFunc();
+}
+
+void Scene::UnLoad()
+{
+	m_objects.clear();
+	m_observers.clear();
+}
+
 void Scene::Add(std::unique_ptr<GameObject> object)
 {
 	assert(object != nullptr && "Cannot add a null GameObject to the scene.");
