@@ -2,7 +2,7 @@
 #include <memory>
 #include "Transform.h"
 #include "Component.h"
-//#include "Subject.h"
+#include "Subject.h"
 
 namespace dae
 {
@@ -14,7 +14,7 @@ namespace dae
 	{
 	public:
 		GameObject() = default;
-		~GameObject();
+		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
@@ -93,9 +93,9 @@ namespace dae
 		// Parent-Child functions
 		void SetParent(GameObject* newParent, bool keepWorldPosition);
 		GameObject* GetParent() const { return m_parent; }
-		const std::vector<GameObject*>& GetChildren() { return m_children; }
+		const std::vector<std::unique_ptr<GameObject>>& GetChildren() { return m_children; }
 		size_t GetChildCount() const { return m_children.size(); }
-		GameObject* GetChildAt(size_t index) const { return m_children[index]; }
+		GameObject* GetChildAt(size_t index) const { return m_children[index].get(); }
 
 		// Subject functions
 		void InitSubject();
@@ -103,7 +103,7 @@ namespace dae
 
 	private:
 		bool IsParentOf(GameObject* possibleParent) const;
-		void AddChild(GameObject* newParent);
+		void AddChild(std::unique_ptr<GameObject> newChild);
 		void RemoveChild(GameObject* newParent);
 
 		const glm::vec3& GetWorldPosition();
@@ -117,7 +117,7 @@ namespace dae
 
 		std::vector<std::unique_ptr<Component>> m_components;
 		GameObject* m_parent{ nullptr };		// non-owning
-		std::vector<GameObject*> m_children;	// non-owning
+		std::vector<std::unique_ptr<GameObject>> m_children;
 
 		std::unique_ptr<Subject> m_subject;
 	};

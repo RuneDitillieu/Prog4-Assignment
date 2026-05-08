@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "Scene.h"
+#include <algorithm>
 
 using namespace dae;
 
@@ -60,3 +61,18 @@ void Scene::Render() const
 	}
 }
 
+std::unique_ptr<GameObject> dae::Scene::GetGameObjectOwnership(GameObject* pObject)
+{
+	// get object
+	auto it = std::find_if(m_objects.begin(), m_objects.end(), [pObject](auto& obj) { return obj.get() == pObject; });
+
+	// release ownership
+	std::unique_ptr<GameObject> object = std::move(*it);
+	*it = nullptr;
+
+	// erase empty slot
+	m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), nullptr));
+
+	// give ownership
+	return std::move(object);
+}

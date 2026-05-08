@@ -18,6 +18,8 @@ namespace dae
 		void LateUpdate();
 		void Render() const;
 
+		std::unique_ptr<GameObject> GetGameObjectOwnership(GameObject* pObject);
+
 		~Scene() = default;
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;

@@ -1,14 +1,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "Subject.h"
-
-dae::GameObject::~GameObject()
-{
-	for (auto child : m_children)
-	{
-		child->MarkForRemoval();
-	}
-}
+#include "SceneManager.h"
 
 void dae::GameObject::Update()
 {
@@ -71,7 +64,7 @@ void dae::GameObject::UpdateWorldPosition()
 void dae::GameObject::SetPositionDirty()
 {
 	m_posIsDirty = true;
-	for (GameObject* child : m_children)
+	for (auto& child : m_children)
 	{
 		child->SetPositionDirty();
 	}
@@ -102,8 +95,10 @@ void dae::GameObject::SetParent(GameObject* newParent, bool keepWorldPosition)
 
 		m_parent = newParent;
 
-		if(m_parent)
-			m_parent->AddChild(this);
+		if (m_parent)
+		{
+			m_parent->AddChild(SceneManager::GetInstance().GetActiveScene()->GetGameObjectOwnership(this));
+		}
 	}
 }
 
@@ -132,15 +127,15 @@ bool dae::GameObject::IsParentOf(GameObject* possibleParent) const
 	return false;
 }
 
-void dae::GameObject::AddChild(GameObject* newChild)
+void dae::GameObject::AddChild(std::unique_ptr<GameObject> newChild)
 {
-	m_children.push_back(newChild);
+	m_children.push_back(std::move(newChild));
 }
 
 void dae::GameObject::RemoveChild(GameObject* childToRemove)
 {
 	m_children.erase(
-		std::remove(m_children.begin(), m_children.end(), childToRemove)
+		std::remove_if(m_children.begin(), m_children.end(), [childToRemove](auto& ptr) { return ptr.get() == childToRemove; })
 	);
 }
 

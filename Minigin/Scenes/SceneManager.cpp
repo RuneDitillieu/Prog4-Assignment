@@ -3,30 +3,46 @@
 
 void dae::SceneManager::Update()
 {
-	for(auto& scene : m_scenes)
+	/*for(auto& scene : m_scenes)
 	{
 		scene->Update();
-	}
+	}*/
+
+	m_scenes[m_activeSceneIdx]->Update();
 }
 
 void dae::SceneManager::LateUpdate()
 {
-	for (auto& scene : m_scenes)
+	/*for (auto& scene : m_scenes)
 	{
 		scene->LateUpdate();
-	}
+	}*/
+
+	m_scenes[m_activeSceneIdx]->LateUpdate();
 }
 
 void dae::SceneManager::Render()
 {
-	for (const auto& scene : m_scenes)
+	/*for (const auto& scene : m_scenes)
 	{
 		scene->Render();
-	}
+	}*/
+
+	m_scenes[m_activeSceneIdx]->Render();
 }
 
 dae::Scene& dae::SceneManager::CreateScene()
 {
 	m_scenes.emplace_back(new Scene());
 	return *m_scenes.back();
+}
+
+dae::Scene* dae::SceneManager::GetActiveScene() const
+{
+	return m_scenes[m_activeSceneIdx].get();
+}
+
+void dae::SceneManager::SetActiveScene(int sceneIdx)
+{
+	m_activeSceneIdx = sceneIdx;
 }
