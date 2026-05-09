@@ -58,7 +58,7 @@ static void load()
 	scene.Add(std::move(go));
 
 	// level
-	QBert::Utils::CreateLevel(scene, 0, false, 0, 1);
+	QBert::Utils::CreateLevel(scene, 0, false, 2, 1);
 
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
 

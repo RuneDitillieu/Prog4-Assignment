@@ -101,6 +101,8 @@ namespace dae
 		void InitSubject();
 		Subject* GetSubject(); 
 
+		bool m_isEnabled{ true };
+
 	private:
 		bool IsParentOf(GameObject* possibleParent) const;
 		void AddChild(GameObject* newChild);

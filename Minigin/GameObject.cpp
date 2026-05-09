@@ -5,6 +5,8 @@
 
 void dae::GameObject::Update()
 {
+	if (!m_isEnabled) return;
+
 	for (auto& component : m_components)
 	{
 		component->Update();
@@ -18,6 +20,8 @@ void dae::GameObject::Update()
 
 void dae::GameObject::LateUpdate()
 {
+	if (!m_isEnabled) return;
+
 	for (auto& component : m_components)
 	{
 		component->LateUpdate();
@@ -31,6 +35,8 @@ void dae::GameObject::LateUpdate()
 
 void dae::GameObject::Render()
 {
+	if (!m_isEnabled) return;
+
 	UpdateWorldPosition();
 	for (auto& component : m_components)
 	{
