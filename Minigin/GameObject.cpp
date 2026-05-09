@@ -9,6 +9,11 @@ void dae::GameObject::Update()
 	{
 		component->Update();
 	}
+
+	for (auto& child : m_children)
+	{
+		child->Update();
+	}
 }
 
 void dae::GameObject::LateUpdate()
@@ -16,6 +21,11 @@ void dae::GameObject::LateUpdate()
 	for (auto& component : m_components)
 	{
 		component->LateUpdate();
+	}
+
+	for (auto& child : m_children)
+	{
+		child->LateUpdate();
 	}
 }
 
@@ -25,6 +35,11 @@ void dae::GameObject::Render()
 	for (auto& component : m_components)
 	{
 		component->Render(m_worldTransform);
+	}
+
+	for (auto& child : m_children)
+	{
+		child->Render();
 	}
 }
 
@@ -78,9 +93,12 @@ void dae::GameObject::SetParent(GameObject* newParent, bool keepWorldPosition)
 		&& !IsParentOf(newParent)
 		&& m_parent != newParent)	
 	{
+		GameObject* thisOwnership{ nullptr };
+
 		if (m_parent == nullptr)
 		{
 			SetLocalPosition(GetWorldPosition());
+			thisOwnership = SceneManager::GetInstance().GetActiveScene()->GetGameObjectOwnership(this);
 		}
 		else 
 		{
@@ -90,14 +108,25 @@ void dae::GameObject::SetParent(GameObject* newParent, bool keepWorldPosition)
 			}
 			SetPositionDirty();
 
-			m_parent->RemoveChild(this);
+			thisOwnership = m_parent->RemoveChild(this);
 		}
 
 		m_parent = newParent;
 
+		if (!thisOwnership)
+		{
+			// currently owner by main.cpp, but scene has a check so you can't still add it 
+			// when an object already has a parent
+			thisOwnership = this;
+		}
+
 		if (m_parent)
 		{
-			m_parent->AddChild(SceneManager::GetInstance().GetActiveScene()->GetGameObjectOwnership(this));
+			m_parent->AddChild(thisOwnership);
+		}
+		else
+		{
+			SceneManager::GetInstance().GetActiveScene()->Add(std::unique_ptr<GameObject>(thisOwnership));
 		}
 	}
 }
@@ -127,16 +156,32 @@ bool dae::GameObject::IsParentOf(GameObject* possibleParent) const
 	return false;
 }
 
-void dae::GameObject::AddChild(std::unique_ptr<GameObject> newChild)
+void dae::GameObject::AddChild(GameObject* newChild)
 {
-	m_children.push_back(std::move(newChild));
+	m_children.push_back(std::unique_ptr<GameObject>(newChild));
 }
 
-void dae::GameObject::RemoveChild(GameObject* childToRemove)
+[[nodiscard]] dae::GameObject* dae::GameObject::RemoveChild(GameObject* childToRemove)
 {
-	m_children.erase(
-		std::remove_if(m_children.begin(), m_children.end(), [childToRemove](auto& ptr) { return ptr.get() == childToRemove; })
-	);
+	// get object
+	auto it = std::find_if(m_children.begin(), m_children.end(), [childToRemove](auto& ptr) { return ptr.get() == childToRemove; });
+
+	if (it != m_children.end())
+	{
+		// release ownership
+		GameObject* object = it->release();
+		*it = nullptr;
+
+		// erase empty slot
+		m_children.erase(std::remove(m_children.begin(), m_children.end(), nullptr));
+
+		// give ownership
+		return object;
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 void dae::GameObject::InitSubject() 

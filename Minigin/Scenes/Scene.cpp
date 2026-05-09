@@ -23,7 +23,20 @@ void Scene::UnLoad()
 void Scene::Add(std::unique_ptr<GameObject> object)
 {
 	assert(object != nullptr && "Cannot add a null GameObject to the scene.");
-	m_objects.emplace_back(std::move(object));
+	assert((std::find_if(m_objects.begin(), m_objects.end(), [&object] (auto& obj) { return obj.get() == object.get(); }) 
+		== m_objects.end()) && "Cannot add a GameObject twice.");
+
+	if (object->GetParent())
+	{
+		// if an object already has a parent, then it's already owned by another object
+		// so in case you then try to add it to the scene (bc main.cpp also has a unique_ptr),
+		// you can safely release it
+		object.release();
+	}
+	else
+	{
+		m_objects.emplace_back(std::move(object));
+	}
 }
 
 void Scene::Add(std::unique_ptr<IObserver> observer)
@@ -77,18 +90,25 @@ void Scene::Render() const
 	}
 }
 
-std::unique_ptr<GameObject> dae::Scene::GetGameObjectOwnership(GameObject* pObject)
+[[nodiscard]] GameObject* dae::Scene::GetGameObjectOwnership(GameObject* pObject)
 {
 	// get object
 	auto it = std::find_if(m_objects.begin(), m_objects.end(), [pObject](auto& obj) { return obj.get() == pObject; });
 
-	// release ownership
-	std::unique_ptr<GameObject> object = std::move(*it);
-	*it = nullptr;
+	if (it != m_objects.end())
+	{
+		// release ownership
+		GameObject* object = it->release();
+		*it = nullptr;
 
-	// erase empty slot
-	m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), nullptr));
+		// erase empty slot
+		m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), nullptr));
 
-	// give ownership
-	return std::move(object);
+		// give ownership
+		return object;
+	}
+	else
+	{
+		return nullptr;
+	}
 }

@@ -103,8 +103,8 @@ namespace dae
 
 	private:
 		bool IsParentOf(GameObject* possibleParent) const;
-		void AddChild(std::unique_ptr<GameObject> newChild);
-		void RemoveChild(GameObject* newParent);
+		void AddChild(GameObject* newChild);
+		[[nodiscard]] GameObject* RemoveChild(GameObject* newParent);
 
 		const glm::vec3& GetWorldPosition();
 		void UpdateWorldPosition();
