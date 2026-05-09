@@ -6,3 +6,6 @@
 #include "MovementComponent.h"
 #include "ImGuiComponent.h"
 #include "HealthComponent.h"
+#include "RectColliderComponent.h"
+#include "CircleColliderComponent.h"
+#include "SpriteComponent.h"

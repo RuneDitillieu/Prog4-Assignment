@@ -20,9 +20,6 @@
 #include "SdlSoundSystem.h"
 
 #include "Coily.h"
-#include "RectColliderComponent.h"
-#include "SpriteComponent.h"
-#include "TileComponent.h"
 #include "LevelBase.h"
 
 #include <filesystem>
@@ -37,29 +34,34 @@ static void load()
 	dae::ServiceLocator::GetSoundSystem().Init();
 
 	// background
-	auto go = std::make_unique<dae::GameObject>();
+	/*auto go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "background.png"));
-	scene.Add(std::move(go));
+	scene.Add(std::move(go));*/
 
 	// logo
-	go = std::make_unique<dae::GameObject>();
+	/*go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "logo.png"));
 	go->SetLocalPosition(358, 180);
-	scene.Add(std::move(go));
+	scene.Add(std::move(go));*/
 
 	// title
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go = std::make_unique<dae::GameObject>();
+	/*go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Programming 4 Assignment", font));
 	go->SetLocalPosition(292, 20);
-	scene.Add(std::move(go));
+	scene.Add(std::move(go));*/
 
 	// fps
-	go = std::make_unique<dae::GameObject>();
+	auto go = std::make_unique<dae::GameObject>();
 	go->SetLocalPosition(10, 10);
 	go->AddComponent(std::make_unique<dae::FpsComponent>(go.get(), "0.0 FPS", font));
 	scene.Add(std::move(go));
 
+	go = std::make_unique<dae::GameObject>();
+	go->SetLocalPosition(350.f, 150.f);
+	go->SetScale(3.f);
+	go->AddComponent(std::make_unique<QBert::LevelBase>(go.get(), 0, false, 0, 1));
+	scene.Add(std::move(go));
 
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
 	// ui
@@ -179,12 +181,6 @@ static void load()
 	rc = go->GetComponent<dae::RenderComponent>();
 	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), rc, "PlayerTextSprites.png", 1, 6, rc->GetSize().x / 2.f, rc->GetSize().y / 6.f, glm::vec2(rc->GetSize().x / 2.f, 0)));
 
-	scene.Add(std::move(go));
-
-	go = std::make_unique<dae::GameObject>();
-	go->SetLocalPosition(400.f, 100.f);
-	go->SetScale(3.f);
-	go->AddComponent(std::make_unique<QBert::LevelBase>(go.get(), 0, false, 0, 1));
 	scene.Add(std::move(go));
 
 	dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(dae::SoundSystem::Sound::Jump1), "./Data/Sounds/jump.mp3");
