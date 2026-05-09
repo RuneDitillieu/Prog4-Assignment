@@ -1,4 +1,6 @@
-#pragma once
+#ifndef IMGUIPLOT_H
+#define IMGUIPLOT_H
+
 #include <cstdint>
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -76,3 +78,5 @@ enum class PlotStatus {
 
 IMGUI_API PlotStatus Plot(const char* label, const PlotConfig& conf);
 }
+
+#endif // !IMGUIPLOT_H

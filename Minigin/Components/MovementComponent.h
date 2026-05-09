@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MOVEMENTCOMPONENT_H
+#define MOVEMENTCOMPONENT_H
+
 #include "Component.h"
 #include <glm/glm.hpp>
 
@@ -26,3 +28,5 @@ namespace dae
 		glm::vec3 m_direction{ 0, 0, 0 };
 	};
 }
+
+#endif // !MOVEMENTCOMPONENT_H

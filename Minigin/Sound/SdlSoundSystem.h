@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SDLSOUNDSYSTEM_H
+#define SDLSOUNDSYSTEM_H
+
 #include "SoundSystem.h"
 #include "SDL3_mixer/SDL_mixer.h"
 #include <unordered_map>
@@ -46,3 +48,5 @@ namespace dae
 		MIX_Mixer* m_pMixer = nullptr;
 	};
 }
+
+#endif // !SDLSOUNDSYSTEM_H

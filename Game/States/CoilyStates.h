@@ -1,4 +1,6 @@
-#pragma once
+#ifndef COILYSTATES_H
+#define COILYSTATES_H
+
 #include "GameObject.h"
 #include <typeindex>
 
@@ -45,3 +47,5 @@ namespace QBert
 	private:
 	};
 }
+
+#endif // !COILYSTATES_H

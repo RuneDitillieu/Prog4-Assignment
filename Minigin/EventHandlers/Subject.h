@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SUBJECT_H
+#define SUBJECT_H
+
 //#include "Observers.h"
 #include <vector>
 #include "GameObject.h"
@@ -22,3 +24,5 @@ namespace dae
 		std::vector<IObserver*> m_observers;
 	};
 }
+
+#endif // !SUBJECT_H

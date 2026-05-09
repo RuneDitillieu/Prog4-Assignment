@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TEXTCOMPONENT_H
+#define TEXTCOMPONENT_H
+
 #include <string>
 #include <memory>
 #include "Transform.h"
@@ -39,3 +41,5 @@ namespace dae
 		RenderComponent* m_pConnectedRenderComponent;
 	};
 }
+
+#endif // !TEXTCOMPONENT_H

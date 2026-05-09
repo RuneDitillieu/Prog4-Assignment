@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SCENE_H
+#define SCENE_H
+
 #include <memory>
 #include <vector>
 #include "GameObject.h"
@@ -40,3 +42,5 @@ namespace dae
 		std::vector<std::unique_ptr<IObserver>> m_observers{};
 	};
 }
+
+#endif // !SCENE_H

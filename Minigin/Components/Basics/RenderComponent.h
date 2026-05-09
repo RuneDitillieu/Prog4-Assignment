@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RENDERCOMPONENT_H
+#define RENDERCOMPONENT_H
+
 #include "Component.h"
 #include <memory>
 #include <string>
@@ -36,3 +38,5 @@ namespace dae
 		bool m_useSourceRect{ false };
 	};
 }
+
+#endif // !RENDERCOMPONENT_H

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef COILY_H
+#define COILY_H
+
 #include "Component.h"
 #include "CoilyStates.h"
 
@@ -23,3 +25,5 @@ namespace QBert
         std::unique_ptr<CoilyState> m_pState{ std::make_unique<QBert::EggState>(GetOwner()) };
 	};
 }
+
+#endif // !COILY_H

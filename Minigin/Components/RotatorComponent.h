@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ROTATORCOMPONENT_H
+#define ROTATORCOMPONENT_H
+
 #include "Component.h"
 #include <glm/glm.hpp>
 
@@ -25,3 +27,5 @@ namespace dae
 		float m_distance;
 	};
 }
+
+#endif // !ROTATORCOMPONENT_H

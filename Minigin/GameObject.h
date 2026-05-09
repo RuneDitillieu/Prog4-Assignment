@@ -1,4 +1,6 @@
-#pragma once
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
+
 #include <memory>
 #include "Transform.h"
 #include "Component.h"
@@ -66,6 +68,21 @@ namespace dae
 			return nullptr;
 		}
 		template<typename T>
+		T* GetComponentInChildren()
+		{
+			T* comp = GetComponent<T>();
+			if (comp != nullptr)
+				return comp;
+			
+			for (auto& child : m_children)
+			{
+				comp = child->GetComponentInChildren<T>();
+				if (comp != nullptr)
+					return comp;
+			}
+			return nullptr;
+		}
+		template<typename T>
 		void RemoveComponent(size_t index = 0)
 		{
 			// place all components of this type in the back
@@ -124,3 +141,5 @@ namespace dae
 		std::unique_ptr<Subject> m_subject;
 	};
 }
+
+#endif // !GAMEOBJECT_H

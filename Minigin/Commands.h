@@ -1,4 +1,6 @@
-#pragma once
+#ifndef COMMANDS_H
+#define COMMANDS_H
+
 #include <SDL3/SDL.h>
 #include "GameObject.h"
 #include "MovementComponent.h"
@@ -92,3 +94,5 @@ namespace dae
 		dae::ScoreComponent* m_scoreComp;
 	};
 }
+
+#endif // !COMMANDS_H

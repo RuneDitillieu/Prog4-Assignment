@@ -1,4 +1,6 @@
-#pragma once
+#ifndef EVENTS_H
+#define EVENTS_H
+
 #include <cstdint>
 
 namespace dae
@@ -44,3 +46,5 @@ namespace dae
 		explicit Event(EventId _id) : id{ _id } {}
 	};
 }
+
+#endif // !EVENTS_H

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SPRITECOMPONENT_H
+#define SPRITECOMPONENT_H
+
 #include "Component.h"
 #include <string>
 #include <glm/glm.hpp>
@@ -43,3 +45,5 @@ namespace dae
 		bool m_doUpdate;
 	};
 }
+
+#endif // !SPRITECOMPONENT_H

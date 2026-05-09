@@ -1,4 +1,6 @@
-#pragma once
+#ifndef COMPONENT_H
+#define COMPONENT_H
+
 #include <typeindex>
 
 namespace dae
@@ -29,4 +31,6 @@ namespace dae
         GameObject* m_pOwner;
     };
 }
+
+#endif // !COMPONENT_H
 

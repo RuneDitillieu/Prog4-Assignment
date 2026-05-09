@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RENDERER_H
+#define RENDERER_H
+
 #include <SDL3/SDL.h>
 #include "Singleton.h"
 
@@ -30,3 +32,4 @@ namespace dae
 	};
 }
 
+#endif // !RENDERER_H

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TILECOMPONENT_H
+#define TILECOMPONENT_H
+
 #include "Component.h"
 #include "SpriteComponent.h"
 
@@ -33,3 +35,5 @@ namespace QBert
 		dae::SpriteComp* m_pConnSprite{ nullptr };
 	};
 }
+
+#endif // !TILECOMPONENT_H

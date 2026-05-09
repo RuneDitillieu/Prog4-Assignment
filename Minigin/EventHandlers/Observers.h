@@ -1,4 +1,6 @@
-#pragma once
+#ifndef OBSERVERS_H
+#define OBSERVERS_H
+
 #include "Events.h"
 #include "GameObject.h"
 #include "TextComponent.h"
@@ -38,3 +40,5 @@ namespace dae
 		GameObject* m_textObject;
 	};
 }
+
+#endif // !OBSERVERS_H

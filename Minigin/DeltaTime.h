@@ -1,4 +1,6 @@
-#pragma once
+#ifndef DELTATIME_H
+#define DELTATIME_H
+
 #include "Singleton.h"
 #include <SDL3/SDL.h>
 
@@ -20,3 +22,5 @@ namespace dae
 		float m_deltaTime{ 0.f };
 	};
 }
+
+#endif // !DELTATIME_H

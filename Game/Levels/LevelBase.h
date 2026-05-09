@@ -1,4 +1,6 @@
-#pragma once
+#ifndef LEVELBASE_H
+#define LEVELBASE_H
+
 #include <vector>
 #include "Component.h"
 
@@ -24,3 +26,5 @@ namespace QBert
 		std::vector<std::vector<TileComp*>> m_tiles;
 	};
 }
+
+#endif // !LEVELBASE_H

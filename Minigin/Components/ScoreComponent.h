@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SCORECOMPONENT_H
+#define SCORECOMPONENT_H
+
 #include "Component.h"
 
 namespace dae
@@ -23,3 +25,5 @@ namespace dae
         int m_score{ 0 };
 	};
 }
+
+#endif // !SCORECOMPONENT_H

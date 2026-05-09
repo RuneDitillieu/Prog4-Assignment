@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SERVICELOCATOR_H
+#define SERVICELOCATOR_H
+
 #include <memory>
 #include "SoundSystem.h"
 
@@ -17,3 +19,5 @@ namespace dae
 		static std::unique_ptr<SoundSystem> _ss_instance;
 	};
 }
+
+#endif // !SERVICELOCATOR_H

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef INITUTILS_H
+#define INITUTILS_H
+
 #include "Scene.h"
 #include "GameObject.h"
 #include "LevelBase.h"
@@ -33,7 +35,8 @@ namespace QBert::Utils
 	void CreateUi(dae::Scene& scene)
 	{
 		// TOP LEFT
-
+		
+		// animated text "Player"
 		auto playerText = std::make_unique<dae::GameObject>();
 		playerText->SetLocalPosition(20.f, 80.f);
 		playerText->SetScale(3.f);
@@ -41,6 +44,7 @@ namespace QBert::Utils
 		playerText->AddComponent(std::make_unique<dae::SpriteComp>(playerText.get(), rc, "PlayerTextSprites.png", 
 			1, 6, rc->GetSize().x / 2.f, rc->GetSize().y / 6.f, glm::vec2(rc->GetSize().x / 2.f, 0)));
 
+		// rect with player id
 		auto playerId = std::make_unique<dae::GameObject>();
 		playerId->SetLocalPosition(rc->GetSize().x / 2.f * 3.f + 20.f, -8.f);
 		playerId->SetScale(3.f);
@@ -49,12 +53,14 @@ namespace QBert::Utils
 			2, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(0, 0), false));
 		playerId.release()->SetParent(playerText.get(), false);
 
+		// score numbers
 		CreateNumberComp(8.f, 25.f, true).release()->SetParent(playerText.get(), false);
 		CreateNumberComp(28.f, 25.f, false).release()->SetParent(playerText.get(), false);
 		CreateNumberComp(48.f, 25.f, false).release()->SetParent(playerText.get(), false);
 		CreateNumberComp(68.f, 25.f, false).release()->SetParent(playerText.get(), false);
 		CreateNumberComp(88.f, 25.f, false).release()->SetParent(playerText.get(), false);
 
+		// text "Change to:"
 		auto changeToText = std::make_unique<dae::GameObject>();
 		changeToText->SetLocalPosition(3.f, 75.f);
 		changeToText->SetScale(3.f);
@@ -62,6 +68,7 @@ namespace QBert::Utils
 		changeToText->AddComponent(std::make_unique<dae::SpriteComp>(changeToText.get(), rc, "LevelUi.png",
 			1, 1, rc->GetSize().x, rc->GetSize().y / 5.f, glm::vec2(0, rc->GetSize().y / 5.f * 4.f), false));
 
+		// pink arrows
 		auto leftLeftArrow = std::make_unique<dae::GameObject>();
 		leftLeftArrow->SetLocalPosition(0.f, 30.f);
 		leftLeftArrow->SetScale(3.f);
@@ -94,6 +101,7 @@ namespace QBert::Utils
 			1, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(rc->GetSize().x / 2.f + rc->GetSize().x / 5.f, 0), false));
 		rightRightArrow.release()->SetParent(changeToText.get(), false);
 
+		// goal tilecolor icon
 		auto tileIcon = std::make_unique<dae::GameObject>();
 		tileIcon->SetLocalPosition(50.f, 20.f);
 		tileIcon->SetScale(3.f);
@@ -109,6 +117,7 @@ namespace QBert::Utils
 
 		// TOP RIGHT
 
+		// text "Level:"
 		auto levelText = std::make_unique<dae::GameObject>();
 		levelText->SetLocalPosition(580.f, 150.f);
 		levelText->SetScale(3.f);
@@ -116,6 +125,7 @@ namespace QBert::Utils
 		levelText->AddComponent(std::make_unique<dae::SpriteComp>(levelText.get(), rc, "LevelUi.png",
 			1, 1, rc->GetSize().x / 3.f * 2.f, rc->GetSize().y / 5.f, glm::vec2(0, rc->GetSize().y / 5.f * 2.f), false));
 
+		// nr of the current level
 		auto levelNrText = std::make_unique<dae::GameObject>();
 		levelNrText->SetLocalPosition(100.f, -7.f);
 		levelNrText->SetScale(3.f);
@@ -124,6 +134,7 @@ namespace QBert::Utils
 			10, 1, rc->GetSize().x / 26.f, rc->GetSize().y / 8.f, glm::vec2(0, 0), false));
 		levelNrText.release()->SetParent(levelText.get(), false);
 
+		// text "Round:"
 		auto roundText = std::make_unique<dae::GameObject>();
 		roundText->SetLocalPosition(0, 30.f);
 		roundText->SetScale(3.f);
@@ -131,6 +142,7 @@ namespace QBert::Utils
 		roundText->AddComponent(std::make_unique<dae::SpriteComp>(roundText.get(), rc, "LevelUi.png",
 			1, 1, rc->GetSize().x / 3.f * 2.f, rc->GetSize().y / 5.f, glm::vec2(0, rc->GetSize().y / 5.f * 3.f), false));
 
+		// nr of the current round
 		auto roundNrText = std::make_unique<dae::GameObject>();
 		roundNrText->SetLocalPosition(100.f, -7.f);
 		roundNrText->SetScale(3.f);
@@ -144,3 +156,5 @@ namespace QBert::Utils
 		scene.Add(std::move(levelText));
 	}
 }
+
+#endif // !INITUTILS_H

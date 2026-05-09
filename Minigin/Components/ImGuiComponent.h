@@ -1,4 +1,6 @@
-#pragma once
+#ifndef IMGUICOMPONENT_H
+#define IMGUICOMPONENT_H
+
 #include <vector>
 #include <SDL3/SDL.h>
 #include "Component.h"
@@ -61,3 +63,5 @@ namespace dae
 		SDL_Renderer* m_sdlRenderer{ nullptr }; // non-owning
 	};
 }
+
+#endif // !IMGUICOMPONENT_H

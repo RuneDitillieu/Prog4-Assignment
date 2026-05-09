@@ -1,4 +1,6 @@
-#pragma once
+#ifndef COLLIDERCOMPONENT_H
+#define COLLIDERCOMPONENT_H
+
 #include "Component.h"
 #include <glm/glm.hpp>
 
@@ -22,3 +24,5 @@ namespace dae
         bool m_isTrigger{ false };
 	};
 }
+
+#endif // !COLLIDERCOMPONENT_H

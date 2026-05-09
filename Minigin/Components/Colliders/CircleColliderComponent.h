@@ -1,4 +1,6 @@
-#pragma once
+#ifndef CIRCLECOLLIDERCOMPONENT_H
+#define CIRCLECOLLIDERCOMPONENT_H
+
 #include "ColliderComponent.h"
 
 namespace dae
@@ -24,3 +26,5 @@ namespace dae
 		float m_collisionRadius;
 	};
 }
+
+#endif // !CIRCLECOLLIDERCOMPONENT_H

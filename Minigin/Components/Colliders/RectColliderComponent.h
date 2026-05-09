@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RECTCOLLIDERCOMPONENT_H
+#define RECTCOLLIDERCOMPONENT_H
+
 #include "ColliderComponent.h"
 
 namespace dae
@@ -25,3 +27,4 @@ namespace dae
 	};
 }
 
+#endif // !RECTCOLLIDERCOMPONENT_H

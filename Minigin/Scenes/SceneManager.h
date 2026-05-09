@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SCENEMANAGER_H
+#define SCENEMANAGER_H
+
 #include <vector>
 #include <string>
 #include <memory>
@@ -28,3 +30,5 @@ namespace dae
 		std::vector<std::unique_ptr<Scene>> m_scenes{};
 	};
 }
+
+#endif // !SCENEMANAGER_H

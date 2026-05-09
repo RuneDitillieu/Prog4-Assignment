@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HEALTHCOMPONENT_H
+#define HEALTHCOMPONENT_H
+
 #include "Component.h"
 
 namespace dae
@@ -28,3 +30,5 @@ namespace dae
         int m_remainingLives;
     };
 }
+
+#endif // !HEALTHCOMPONENT_H

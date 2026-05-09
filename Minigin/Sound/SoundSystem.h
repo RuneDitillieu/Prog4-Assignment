@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SOUNDSYSTEM_H
+#define SOUNDSYSTEM_H
+
 #include <string>
 
 namespace dae
@@ -32,3 +34,5 @@ namespace dae
 		void Init() override {}
 	};
 }
+
+#endif // !SOUNDSYSTEM_H

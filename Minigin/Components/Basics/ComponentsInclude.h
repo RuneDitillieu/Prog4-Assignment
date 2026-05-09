@@ -1,4 +1,6 @@
-#pragma once
+#ifndef COMPONENTSINCLUDE_H
+#define COMPONENTSINCLUDE_H
+
 #include "TextComponent.h"
 #include "RenderComponent.h"
 #include "FpsComponent.h"
@@ -9,3 +11,5 @@
 #include "RectColliderComponent.h"
 #include "CircleColliderComponent.h"
 #include "SpriteComponent.h"
+
+#endif // !COMPONENTSINCLUDE_H

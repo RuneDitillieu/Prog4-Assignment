@@ -66,9 +66,14 @@ static void load()
 	auto uiLives = std::make_unique<dae::GameObject>();
 	uiLives->AddComponent(std::make_unique<dae::TextComponent>(uiLives.get(), "# lives: 3", font));
 	uiLives->SetLocalPosition(15, 250);
+
+	uiLives->m_isEnabled = false;
+
 	auto uiScore = std::make_unique<dae::GameObject>();
 	uiScore->AddComponent(std::make_unique<dae::TextComponent>(uiScore.get(), "score: 0", font));
 	uiScore->SetLocalPosition(15, 280);
+
+	uiScore->m_isEnabled = false;
 
 	auto livesDisplay = std::make_unique<dae::RemainingLivesDisplay>(uiLives.get());
 	auto scoreDisplay = std::make_unique<dae::ScoreDisplay>(uiScore.get());
@@ -107,9 +112,14 @@ static void load()
 	uiLives = std::make_unique<dae::GameObject>();
 	uiLives->AddComponent(std::make_unique<dae::TextComponent>(uiLives.get(), "# lives: 3", font));
 	uiLives->SetLocalPosition(15, 310);
+
+	uiLives->m_isEnabled = false;
+
 	uiScore = std::make_unique<dae::GameObject>();
 	uiScore->AddComponent(std::make_unique<dae::TextComponent>(uiScore.get(), "score: 0", font));
 	uiScore->SetLocalPosition(15, 340);
+
+	uiScore->m_isEnabled = false;
 
 	livesDisplay = std::make_unique<dae::RemainingLivesDisplay>(uiLives.get());
 	scoreDisplay = std::make_unique<dae::ScoreDisplay>(uiScore.get());
