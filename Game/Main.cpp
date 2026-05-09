@@ -22,6 +22,8 @@
 #include "Coily.h"
 #include "RectColliderComponent.h"
 #include "SpriteComponent.h"
+#include "TileComponent.h"
+#include "LevelBase.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -177,6 +179,12 @@ static void load()
 	rc = go->GetComponent<dae::RenderComponent>();
 	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), rc, "PlayerTextSprites.png", 1, 6, rc->GetSize().x / 2.f, rc->GetSize().y / 6.f, glm::vec2(rc->GetSize().x / 2.f, 0)));
 
+	scene.Add(std::move(go));
+
+	go = std::make_unique<dae::GameObject>();
+	go->SetLocalPosition(400.f, 100.f);
+	go->SetScale(3.f);
+	go->AddComponent(std::make_unique<QBert::LevelBase>(go.get(), 0, false, 0, 1));
 	scene.Add(std::move(go));
 
 	dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(dae::SoundSystem::Sound::Jump1), "./Data/Sounds/jump.mp3");
