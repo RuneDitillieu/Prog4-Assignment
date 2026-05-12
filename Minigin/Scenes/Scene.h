@@ -33,6 +33,20 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
+		template<typename T>
+		T* GetFirstObjectByType()
+		{
+			for (auto& object : m_objects)
+			{
+				auto comp{ object->GetComponentInChildren<T>() };
+				if (comp != nullptr)
+				{
+					return static_cast<T*>(comp);
+				}
+			}
+			return nullptr;
+		}
+
 	private:
 		friend class SceneManager;
 		explicit Scene() = default;

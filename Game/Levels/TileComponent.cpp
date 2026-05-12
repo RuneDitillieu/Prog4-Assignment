@@ -12,10 +12,12 @@ QBert::TileComp::TileComp(dae::GameObject* pOwner, int tileType, bool revertable
 	, m_currentTile(start)
 { 
 	auto rc = pOwner->AddComponent(std::make_unique<dae::RenderComponent>(pOwner, "GroundPieces.png"));
-
+	pOwner->SetScale(3.f);
 	glm::vec2 size{ rc->GetSize().x / 22.5f, rc->GetSize().y / 6 };
 	m_pConnSprite = pOwner->AddComponent(std::make_unique<dae::SpriteComp>(pOwner, rc, "GroundPieces.png", 1, 3, 
 		size.x, size.y, glm::vec2(m_tileType * size.x, 0), false));
+
+	m_middlePos = glm::vec3((size.x * pOwner->GetScale()) / 2.f, (size.y * pOwner->GetScale()) / 4.f, 0);
 }
 
 void QBert::TileComp::Turn()
@@ -38,6 +40,13 @@ void QBert::TileComp::Turn()
 	}
 
 	m_pConnSprite->SetCurFrame(m_currentTile);
+}
+
+glm::vec3 QBert::TileComp::GetMiddlePos() const
+{
+	glm::vec3 worldPos{ GetOwner()->GetWorldPosition().x,  GetOwner()->GetWorldPosition().y, 0 };
+	worldPos += m_middlePos;
+	return worldPos;
 }
 
 std::type_index QBert::TileComp::GetType() const

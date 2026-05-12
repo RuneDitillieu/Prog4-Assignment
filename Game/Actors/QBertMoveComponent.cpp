@@ -1,0 +1,68 @@
+#include "QBertMoveComponent.h"
+#include "DeltaTime.h"
+#include "GameObject.h"
+#include "SceneManager.h"
+#include "LevelBase.h"
+#include "TileComponent.h"
+
+QBert::QBertMoveComp::QBertMoveComp(dae::GameObject* pOwner, const glm::vec3& feetPos)
+	: dae::Component(pOwner)
+	, m_QBertFeetPos(feetPos)
+{ 
+	m_pConnLevelComp = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<QBert::LevelBase>();
+	m_goalPos = glm::vec3(m_pConnLevelComp->GetTile(0, 0)->GetMiddlePos());
+	glm::vec3 pos{ m_goalPos.x - m_QBertFeetPos.x, m_goalPos.y - m_QBertFeetPos.y, 0 };
+	GetOwner()->SetLocalPosition(pos);
+
+	m_pConnSpriteComp = pOwner->GetComponent<dae::SpriteComp>();
+}
+
+void QBert::QBertMoveComp::Update()
+{
+	glm::vec3 dir{ glm::vec3(m_goalPos.x, m_goalPos.y, 0) 
+		- (GetOwner()->GetWorldPosition() + m_QBertFeetPos) };
+
+	float dist{ glm::length(dir) };
+	if (dist >= 5.f)
+	{
+		dir /= dist;
+		GetOwner()->SetLocalPosition(GetOwner()->GetLocalPosition() + (dir * 200.f * dae::DeltaTime::GetInstance().GetDeltaTime()));
+	}
+	else
+	{
+		m_currentTile = m_goalTile;
+	}
+}
+
+void QBert::QBertMoveComp::Move(const glm::vec3& direction)
+{
+	glm::vec2 moveDir{ static_cast<int>(direction.x), static_cast<int>(direction.y) };
+	QBert::TileComp* goalTile = m_pConnLevelComp->GetTile(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
+	if (goalTile)
+	{
+		m_goalPos = goalTile->GetMiddlePos();
+		m_goalTile = glm::vec2(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
+	}
+
+	if (moveDir.x == 1)
+	{
+		m_pConnSpriteComp->SetCurFrame(5);
+	}
+	else if (moveDir.x == -1)
+	{
+		m_pConnSpriteComp->SetCurFrame(3);
+	}
+	else if (moveDir.y == 1)
+	{
+		m_pConnSpriteComp->SetCurFrame(7);
+	}
+	else if (moveDir.y == -1)
+	{
+		m_pConnSpriteComp->SetCurFrame(1);
+	}
+}
+
+std::type_index QBert::QBertMoveComp::GetType() const
+{
+	return typeid(QBertMoveComp);
+}

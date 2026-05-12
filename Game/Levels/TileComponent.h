@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "SpriteComponent.h"
+#include <glm/glm.hpp>
 
 namespace QBert
 {
@@ -19,6 +20,7 @@ namespace QBert
 
 		void Turn();
 		bool IsWinColor() { return m_currentTile == m_winTile; }
+		glm::vec3 GetMiddlePos() const;
 
 		std::type_index GetType() const override;
 
@@ -31,6 +33,8 @@ namespace QBert
 		const int m_middleTile;
 
 		int m_currentTile;
+
+		glm::vec3 m_middlePos{};
 
 		dae::SpriteComp* m_pConnSprite{ nullptr };
 	};

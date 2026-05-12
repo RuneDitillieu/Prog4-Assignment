@@ -31,6 +31,7 @@ namespace dae
 		void SetLocalPosition(const glm::vec3& newPosition);
 		void SetScale(float scale) { m_localTransform.SetScale(scale); }
 		const glm::vec3& GetLocalPosition() const { return m_localTransform.GetPosition(); }
+		const glm::vec3& GetWorldPosition();
 		float GetScale() const { return m_localTransform.GetScale(); }
 
 		void MarkForRemoval() { m_isMarkedForRemoval = true;  }
@@ -125,7 +126,6 @@ namespace dae
 		void AddChild(GameObject* newChild);
 		[[nodiscard]] GameObject* RemoveChild(GameObject* newParent);
 
-		const glm::vec3& GetWorldPosition();
 		void UpdateWorldPosition();
 		void SetPositionDirty();
 

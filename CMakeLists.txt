@@ -245,7 +245,7 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
   "Game/States/CoilyStateSnake.cpp" 
   "Game/Actors/Coily.h" 
   "Game/Actors/Coily.cpp"
-  "Game/Levels/TileComponent.cpp" "Game/Levels/LevelBase.cpp")
+  "Game/Levels/TileComponent.cpp" "Game/Levels/LevelBase.cpp" "Game/Actors/QBertMoveComponent.cpp" "Game/Actors/QBertActorComponent.cpp" "Game/States/QBertMoveState.cpp")
 
 set(GAME_DIRS Game/States Game/Actors Game/Levels)
 target_include_directories(${GAME_NAME} PRIVATE ${GAME_DIRS})

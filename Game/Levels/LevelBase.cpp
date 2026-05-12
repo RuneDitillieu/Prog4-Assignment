@@ -29,9 +29,20 @@ QBert::LevelBase::LevelBase(dae::GameObject* pOwner, int tileType, bool revertab
 			float scale{ 3.f };
 			float tileSize{ (go->GetComponent<dae::RenderComponent>()->GetSize().y / 6) * scale };
 			go->SetLocalPosition(colIdx * 0.5f * tileSize + rowIdx * -0.5f * tileSize, colIdx * 0.75f * tileSize + rowIdx * 0.75f * tileSize);
-			go->SetScale(scale);
 			go.release()->SetParent(pOwner, false);
 		}
+	}
+}
+
+QBert::TileComp* QBert::LevelBase::GetTile(int col, int row) const
+{
+	if (m_tiles.size() > col && m_tiles[col].size() > row)
+	{
+		return m_tiles[col][row];
+	}
+	else
+	{
+		return nullptr;
 	}
 }
 

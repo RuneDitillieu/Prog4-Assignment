@@ -21,6 +21,8 @@
 
 #include "Coily.h"
 #include "InitUtils.h"
+#include "QBertActorComponent.h"
+#include "QBertCommands.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -80,11 +82,12 @@ static void load()
 
 	// player
 	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "QBertSprites.png"));
+	go->AddComponent(std::make_unique<QBert::QBertActorComp>(go.get()));
+	/*go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "QBertSprites.png"));
 	go->GetComponent<dae::RenderComponent>();
 	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), "QBertSprites.png", 8, 1, false));
 	go->SetLocalPosition(100, 300);
-	go->SetScale(3.f);
+	go->SetScale(3.f);*/
 	glm::vec2 texSize{ go->GetComponent<dae::RenderComponent>()->GetSize() * go->GetScale() };
 	go->AddComponent(std::make_unique<dae::RectColliderComp>(go.get(), go->GetLocalPosition(), go->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
@@ -94,10 +97,10 @@ static void load()
 	go->GetSubject()->AddObserver(livesDisplay.get());
 	go->GetSubject()->AddObserver(scoreDisplay.get());
 
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
 
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TakeDamageCommand>(go.get(), 3), SDL_SCANCODE_E, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), SDL_SCANCODE_R, SDL_EVENT_KEY_DOWN);
@@ -139,6 +142,7 @@ static void load()
 	go->InitSubject();
 	go->GetSubject()->AddObserver(livesDisplay.get());
 	go->GetSubject()->AddObserver(scoreDisplay.get());
+	go->m_isEnabled = false;
 
 #if defined(__EMSCRIPTEN__)
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
