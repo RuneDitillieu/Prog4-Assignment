@@ -34,7 +34,7 @@ QBert::LevelBase::LevelBase(dae::GameObject* pOwner, int tileType, bool revertab
 	}
 }
 
-QBert::TileComp* QBert::LevelBase::GetTile(int col, int row) const
+QBert::TileComp* QBert::LevelBase::GetTile(size_t col, size_t row) const
 {
 	if (m_tiles.size() > col && m_tiles[col].size() > row)
 	{

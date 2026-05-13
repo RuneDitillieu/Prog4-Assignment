@@ -18,7 +18,8 @@ namespace QBert
 		TileComp& operator=(const TileComp& other) = delete;
 		TileComp& operator=(TileComp&& other) = delete;
 
-		void Turn();
+		bool Turn();
+		void Revert();
 		bool IsWinColor() { return m_currentTile == m_winTile; }
 		glm::vec3 GetMiddlePos() const;
 

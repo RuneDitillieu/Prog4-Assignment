@@ -86,7 +86,7 @@ namespace dae
 		void Execute() override
 		{
 			m_scoreComp->AddToScore(m_scoreIncrease);
-			dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(dae::SoundSystem::Sound::Jump1), 0.5f);
+			//dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(dae::SoundSystem::Sound::Jump1), 0.5f);
 		}
 
 	private:

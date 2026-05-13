@@ -20,8 +20,10 @@ QBert::TileComp::TileComp(dae::GameObject* pOwner, int tileType, bool revertable
 	m_middlePos = glm::vec3((size.x * pOwner->GetScale()) / 2.f, (size.y * pOwner->GetScale()) / 4.f, 0);
 }
 
-void QBert::TileComp::Turn()
+bool QBert::TileComp::Turn()
 {
+	int curTile{ m_currentTile };
+
 	if (m_currentTile == m_startTile)
 	{
 		if (m_middleTile == -1)
@@ -37,6 +39,34 @@ void QBert::TileComp::Turn()
 		&& m_revertable)
 	{
 		m_currentTile = m_startTile;
+	}
+
+	m_pConnSprite->SetCurFrame(m_currentTile);
+
+	if (curTile == m_currentTile)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+void QBert::TileComp::Revert()
+{
+	if (m_currentTile == m_startTile)
+	{
+		return;
+	}
+	else if (m_currentTile == m_middleTile 
+		|| (m_currentTile == m_winTile && m_middleTile == -1))
+	{
+		m_currentTile = m_startTile;
+	}
+	else if (m_currentTile == m_winTile)
+	{
+		m_currentTile = m_middleTile;
 	}
 
 	m_pConnSprite->SetCurFrame(m_currentTile);

@@ -4,6 +4,9 @@
 #include "SceneManager.h"
 #include "LevelBase.h"
 #include "TileComponent.h"
+#include "ServiceLocator.h"
+#include "Sounds.h"
+#include "Events.h"
 
 QBert::QBertMoveComp::QBertMoveComp(dae::GameObject* pOwner, const glm::vec3& feetPos)
 	: dae::Component(pOwner)
@@ -28,9 +31,33 @@ void QBert::QBertMoveComp::Update()
 		dir /= dist;
 		GetOwner()->SetLocalPosition(GetOwner()->GetLocalPosition() + (dir * 200.f * dae::DeltaTime::GetInstance().GetDeltaTime()));
 	}
-	else
+	else if (m_currentTile != m_goalTile)
 	{
 		m_currentTile = m_goalTile;
+		if (m_pConnLevelComp->GetTile(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y))->Turn())
+		{
+			dae::Event e(dae::make_sdbm_hash("TILE_TURNED"));
+			GetOwner()->GetSubject()->NotifyObservers(e);
+		}
+
+		int soundId{ rand() % 4 };
+		switch (soundId)
+		{
+		case 0:
+			dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(QBert::Sound::Jump1), 0.5f);
+			break;
+		case 1:
+			dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(QBert::Sound::Jump2), 0.5f);
+			break;
+		case 2:
+			dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(QBert::Sound::Jump3), 0.5f);
+			break;
+		case 3:
+			dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(QBert::Sound::Jump4), 0.3f);
+			break;
+		default:
+			break;
+		}
 	}
 }
 

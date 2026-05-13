@@ -97,6 +97,8 @@ static void load()
 	go->GetSubject()->AddObserver(livesDisplay.get());
 	go->GetSubject()->AddObserver(scoreDisplay.get());
 
+	dae::GameObject* player = go.get();
+
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
@@ -186,9 +188,9 @@ static void load()
 	scene.Add(std::move(livesDisplay));
 	scene.Add(std::move(scoreDisplay));
 
-	QBert::Utils::CreateUi(scene);
+	QBert::Utils::CreateUi(scene, player);
 
-	dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(dae::SoundSystem::Sound::Jump1), "./Data/Sounds/jump.mp3");
+	QBert::Utils::AddSounds();
 }
 
 int main(int, char*[]) {

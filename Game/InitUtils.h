@@ -1,11 +1,15 @@
 #ifndef INITUTILS_H
 #define INITUTILS_H
 
-#include "Scene.h"
 #include "GameObject.h"
-#include "LevelBase.h"
-#include "SpriteComponent.h"
 #include "RenderComponent.h"
+#include "Scene.h"
+#include "SpriteComponent.h"
+#include "ServiceLocator.h"
+
+#include "LevelBase.h"
+#include "Sounds.h"
+#include "QBertScoreComponent.h"
 
 namespace QBert::Utils
 {
@@ -18,21 +22,22 @@ namespace QBert::Utils
 		scene.Add(std::move(go));
 	}
 
-	std::unique_ptr<dae::GameObject> CreateNumberComp(float x, float y, bool enabled)
+	std::unique_ptr<dae::GameObject> CreateNumberComp(float x, float y, bool enabled, std::vector<dae::SpriteComp*>& numberSprites)
 	{
 		auto score = std::make_unique<dae::GameObject>();
 		score->SetLocalPosition(x, y);
 		score->SetScale(3.f);
 		auto rc = score->AddComponent(std::make_unique<dae::RenderComponent>(score.get(), "Fonts.png"));
+		numberSprites.emplace_back(
 		score->AddComponent(std::make_unique<dae::SpriteComp>(score.get(), rc, "Fonts.png",
-			10, 1, rc->GetSize().x / 26.f, rc->GetSize().y / 8.f, glm::vec2(0, 0), false));
+			10, 1, rc->GetSize().x / 26.f, rc->GetSize().y / 8.f, glm::vec2(0, 0), false)));
 
 		score->m_isEnabled = enabled;
 
 		return score;
 	}
 
-	void CreateUi(dae::Scene& scene)
+	void CreateUi(dae::Scene& scene, dae::GameObject* player1)
 	{
 		// TOP LEFT
 		
@@ -53,12 +58,17 @@ namespace QBert::Utils
 			2, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(0, 0), false));
 		playerId.release()->SetParent(playerText.get(), false);
 
+		std::vector<dae::SpriteComp*> numberSprites{};
+		numberSprites.reserve(5);
 		// score numbers
-		CreateNumberComp(8.f, 25.f, true).release()->SetParent(playerText.get(), false);
-		CreateNumberComp(28.f, 25.f, false).release()->SetParent(playerText.get(), false);
-		CreateNumberComp(48.f, 25.f, false).release()->SetParent(playerText.get(), false);
-		CreateNumberComp(68.f, 25.f, false).release()->SetParent(playerText.get(), false);
-		CreateNumberComp(88.f, 25.f, false).release()->SetParent(playerText.get(), false);
+		CreateNumberComp(8.f, 25.f, true, numberSprites).release()->SetParent(playerText.get(), false);
+		CreateNumberComp(28.f, 25.f, false, numberSprites).release()->SetParent(playerText.get(), false);
+		CreateNumberComp(48.f, 25.f, false, numberSprites).release()->SetParent(playerText.get(), false);
+		CreateNumberComp(68.f, 25.f, false, numberSprites).release()->SetParent(playerText.get(), false);
+		CreateNumberComp(88.f, 25.f, false, numberSprites).release()->SetParent(playerText.get(), false);
+		auto scoreComp = playerText->AddComponent(std::make_unique<QBert::ScoreComp>(playerText.get(), numberSprites));
+
+		player1->GetSubject()->AddObserver(scoreComp);
 
 		// text "Change to:"
 		auto changeToText = std::make_unique<dae::GameObject>();
@@ -154,6 +164,14 @@ namespace QBert::Utils
 		roundText.release()->SetParent(levelText.get(), false);
 
 		scene.Add(std::move(levelText));
+	}
+
+	void AddSounds()
+	{
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump1), "./Data/Sounds/jump.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump2), "./Data/Sounds/jump-2.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump3), "./Data/Sounds/jump-3.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump4), "./Data/Sounds/jump-4.mp3");
 	}
 }
 
