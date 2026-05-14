@@ -12,7 +12,7 @@ namespace QBert
 	class QBertMoveComp : public dae::Component
 	{
 	public:
-		QBertMoveComp(dae::GameObject* pOwner, const glm::vec3& feetPos);
+		QBertMoveComp(dae::GameObject* pOwner, const glm::vec3& feetPos, const glm::vec2& startTile, bool canTurn, bool canRevert);
 		~QBertMoveComp() = default;
 		QBertMoveComp(const QBertMoveComp& other) = delete;
 		QBertMoveComp(QBertMoveComp&& other) = delete;
@@ -23,12 +23,18 @@ namespace QBert
 
 		void Update() override;
 		void Move(const glm::vec3& direction);
+		glm::vec2 GetCurrentTile() const { return m_currentTile; }
+		bool IsMoving() const { if (m_currentTile == m_goalTile) return false; else return true; }
 
 	private:
 		glm::vec3 m_QBertFeetPos;
-		glm::vec2 m_currentTile{ 0, 0 };
-		glm::vec2 m_goalTile{ 0, 0 };
+		glm::vec2 m_currentTile;
+		glm::vec2 m_goalTile;
 		glm::vec3 m_goalPos;
+
+		bool m_canTurnTiles;
+		bool m_canRevertTiles;
+
 		LevelBase* m_pConnLevelComp;
 		dae::SpriteComp* m_pConnSpriteComp;
 	};

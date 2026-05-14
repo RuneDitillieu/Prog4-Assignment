@@ -53,11 +53,13 @@ bool QBert::TileComp::Turn()
 	}
 }
 
-void QBert::TileComp::Revert()
+bool QBert::TileComp::Revert()
 {
+	int curTile{ m_currentTile };
+
 	if (m_currentTile == m_startTile)
 	{
-		return;
+		return false;
 	}
 	else if (m_currentTile == m_middleTile 
 		|| (m_currentTile == m_winTile && m_middleTile == -1))
@@ -70,6 +72,15 @@ void QBert::TileComp::Revert()
 	}
 
 	m_pConnSprite->SetCurFrame(m_currentTile);
+
+	if (curTile == m_currentTile)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 glm::vec3 QBert::TileComp::GetMiddlePos() const

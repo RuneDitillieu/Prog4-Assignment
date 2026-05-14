@@ -10,7 +10,7 @@ namespace QBert
 	class Coily : public dae::Component
 	{
     public:
-        Coily(dae::GameObject* pOwner);
+        Coily(dae::GameObject* pOwner, LevelBase* pLevel);
         ~Coily() = default;
         Coily(const Coily& other) = delete;
         Coily(Coily&& other) = delete;
@@ -22,7 +22,7 @@ namespace QBert
         std::type_index GetType() const override;
 
     private:
-        std::unique_ptr<CoilyState> m_pState{ std::make_unique<QBert::EggState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>()) };
+        std::unique_ptr<CoilyState> m_pState;
 	};
 }
 

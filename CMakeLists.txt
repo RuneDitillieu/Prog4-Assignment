@@ -86,7 +86,7 @@ if(NOT glm_FOUND)
   )
   FetchContent_MakeAvailable(glm)
 endif()
-
+ 
 # Add SDL3
 find_package(SDL3 3.4 CONFIG QUIET)
 if(NOT SDL3_FOUND)
@@ -241,17 +241,20 @@ target_link_libraries(${ENGINE_NAME} PUBLIC
 # list source files
 add_executable(${GAME_NAME} ${TARGET_PARAM}
   "Game/Main.cpp"
-  "Game/States/CoilyStateEgg.cpp"
-  "Game/States/CoilyStateSnake.cpp" 
+  "Game/States/CoilyStates/CoilyIdleEggState.cpp"
+  "Game/States/CoilyStates/CoilySnakeState.cpp" 
   "Game/Actors/Coily.h" 
   "Game/Actors/Coily.cpp"
   "Game/Levels/TileComponent.cpp" 
   "Game/Levels/LevelBase.cpp" 
   "Game/Actors/QBertMoveComponent.cpp" 
   "Game/Actors/QBertActorComponent.cpp" 
-  "Game/States/QBertMoveState.cpp" "Game/QBertScoreComponent.cpp")
+  "Game/States/QBertMoveState.cpp" 
+  "Game/QBertScoreComponent.cpp" 
+  "Game/Levels/LevelManager.cpp" 
+  "Game/States/CoilyStates/CoilyJumpingEggState.cpp")
 
-set(GAME_DIRS Game Game/States Game/Actors Game/Levels)
+set(GAME_DIRS Game Game/States Game/Actors Game/Levels Game/States/CoilyStates)
 target_include_directories(${GAME_NAME} PRIVATE ${GAME_DIRS})
 target_compile_features(${GAME_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${GAME_NAME} PRIVATE ${ENGINE_NAME})

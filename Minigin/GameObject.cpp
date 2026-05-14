@@ -1,5 +1,4 @@
 #include "GameObject.h"
-#include "Component.h"
 #include "Subject.h"
 #include "SceneManager.h"
 

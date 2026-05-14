@@ -22,6 +22,7 @@ namespace QBert
 
 		TileComp* GetTile(size_t col, size_t row) const;
 		bool TurnTile(size_t col, size_t row) const;
+		bool RevertTile(size_t col, size_t row) const;
 
 	private:
 		bool AreAllTilesCorrect() const;

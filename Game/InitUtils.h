@@ -14,13 +14,15 @@
 
 namespace QBert::Utils
 {
-	void CreateLevel(dae::Scene& scene, int tileType, bool revertableTiles, int startTile, int winTile, int intermediateTile = -1)
+	dae::GameObject* CreateLevel(dae::Scene& scene, int tileType, bool revertableTiles, int startTile, int winTile, int intermediateTile = -1)
 	{
 		auto go = std::make_unique<dae::GameObject>();
 		go->SetLocalPosition(350.f, 150.f);
 		go->SetScale(3.f);
 		go->AddComponent(std::make_unique<QBert::LevelBase>(go.get(), tileType, revertableTiles, startTile, winTile, intermediateTile));
+		auto level{ go.get() };
 		scene.Add(std::move(go));
+		return level;
 	}
 
 	std::unique_ptr<dae::GameObject> CreateNumberComp(float x, float y, bool enabled, std::vector<dae::SpriteComp*>& numberSprites)

@@ -67,6 +67,18 @@ bool QBert::LevelBase::TurnTile(size_t col, size_t row) const
 	}
 }
 
+bool QBert::LevelBase::RevertTile(size_t col, size_t row) const
+{
+	if (GetTile(col, row)->Revert())
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 bool QBert::LevelBase::AreAllTilesCorrect() const
 {
 	for (auto vec : m_tiles)

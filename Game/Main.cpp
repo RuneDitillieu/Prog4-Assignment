@@ -23,6 +23,7 @@
 #include "InitUtils.h"
 #include "QBertActorComponent.h"
 #include "QBertCommands.h"
+#include "QBertMoveComponent.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -31,6 +32,7 @@ std::unique_ptr<dae::SoundSystem> dae::ServiceLocator::_ss_instance{ std::make_u
 
 static void load()
 {
+	
 	auto& scene = dae::SceneManager::GetInstance().CreateScene();
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SdlSoundSystem>());
 	dae::ServiceLocator::GetSoundSystem().Init();
@@ -60,7 +62,7 @@ static void load()
 	scene.Add(std::move(go));
 
 	// level
-	QBert::Utils::CreateLevel(scene, 0, false, 2, 1);
+	auto level = QBert::Utils::CreateLevel(scene, 0, false, 2, 1);
 
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
 
@@ -83,11 +85,6 @@ static void load()
 	// player
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<QBert::QBertActorComp>(go.get()));
-	/*go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "QBertSprites.png"));
-	go->GetComponent<dae::RenderComponent>();
-	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), "QBertSprites.png", 8, 1, false));
-	go->SetLocalPosition(100, 300);
-	go->SetScale(3.f);*/
 	glm::vec2 texSize{ go->GetComponent<dae::RenderComponent>()->GetSize() * go->GetScale() };
 	go->AddComponent(std::make_unique<dae::RectColliderComp>(go.get(), go->GetLocalPosition(), go->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
@@ -130,21 +127,19 @@ static void load()
 	scoreDisplay = std::make_unique<dae::ScoreDisplay>(uiScore.get());
 
 	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
+	auto rc = go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "CoilySprites.png"));
 	go->SetLocalPosition(300, 300);
-	go->AddComponent(std::make_unique<QBert::Coily>(go.get()));
 	go->SetScale(3.f);
-	texSize = go->GetComponent<dae::RenderComponent>()->GetSize() * go->GetScale();
-	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), "Eggs.png", 6, 1, false));
-	go->GetComponent<dae::SpriteComp>()->SetCurFrame(4);
+	texSize = rc->GetSize() * go->GetScale();
+	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), "CoilySprites.png", 10, 1, false));
+	go->AddComponent(std::make_unique<QBert::QBertMoveComp>(go.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), glm::vec2(0, 1), false, false));
+	go->AddComponent(std::make_unique<QBert::Coily>(go.get(), level->GetComponent<QBert::LevelBase>()));
 	go->AddComponent(std::make_unique<dae::RectColliderComp>(go.get(), go->GetLocalPosition(), go->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
-	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
 	go->AddComponent(std::make_unique<dae::HealthComponent>(go.get(), 3, 3));
 	go->AddComponent(std::make_unique<dae::ScoreComponent>(go.get()));
 	go->InitSubject();
 	go->GetSubject()->AddObserver(livesDisplay.get());
 	go->GetSubject()->AddObserver(scoreDisplay.get());
-	go->m_isEnabled = false;
 
 #if defined(__EMSCRIPTEN__)
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
@@ -190,7 +185,7 @@ static void load()
 
 	QBert::Utils::CreateUi(scene, player);
 
-	QBert::Utils::AddSounds();
+	QBert::Utils::AddSounds(); 
 }
 
 int main(int, char*[]) {

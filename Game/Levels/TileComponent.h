@@ -24,7 +24,7 @@ namespace QBert
 
 	private:
 		bool Turn();
-		void Revert();
+		bool Revert();
 		bool IsWinColor() { return m_currentTile == m_winTile; }
 
 		const int m_tileType;
