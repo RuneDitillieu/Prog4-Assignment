@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "RenderComponent.h"
 #include "Scene.h"
+#include "SceneManager.h"
 #include "SpriteComponent.h"
 #include "ServiceLocator.h"
 
@@ -69,6 +70,9 @@ namespace QBert::Utils
 		auto scoreComp = playerText->AddComponent(std::make_unique<QBert::ScoreComp>(playerText.get(), numberSprites));
 
 		player1->GetSubject()->AddObserver(scoreComp);
+		auto level = scene.GetFirstObjectByType<QBert::LevelBase>()->GetOwner(); 
+		level->InitSubject();
+		level->GetSubject()->AddObserver(scoreComp);
 
 		// text "Change to:"
 		auto changeToText = std::make_unique<dae::GameObject>();
@@ -168,10 +172,21 @@ namespace QBert::Utils
 
 	void AddSounds()
 	{
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump1), "./Data/Sounds/jump.mp3");
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump2), "./Data/Sounds/jump-2.mp3");
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump3), "./Data/Sounds/jump-3.mp3");
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump4), "./Data/Sounds/jump-4.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump1), "./Data/Sounds/Jump-1.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump2), "./Data/Sounds/Jump-2.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump3), "./Data/Sounds/Jump-3.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump4), "./Data/Sounds/Jump-4.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Coin), "./Data/Sounds/Coin.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::QBertFall), "./Data/Sounds/QBertFall.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::CoilyFall), "./Data/Sounds/CoilyFall.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Lift), "./Data/Sounds/Lift.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Speech1), "./Data/Sounds/Speech-1.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Speech2), "./Data/Sounds/Speech-2.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Speech3), "./Data/Sounds/Speech-3.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::LevelStart), "./Data/Sounds/LevelStart.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Tune), "./Data/Sounds/Tune.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Victory), "./Data/Sounds/Victory.mp3");
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Prize), "./Data/Sounds/Prize.mp3");
 	}
 }
 
