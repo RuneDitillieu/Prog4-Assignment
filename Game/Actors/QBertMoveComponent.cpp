@@ -82,23 +82,6 @@ void QBert::QBertMoveComp::Move(const glm::vec3& direction)
 		m_goalPos = goalTile->GetMiddlePos();
 		m_goalTile = glm::vec2(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
 	}
-
-	if (moveDir.x == 1)
-	{
-		m_pConnSpriteComp->SetCurFrame(5);
-	}
-	else if (moveDir.x == -1)
-	{
-		m_pConnSpriteComp->SetCurFrame(3);
-	}
-	else if (moveDir.y == 1)
-	{
-		m_pConnSpriteComp->SetCurFrame(7);
-	}
-	else if (moveDir.y == -1)
-	{
-		m_pConnSpriteComp->SetCurFrame(1);
-	}
 }
 
 std::type_index QBert::QBertMoveComp::GetType() const

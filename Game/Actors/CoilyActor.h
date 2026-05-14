@@ -1,5 +1,5 @@
-#ifndef COILY_H
-#define COILY_H
+#ifndef COILYACTOR_H
+#define COILYACTOR_H
 
 #include "Component.h"
 #include "CoilyStates.h"

@@ -241,20 +241,24 @@ target_link_libraries(${ENGINE_NAME} PUBLIC
 # list source files
 add_executable(${GAME_NAME} ${TARGET_PARAM}
   "Game/Main.cpp"
-  "Game/States/CoilyStates/CoilyIdleEggState.cpp"
-  "Game/States/CoilyStates/CoilySnakeState.cpp" 
-  "Game/Actors/Coily.h" 
-  "Game/Actors/Coily.cpp"
+  "Game/QBertScoreComponent.cpp" 
+
+  "Game/Actors/CoilyActor.h" 
+  "Game/Actors/CoilyActor.cpp"
+  "Game/Actors/QBertMoveComponent.cpp" 
+  "Game/Actors/QBertActor.cpp" 
+
   "Game/Levels/TileComponent.cpp" 
   "Game/Levels/LevelBase.cpp" 
-  "Game/Actors/QBertMoveComponent.cpp" 
-  "Game/Actors/QBertActorComponent.cpp" 
-  "Game/States/QBertMoveState.cpp" 
-  "Game/QBertScoreComponent.cpp" 
   "Game/Levels/LevelManager.cpp" 
-  "Game/States/CoilyStates/CoilyJumpingEggState.cpp")
 
-set(GAME_DIRS Game Game/States Game/Actors Game/Levels Game/States/CoilyStates)
+  "Game/States/CoilyStates/CoilyIdleEggState.cpp"
+  "Game/States/CoilyStates/CoilySnakeState.cpp" 
+  "Game/States/QBertStates/QBertJumpingState.cpp" 
+  "Game/States/CoilyStates/CoilyJumpingEggState.cpp"
+   "Game/States/QBertStates/QBertIdleState.cpp")
+
+set(GAME_DIRS Game Game/Actors Game/Levels Game/States Game/States/CoilyStates Game/States/QBertStates)
 target_include_directories(${GAME_NAME} PRIVATE ${GAME_DIRS})
 target_compile_features(${GAME_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${GAME_NAME} PRIVATE ${ENGINE_NAME})

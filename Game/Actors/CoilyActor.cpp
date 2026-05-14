@@ -1,11 +1,10 @@
-#include "Coily.h"
+#include "CoilyActor.h"
 #include "GameObject.h"
 #include "QBertMoveComponent.h"
 
 QBert::Coily::Coily(dae::GameObject* pOwner, LevelBase* pLevel)
 	: dae::Component(pOwner)
 {
-	pLevel;
 	m_pState = std::make_unique<QBert::IdleEggState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>(), 
 		GetOwner()->GetComponent<QBert::QBertMoveComp>(), pLevel);
 	m_pState->OnEnter();

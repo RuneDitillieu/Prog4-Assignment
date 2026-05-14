@@ -19,9 +19,9 @@
 #include "ServiceLocator.h"
 #include "SdlSoundSystem.h"
 
-#include "Coily.h"
+#include "CoilyActor.h"
 #include "InitUtils.h"
-#include "QBertActorComponent.h"
+#include "QBertActor.h"
 #include "QBertCommands.h"
 #include "QBertMoveComponent.h"
 

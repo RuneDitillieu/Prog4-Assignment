@@ -2,6 +2,7 @@
 #define EVENTS_H
 
 #include <cstdint>
+#include <glm/glm.hpp>
 
 namespace dae
 {
@@ -34,6 +35,7 @@ namespace dae
 
 	struct EventArg {
 		int nr;
+		glm::vec3 dir;
 	};
 	using EventId = unsigned int;
 
