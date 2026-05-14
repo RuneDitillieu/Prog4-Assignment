@@ -34,7 +34,7 @@ void QBert::QBertMoveComp::Update()
 	else if (m_currentTile != m_goalTile)
 	{
 		m_currentTile = m_goalTile;
-		if (m_pConnLevelComp->GetTile(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y))->Turn())
+		if (m_pConnLevelComp->TurnTile(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y)))
 		{
 			dae::Event e(dae::make_sdbm_hash("TILE_TURNED"));
 			GetOwner()->GetSubject()->NotifyObservers(e);
@@ -63,6 +63,8 @@ void QBert::QBertMoveComp::Update()
 
 void QBert::QBertMoveComp::Move(const glm::vec3& direction)
 {
+	if (m_currentTile != m_goalTile) return;
+
 	glm::vec2 moveDir{ static_cast<int>(direction.x), static_cast<int>(direction.y) };
 	QBert::TileComp* goalTile = m_pConnLevelComp->GetTile(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
 	if (goalTile)

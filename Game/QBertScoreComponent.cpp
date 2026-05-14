@@ -15,8 +15,11 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject*)
 	case dae::make_sdbm_hash("TILE_TURNED"):
 		m_score += m_tileScore;
 		break;
-	case dae::make_sdbm_hash("SNAKE_KILLED"):
-		m_score += m_snakeScore;
+	case dae::make_sdbm_hash("COILY_KILLED"):
+		m_score += m_coilyScore;
+		break;
+	case dae::make_sdbm_hash("SAM_SLICK_KILLED"):
+		m_score += m_samSlickScore;
 		break;
 	case dae::make_sdbm_hash("BALL_CAUGHT"):
 		m_score += m_greenBallScore;

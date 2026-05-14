@@ -21,9 +21,10 @@ namespace QBert
 		std::type_index GetType() const override;
 
 		TileComp* GetTile(size_t col, size_t row) const;
-		bool AreAllTilesCorrect() const;
+		bool TurnTile(size_t col, size_t row) const;
 
 	private:
+		bool AreAllTilesCorrect() const;
 		std::vector<std::vector<TileComp*>> m_tiles;
 	};
 }

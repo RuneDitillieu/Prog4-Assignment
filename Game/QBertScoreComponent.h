@@ -29,10 +29,11 @@ namespace QBert
 		int m_score{ 0 };
 
 		const int m_tileScore{ 25 };
-		const int m_snakeScore{ 500 };
+		const int m_coilyScore{ 500 };
+		const int m_samSlickScore{ 300 };
 		const int m_greenBallScore{ 100 };
 		const int m_winScoreBase{ 750 }; 
-		const float m_levelScoreMultiplier{ 0.25f };
+		const int m_levelScoreMultiplier{ 250 };
 		const int m_discScore{ 50 };
 
 		std::vector<dae::SpriteComp*> m_pConnSpriteComps;

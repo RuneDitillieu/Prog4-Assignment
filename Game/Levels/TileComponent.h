@@ -18,14 +18,15 @@ namespace QBert
 		TileComp& operator=(const TileComp& other) = delete;
 		TileComp& operator=(TileComp&& other) = delete;
 
-		bool Turn();
-		void Revert();
-		bool IsWinColor() { return m_currentTile == m_winTile; }
 		glm::vec3 GetMiddlePos() const;
 
 		std::type_index GetType() const override;
 
 	private:
+		bool Turn();
+		void Revert();
+		bool IsWinColor() { return m_currentTile == m_winTile; }
+
 		const int m_tileType;
 		const bool m_revertable;
 
@@ -38,6 +39,8 @@ namespace QBert
 		glm::vec3 m_middlePos{};
 
 		dae::SpriteComp* m_pConnSprite{ nullptr };
+
+		friend class LevelBase;
 	};
 }
 

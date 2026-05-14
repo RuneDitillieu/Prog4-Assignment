@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "TileComponent.h"
 #include "RenderComponent.h"
+#include "ServiceLocator.h"
+#include "Sounds.h"
 
 QBert::LevelBase::LevelBase(dae::GameObject* pOwner, int tileType, bool revertable, int start, int win, int middle)
 	: Component(pOwner)
@@ -43,6 +45,25 @@ QBert::TileComp* QBert::LevelBase::GetTile(size_t col, size_t row) const
 	else
 	{
 		return nullptr;
+	}
+}
+
+bool QBert::LevelBase::TurnTile(size_t col, size_t row) const
+{
+	if (GetTile(col, row)->Turn())
+	{
+		if (AreAllTilesCorrect())
+		{
+			dae::Event e(dae::make_sdbm_hash("LEVEL_COMPLETED"));
+			GetOwner()->GetSubject()->NotifyObservers(e);
+			dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(QBert::Sound::Victory), 0.5f);
+		}
+
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
