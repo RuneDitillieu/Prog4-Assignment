@@ -1,14 +1,13 @@
 #include "CoilyStates.h"
-#include "RenderComponent.h"
 #include "DeltaTime.h"
 
-QBert::EggState::EggState(dae::GameObject* coily)
-	: CoilyState(coily)
+QBert::EggState::EggState(dae::GameObject* coily, dae::SpriteComp* spriteComp)
+	: CoilyState(coily, spriteComp)
 {}
 
 void QBert::EggState::OnEnter()
 {
-	m_coily->GetComponent<dae::RenderComponent>()->SetTexture("Eggs.png");
+	m_pConnSprite->SetCurFrame(0);
 	m_goalLocation = m_coily->GetLocalPosition() + glm::vec3(0, 50.f, 0);
 }
 
@@ -18,15 +17,10 @@ std::unique_ptr<QBert::CoilyState> QBert::EggState::Update()
 
 	if (glm::length(m_coily->GetLocalPosition() - m_goalLocation) < 10.f)
 	{
-		return std::make_unique<SnakeState>(m_coily);
+		return std::make_unique<SnakeState>(m_coily, m_pConnSprite);
 	}
 	else
 	{
-		return std::make_unique<CoilyState>(m_coily);
+		return nullptr;
 	}
-}
-
-std::type_index QBert::EggState::GetType() const
-{
-	return typeid(EggState);
 }

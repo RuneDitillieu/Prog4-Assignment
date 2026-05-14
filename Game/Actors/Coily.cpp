@@ -9,8 +9,7 @@ QBert::Coily::Coily(dae::GameObject* pOwner)
 void QBert::Coily::Update()
 {
 	auto state = m_pState->Update();
-	if (state->GetType() != m_pState->GetType()
-		&& state->GetType() != CoilyState(GetOwner()).GetType())
+	if (state != nullptr)
 	{
 		m_pState->OnExit();
 		m_pState.reset(state.release());

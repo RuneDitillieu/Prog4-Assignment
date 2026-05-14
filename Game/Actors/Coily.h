@@ -22,7 +22,7 @@ namespace QBert
         std::type_index GetType() const override;
 
     private:
-        std::unique_ptr<CoilyState> m_pState{ std::make_unique<QBert::EggState>(GetOwner()) };
+        std::unique_ptr<CoilyState> m_pState{ std::make_unique<QBert::EggState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>()) };
 	};
 }
 
