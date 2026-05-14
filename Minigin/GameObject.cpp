@@ -189,11 +189,6 @@ void dae::GameObject::AddChild(GameObject* newChild)
 	}
 }
 
-void dae::GameObject::InitSubject() 
-{ 
-	m_subject = std::make_unique<Subject>();
-}
-
 dae::Subject* dae::GameObject::GetSubject() 
 { 
 	return m_subject.get();

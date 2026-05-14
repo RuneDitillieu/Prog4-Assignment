@@ -4,11 +4,11 @@
 #include "Component.h"
 #include "Observers.h"
 #include "Events.h"
+#include "QBertStates.h"
 
 namespace QBert
 {
 	class GameObject;
-	class QBertState;
 	class Subject;
 	class QBertActorComp : public dae::Component, public dae::IObserver
 	{

@@ -73,7 +73,6 @@ namespace QBert::Utils
 
 		player1->GetSubject()->AddObserver(scoreComp);
 		auto level = scene.GetFirstObjectByType<QBert::LevelBase>()->GetOwner(); 
-		level->InitSubject();
 		level->GetSubject()->AddObserver(scoreComp);
 
 		// text "Change to:"

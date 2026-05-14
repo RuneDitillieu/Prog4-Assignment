@@ -116,7 +116,6 @@ namespace dae
 		GameObject* GetChildAt(size_t index) const { return m_children[index].get(); }
 
 		// Subject functions
-		void InitSubject();
 		Subject* GetSubject(); 
 
 		bool m_isEnabled{ true };
@@ -138,7 +137,7 @@ namespace dae
 		GameObject* m_parent{ nullptr };		// non-owning
 		std::vector<std::unique_ptr<GameObject>> m_children;
 
-		std::unique_ptr<Subject> m_subject;
+		std::unique_ptr<Subject> m_subject{ std::make_unique<Subject>() };
 	};
 }
 

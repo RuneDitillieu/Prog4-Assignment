@@ -32,28 +32,14 @@ std::unique_ptr<dae::SoundSystem> dae::ServiceLocator::_ss_instance{ std::make_u
 
 static void load()
 {
-	
+	// scene & sound
 	auto& scene = dae::SceneManager::GetInstance().CreateScene();
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SdlSoundSystem>());
 	dae::ServiceLocator::GetSoundSystem().Init();
+	QBert::Utils::AddSounds();
 
-	// background
-	/*auto go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "background.png"));
-	scene.Add(std::move(go));*/
-
-	// logo
-	/*go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "logo.png"));
-	go->SetLocalPosition(358, 180);
-	scene.Add(std::move(go));*/
-
-	// title
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	/*go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Programming 4 Assignment", font));
-	go->SetLocalPosition(292, 20);
-	scene.Add(std::move(go));*/
+	// font
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
 
 	// fps
 	auto go = std::make_unique<dae::GameObject>();
@@ -64,35 +50,12 @@ static void load()
 	// level
 	auto level = QBert::Utils::CreateLevel(scene, 0, false, 2, 1);
 
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
-
-	// ui
-	auto uiLives = std::make_unique<dae::GameObject>();
-	uiLives->AddComponent(std::make_unique<dae::TextComponent>(uiLives.get(), "# lives: 3", font));
-	uiLives->SetLocalPosition(15, 250);
-
-	uiLives->m_isEnabled = false;
-
-	auto uiScore = std::make_unique<dae::GameObject>();
-	uiScore->AddComponent(std::make_unique<dae::TextComponent>(uiScore.get(), "score: 0", font));
-	uiScore->SetLocalPosition(15, 280);
-
-	uiScore->m_isEnabled = false;
-
-	auto livesDisplay = std::make_unique<dae::RemainingLivesDisplay>(uiLives.get());
-	auto scoreDisplay = std::make_unique<dae::ScoreDisplay>(uiScore.get());
-
 	// player
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent(std::make_unique<QBert::QBertActorComp>(go.get()));
 	glm::vec2 texSize{ go->GetComponent<dae::RenderComponent>()->GetSize() * go->GetScale() };
 	go->AddComponent(std::make_unique<dae::RectColliderComp>(go.get(), go->GetLocalPosition(), go->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
-	go->AddComponent(std::make_unique<dae::MovementComponent>(go.get(), 100.f));
 	go->AddComponent(std::make_unique<dae::HealthComponent>(go.get(), 3, 3));
-	go->AddComponent(std::make_unique<dae::ScoreComponent>(go.get()));
-	go->InitSubject();
-	go->GetSubject()->AddObserver(livesDisplay.get());
-	go->GetSubject()->AddObserver(scoreDisplay.get());
 
 	dae::GameObject* player = go.get();
 
@@ -101,31 +64,9 @@ static void load()
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
 
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TakeDamageCommand>(go.get(), 3), SDL_SCANCODE_E, SDL_EVENT_KEY_DOWN);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), SDL_SCANCODE_R, SDL_EVENT_KEY_DOWN);
-
 	scene.Add(std::move(go));
 
-	scene.Add(std::move(uiLives));
-	scene.Add(std::move(uiScore));
-	scene.Add(std::move(livesDisplay));
-	scene.Add(std::move(scoreDisplay));
-
-	uiLives = std::make_unique<dae::GameObject>();
-	uiLives->AddComponent(std::make_unique<dae::TextComponent>(uiLives.get(), "# lives: 3", font));
-	uiLives->SetLocalPosition(15, 310);
-
-	uiLives->m_isEnabled = false;
-
-	uiScore = std::make_unique<dae::GameObject>();
-	uiScore->AddComponent(std::make_unique<dae::TextComponent>(uiScore.get(), "score: 0", font));
-	uiScore->SetLocalPosition(15, 340);
-
-	uiScore->m_isEnabled = false;
-
-	livesDisplay = std::make_unique<dae::RemainingLivesDisplay>(uiLives.get());
-	scoreDisplay = std::make_unique<dae::ScoreDisplay>(uiScore.get());
-
+	// coily
 	go = std::make_unique<dae::GameObject>();
 	auto rc = go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "CoilySprites.png"));
 	go->SetLocalPosition(300, 300);
@@ -136,56 +77,30 @@ static void load()
 	go->AddComponent(std::make_unique<QBert::Coily>(go.get(), level->GetComponent<QBert::LevelBase>()));
 	go->AddComponent(std::make_unique<dae::RectColliderComp>(go.get(), go->GetLocalPosition(), go->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 	go->AddComponent(std::make_unique<dae::HealthComponent>(go.get(), 3, 3));
-	go->AddComponent(std::make_unique<dae::ScoreComponent>(go.get()));
-	go->InitSubject();
-	go->GetSubject()->AddObserver(livesDisplay.get());
-	go->GetSubject()->AddObserver(scoreDisplay.get());
 
-#if defined(__EMSCRIPTEN__)
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
-
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TakeDamageCommand>(go.get(), 3), SDL_SCANCODE_Q, SDL_EVENT_KEY_DOWN);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), SDL_SCANCODE_T, SDL_EVENT_KEY_DOWN);
-
-#else
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), XINPUT_GAMEPAD_DPAD_UP, 0);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), XINPUT_GAMEPAD_DPAD_DOWN, 0);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), XINPUT_GAMEPAD_DPAD_LEFT, 0);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), XINPUT_GAMEPAD_DPAD_RIGHT, 0);
-
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TakeDamageCommand>(go.get(), 3), XINPUT_GAMEPAD_A, 0);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), XINPUT_GAMEPAD_B, 0);
-#endif // !EMSCRIPTEN
+//#if defined(__EMSCRIPTEN__)
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
+//
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TakeDamageCommand>(go.get(), 3), SDL_SCANCODE_Q, SDL_EVENT_KEY_DOWN);
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), SDL_SCANCODE_T, SDL_EVENT_KEY_DOWN);
+//
+//#else
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), XINPUT_GAMEPAD_DPAD_UP, 0);
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), XINPUT_GAMEPAD_DPAD_DOWN, 0);
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), XINPUT_GAMEPAD_DPAD_LEFT, 0);
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), XINPUT_GAMEPAD_DPAD_RIGHT, 0);
+//
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TakeDamageCommand>(go.get(), 3), XINPUT_GAMEPAD_A, 0);
+//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), XINPUT_GAMEPAD_B, 0);
+//#endif // !EMSCRIPTEN
 
 
 	scene.Add(std::move(go));
-
-	/*go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use WASD to move Q*Bert, E to take damage, R to turn tiles", font));
-	go->SetLocalPosition(15, 130);
-	scene.Add(std::move(go));
-
-	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Use DPAD to move Coily, Q to take damage, T to turn tiles", font));
-	go->SetLocalPosition(15, 170);
-	scene.Add(std::move(go));
-
-	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Turning tiles plays a sound", font));
-	go->SetLocalPosition(15, 210);
-	scene.Add(std::move(go));*/
-
-	scene.Add(std::move(uiLives));
-	scene.Add(std::move(uiScore));
-	scene.Add(std::move(livesDisplay));
-	scene.Add(std::move(scoreDisplay));
 
 	QBert::Utils::CreateUi(scene, player);
-
-	QBert::Utils::AddSounds(); 
 }
 
 int main(int, char*[]) {

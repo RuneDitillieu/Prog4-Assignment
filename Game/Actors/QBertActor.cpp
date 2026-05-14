@@ -4,7 +4,6 @@
 #include "SpriteComponent.h"
 #include "QBertMoveComponent.h"
 #include "SpriteComponent.h"
-#include "QBertStates.h"
 
 QBert::QBertActorComp::QBertActorComp(dae::GameObject* pOwner)
 	: dae::Component(pOwner)
