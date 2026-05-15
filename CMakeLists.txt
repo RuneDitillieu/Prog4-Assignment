@@ -257,7 +257,7 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
   "Game/States/CoilyStates/CoilyIdleSnakeState.cpp" 
   "Game/States/CoilyStates/CoilyJumpingEggState.cpp"
   "Game/States/QBertStates/QBertJumpingState.cpp" 
-  "Game/States/QBertStates/QBertIdleState.cpp" "Game/States/CoilyStates/CoilyJumpingSnakeState.cpp")
+  "Game/States/QBertStates/QBertIdleState.cpp" "Game/States/CoilyStates/CoilyJumpingSnakeState.cpp" "Game/Components/ArrowAnimComponent.cpp")
 
 set(GAME_DIRS Game Game/Actors Game/Components Game/Levels Game/States Game/States/CoilyStates Game/States/QBertStates)
 target_include_directories(${GAME_NAME} PRIVATE ${GAME_DIRS})

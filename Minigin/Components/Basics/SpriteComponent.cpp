@@ -57,6 +57,12 @@ void dae::SpriteComp::LateUpdate()
 	m_pConnectedRenderComponent->SetSourceRect(sourceRect);
 }
 
+void dae::SpriteComp::SetCurFrame(int frameIdx)
+{
+	m_curFrame = frameIdx;
+	m_curFrame %= m_cols * m_rows;
+}
+
 void dae::SpriteComp::Set(int cols, int rows, float frameW, float frameH, const glm::vec2& startPos, bool autoUpdate)
 {
 	m_cols = cols;

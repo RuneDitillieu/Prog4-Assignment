@@ -22,7 +22,7 @@ namespace dae
 		SpriteComp& operator=(SpriteComp&& other) = delete;
 
 		void LateUpdate() override;
-		void SetCurFrame(int frameIdx) { m_curFrame = frameIdx; }
+		void SetCurFrame(int frameIdx);
 		int GetCurFrame() { return m_curFrame; }
 		void Set(int cols, int rows, float frameW, float frameH, const glm::vec2& startPos, bool autoUpdate = true);
 

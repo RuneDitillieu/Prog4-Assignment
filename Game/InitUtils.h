@@ -11,6 +11,7 @@
 #include "LevelBase.h"
 #include "Sounds.h"
 #include "QBertScoreComponent.h"
+#include "ArrowAnimComponent.h"
 
 namespace QBert::Utils
 {
@@ -83,6 +84,9 @@ namespace QBert::Utils
 		changeToText->AddComponent(std::make_unique<dae::SpriteComp>(changeToText.get(), rc, "LevelUi.png",
 			1, 1, rc->GetSize().x, rc->GetSize().y / 5.f, glm::vec2(0, rc->GetSize().y / 5.f * 4.f), false));
 
+		std::vector<dae::GameObject*> arrows{};
+		arrows.reserve(4);
+
 		// pink arrows
 		auto leftLeftArrow = std::make_unique<dae::GameObject>();
 		leftLeftArrow->SetLocalPosition(0.f, 30.f);
@@ -90,6 +94,8 @@ namespace QBert::Utils
 		rc = leftLeftArrow->AddComponent(std::make_unique<dae::RenderComponent>(leftLeftArrow.get(), "LevelUi.png"));
 		leftLeftArrow->AddComponent(std::make_unique<dae::SpriteComp>(leftLeftArrow.get(), rc, "LevelUi.png",
 			1, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(rc->GetSize().x / 2.f, 0), false));
+
+		arrows.push_back(leftLeftArrow.get());
 		leftLeftArrow.release()->SetParent(changeToText.get(), false);
 
 		auto leftArrow = std::make_unique<dae::GameObject>();
@@ -98,6 +104,8 @@ namespace QBert::Utils
 		rc = leftArrow->AddComponent(std::make_unique<dae::RenderComponent>(leftArrow.get(), "LevelUi.png"));
 		leftArrow->AddComponent(std::make_unique<dae::SpriteComp>(leftArrow.get(), rc, "LevelUi.png",
 			1, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(rc->GetSize().x / 2.f, 0), false));
+
+		arrows.push_back(leftArrow.get());
 		leftArrow.release()->SetParent(changeToText.get(), false);
 
 		auto rightArrow = std::make_unique<dae::GameObject>();
@@ -106,6 +114,8 @@ namespace QBert::Utils
 		rc = rightArrow->AddComponent(std::make_unique<dae::RenderComponent>(rightArrow.get(), "LevelUi.png"));
 		rightArrow->AddComponent(std::make_unique<dae::SpriteComp>(rightArrow.get(), rc, "LevelUi.png",
 			1, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(rc->GetSize().x / 2.f + rc->GetSize().x / 5.f, 0), false));
+
+		arrows.push_back(rightArrow.get());
 		rightArrow.release()->SetParent(changeToText.get(), false);
 
 		auto rightRightArrow = std::make_unique<dae::GameObject>();
@@ -114,7 +124,11 @@ namespace QBert::Utils
 		rc = rightRightArrow->AddComponent(std::make_unique<dae::RenderComponent>(rightRightArrow.get(), "LevelUi.png"));
 		rightRightArrow->AddComponent(std::make_unique<dae::SpriteComp>(rightRightArrow.get(), rc, "LevelUi.png",
 			1, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(rc->GetSize().x / 2.f + rc->GetSize().x / 5.f, 0), false));
+
+		arrows.push_back(rightRightArrow.get());
 		rightRightArrow.release()->SetParent(changeToText.get(), false);
+
+		changeToText->AddComponent(std::make_unique<QBert::ArrowAnimComp>(changeToText.get(), arrows));
 
 		// goal tilecolor icon
 		auto tileIcon = std::make_unique<dae::GameObject>();

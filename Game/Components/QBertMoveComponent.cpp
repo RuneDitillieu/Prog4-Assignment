@@ -10,9 +10,9 @@
 
 QBert::QBertMoveComp::QBertMoveComp(dae::GameObject* pOwner, const glm::vec3& feetPos, const glm::vec2& startTile, bool canTurn, bool canRevert)
 	: dae::Component(pOwner)
+	, m_QBertFeetPos(feetPos)
 	, m_currentTile(startTile)
 	, m_goalTile(startTile)
-	, m_QBertFeetPos(feetPos)
 	, m_canTurnTiles(canTurn)
 	, m_canRevertTiles(canRevert)
 { 
