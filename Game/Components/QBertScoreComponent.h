@@ -1,7 +1,7 @@
 #ifndef QBERTSCORECOMPONENT_H
 #define QBERTSCORECOMPONENT_H
 
-#include "Observers.h"
+#include "IObserver.h"
 #include "Component.h"
 #include "SpriteComponent.h"
 #include "Events.h"

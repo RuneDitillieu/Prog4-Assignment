@@ -54,7 +54,7 @@ add_library(${ENGINE_NAME} STATIC
   "Minigin/Components/Colliders/RectColliderComponent.cpp"
   "Minigin/Components/Basics/SpriteComponent.cpp"
 
-  "Minigin/EventHandlers/Observers.cpp"
+  
   "Minigin/EventHandlers/Subject.cpp"
 
   "Minigin/Sound/SdlSoundSystem.cpp" 
@@ -254,10 +254,10 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
   "Game/Levels/LevelManager.cpp" 
 
   "Game/States/CoilyStates/CoilyIdleEggState.cpp"
-  "Game/States/CoilyStates/CoilySnakeState.cpp" 
+  "Game/States/CoilyStates/CoilyIdleSnakeState.cpp" 
   "Game/States/CoilyStates/CoilyJumpingEggState.cpp"
   "Game/States/QBertStates/QBertJumpingState.cpp" 
-  "Game/States/QBertStates/QBertIdleState.cpp")
+  "Game/States/QBertStates/QBertIdleState.cpp" "Game/States/CoilyStates/CoilyJumpingSnakeState.cpp")
 
 set(GAME_DIRS Game Game/Actors Game/Components Game/Levels Game/States Game/States/CoilyStates Game/States/QBertStates)
 target_include_directories(${GAME_NAME} PRIVATE ${GAME_DIRS})

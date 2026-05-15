@@ -2,7 +2,7 @@
 #define QBERTACTOR_H
 
 #include "Component.h"
-#include "Observers.h"
+#include "IObserver.h"
 #include "Events.h"
 #include "QBertStates.h"
 

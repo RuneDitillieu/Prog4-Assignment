@@ -2,7 +2,7 @@
 #define LEVELMANAGER_H
 
 #include "Component.h"
-#include "Observers.h"
+#include "IObserver.h"
 
 namespace QBert
 {

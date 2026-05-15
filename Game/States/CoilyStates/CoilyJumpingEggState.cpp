@@ -3,9 +3,7 @@
 #include "LevelBase.h"
 
 QBert::JumpingEggState::JumpingEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level)
-	: CoilyState(coily, spriteComp)
-	, m_pMoveComp(moveComp)
-	, m_pConnLevel(level)
+	: CoilyState(coily, spriteComp, moveComp, level)
 { }
 
 void QBert::JumpingEggState::OnEnter()

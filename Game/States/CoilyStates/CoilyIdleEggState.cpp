@@ -2,16 +2,21 @@
 #include "DeltaTime.h"
 #include "QBertMoveComponent.h"
 #include "LevelBase.h"
+#include "SceneManager.h"
+#include "QBertActor.h"
 
 QBert::IdleEggState::IdleEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level)
-	: CoilyState(coily, spriteComp)
-	, m_pMoveComp(moveComp)
-	, m_pConnLevel(level)
+	: CoilyState(coily, spriteComp, moveComp, level)
 {}
 
 void QBert::IdleEggState::OnEnter()
 {
 	m_pConnSprite->SetCurFrame(0);
+}
+
+void QBert::IdleEggState::OnExit()
+{
+	m_pConnSprite->SetCurFrame(3);
 }
 
 std::unique_ptr<QBert::CoilyState> QBert::IdleEggState::Update()
@@ -27,7 +32,9 @@ std::unique_ptr<QBert::CoilyState> QBert::IdleEggState::Update()
 	}
 	else if(m_secPassed >= m_idleSec * 3.f)
 	{
-		return std::make_unique<QBert::SnakeState>(m_coily, m_pConnSprite);
+		auto qbertActor = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<QBert::QBertActorComp>();
+		auto qbertMove = qbertActor->GetOwner()->GetComponent<QBert::QBertMoveComp>();
+		return std::make_unique<QBert::IdleSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, qbertMove);
 	}
 
 	return nullptr;

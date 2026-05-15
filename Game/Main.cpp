@@ -13,7 +13,7 @@
 
 #include "ComponentsInclude.h"
 #include "Subject.h"
-#include "Observers.h"
+#include "IObserver.h"
 
 #include "Commands.h"
 #include "ServiceLocator.h"

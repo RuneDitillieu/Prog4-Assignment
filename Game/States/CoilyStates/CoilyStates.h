@@ -6,11 +6,15 @@
 
 namespace QBert
 {
+	class QBertMoveComp;
+	class LevelBase;
+
+	// base state
 	class CoilyState
 	{
 	public:
-		CoilyState(dae::GameObject* coily, dae::SpriteComp* spriteComp) 
-			: m_coily(coily), m_pConnSprite(spriteComp) {}
+		CoilyState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level)
+			: m_coily(coily), m_pConnSprite(spriteComp), m_pMoveComp(moveComp), m_pConnLevel(level) {}
 		virtual ~CoilyState() = default;
 		virtual void OnEnter() { };
 		virtual void OnExit() { };
@@ -19,10 +23,13 @@ namespace QBert
 	protected:
 		dae::GameObject* m_coily;
 		dae::SpriteComp* m_pConnSprite;
+		QBertMoveComp* m_pMoveComp;
+		LevelBase* m_pConnLevel;
 	};
 
-	class QBertMoveComp;
-	class LevelBase;
+
+	// egg states
+
 	class IdleEggState : public CoilyState
 	{
 	public:
@@ -30,14 +37,12 @@ namespace QBert
 			QBertMoveComp* moveComp, LevelBase* level);
 
 		void OnEnter() override;
+		void OnExit() override;
 		std::unique_ptr<CoilyState> Update() override;
 
 	private:
 		float m_secPassed{ 0.f };
 		const float m_idleSec{ 0.5f };
-
-		QBertMoveComp* m_pMoveComp;
-		LevelBase* m_pConnLevel;
 	};
 
 	class JumpingEggState : public CoilyState
@@ -50,20 +55,36 @@ namespace QBert
 		std::unique_ptr<CoilyState> Update() override;
 
 	private:
-		QBertMoveComp* m_pMoveComp;
-		LevelBase* m_pConnLevel;
 	};
 
 
-	class SnakeState : public CoilyState
+	// snake states
+
+	class IdleSnakeState : public CoilyState
 	{
 	public:
-		SnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp);
+		IdleSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
 
 		void OnEnter() override;
 		std::unique_ptr<CoilyState> Update() override;
 
 	private:
+		float m_secPassed{ 0.f };
+		const float m_idleSec{ 0.5f };
+
+		QBertMoveComp* m_pQBertMoveComp;
+	};
+
+	class JumpingSnakeState : public CoilyState
+	{
+	public:
+		JumpingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+
+		void OnEnter() override;
+		std::unique_ptr<CoilyState> Update() override;
+
+	private:
+		QBertMoveComp* m_pQBertMoveComp;
 	};
 }
 

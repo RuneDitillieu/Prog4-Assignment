@@ -55,7 +55,7 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject*)
 
 int QBert::ScoreComp::GetWinScore() const
 {
-	return static_cast<int>(m_winScoreBase + (m_levelScoreMultiplier /* * level number */) /* + m_discScore * amount of discs unused */ );
+	return static_cast<int>(m_winScoreBase + (m_levelScoreMultiplier /* * level number */) + m_discScore * 0 /*amount of discs unused */ );
 }
 
 std::type_index QBert::ScoreComp::GetType() const

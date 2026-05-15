@@ -1,5 +1,5 @@
 #include "Subject.h"
-#include "Observers.h"
+#include "IObserver.h"
 
 void dae::Subject::AddObserver(IObserver* observer)
 {

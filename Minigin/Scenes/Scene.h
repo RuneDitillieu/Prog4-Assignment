@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 #include "GameObject.h"
-#include "Observers.h"
+#include "IObserver.h"
 #include <functional>
 
 namespace dae
