@@ -42,6 +42,13 @@ void Scene::RemoveMarkedForRemoval()
 {
 	m_objects.erase(
 		std::remove_if(
+			m_objects.begin(), 
+			m_objects.end(), 
+			[](const auto& ptr) { return ptr == nullptr; }), 
+		m_objects.end());
+
+	m_objects.erase(
+		std::remove_if(
 			m_objects.begin(),
 			m_objects.end(),
 			[](const auto& ptr) { return ptr.get()->GetIsMarkedForRemoval(); }
@@ -59,6 +66,8 @@ void Scene::Update()
 {
 	for(auto& object : m_objects)
 	{
+		if (object == nullptr)
+			continue;
 		object->Update();
 	}
 
@@ -69,6 +78,8 @@ void Scene::LateUpdate()
 {
 	for (auto& object : m_objects)
 	{
+		if (object == nullptr)
+			continue;
 		object->LateUpdate();
 	}
 
@@ -79,6 +90,8 @@ void Scene::Render() const
 {
 	for (const auto& object : m_objects)
 	{
+		if (object == nullptr)
+			continue;
 		object->Render();
 	}
 }
@@ -95,7 +108,7 @@ void Scene::Render() const
 		*it = nullptr;
 
 		// erase empty slot
-		m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), nullptr));
+		//m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), nullptr));
 
 		// give ownership
 		return object;

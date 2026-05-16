@@ -74,7 +74,7 @@ void dae::GameObject::UpdateWorldPosition()
 	if (m_posIsDirty)
 	{
 		if (m_parent == nullptr)
-			m_worldTransform = m_localTransform;
+			m_worldTransform.SetPosition(m_localTransform.GetPosition());
 		else
 			m_worldTransform.SetPosition(m_parent->GetWorldPosition() + m_localTransform.GetPosition());
 	}
@@ -100,19 +100,25 @@ void dae::GameObject::SetParent(GameObject* newParent, bool keepWorldPosition)
 	{
 		GameObject* thisOwnership{ nullptr };
 
-		if (m_parent == nullptr)
+		if (newParent == nullptr)
 		{
 			SetLocalPosition(GetWorldPosition());
-			thisOwnership = SceneManager::GetInstance().GetActiveScene()->GetGameObjectOwnership(this);
 		}
 		else 
 		{
 			if (keepWorldPosition)
 			{
-				SetLocalPosition(GetWorldPosition() - m_parent->GetWorldPosition());
+				SetLocalPosition(GetWorldPosition() - newParent->GetWorldPosition());
 			}
 			SetPositionDirty();
+		}
 
+		if (m_parent == nullptr)
+		{
+			thisOwnership = SceneManager::GetInstance().GetActiveScene()->GetGameObjectOwnership(this);
+		}
+		else
+		{
 			thisOwnership = m_parent->RemoveChild(this);
 		}
 
@@ -138,6 +144,8 @@ void dae::GameObject::SetParent(GameObject* newParent, bool keepWorldPosition)
 
 bool dae::GameObject::IsParentOf(GameObject* possibleParent) const
 {
+	if (possibleParent == nullptr) return false;
+
 	bool rootParentReached{ false };
 	GameObject* parentToCheck{ possibleParent->GetParent() };
 
@@ -192,4 +200,25 @@ void dae::GameObject::AddChild(GameObject* newChild)
 dae::Subject* dae::GameObject::GetSubject() 
 { 
 	return m_subject.get();
+}
+
+void dae::GameObject::IsEnabled(bool isEnabled, bool applyToComponents, bool applyToChildren)
+{
+	m_isEnabled = isEnabled;
+
+	if (applyToComponents)
+	{
+		for (auto& comp : m_components)
+		{
+			comp->m_isEnabled = isEnabled;
+		}
+	}
+
+	if (applyToChildren)
+	{
+		for (auto& child : m_children)
+		{
+			child->IsEnabled(isEnabled, applyToComponents, applyToChildren);
+		}
+	}
 }

@@ -22,18 +22,20 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		// functions
+		// basics
 		void Update();
 		void LateUpdate();
 		void Render();
 
+		// transform
 		void SetLocalPosition(float x, float y);
 		void SetLocalPosition(const glm::vec3& newPosition);
-		void SetScale(float scale) { m_localTransform.SetScale(scale); }
+		void SetScale(float scale) { m_worldTransform.SetScale(scale); }
 		const glm::vec3& GetLocalPosition() const { return m_localTransform.GetPosition(); }
 		const glm::vec3& GetWorldPosition();
-		float GetScale() const { return m_localTransform.GetScale(); }
+		float GetScale() const { return m_worldTransform.GetScale(); }
 
+		// removal
 		void MarkForRemoval() { m_isMarkedForRemoval = true;  }
 		bool GetIsMarkedForRemoval() { return m_isMarkedForRemoval; }
 
@@ -118,9 +120,13 @@ namespace dae
 		// Subject functions
 		Subject* GetSubject(); 
 
-		bool m_isEnabled{ true };
+		// isEnabled
+		bool IsEnabled() const { return m_isEnabled; }
+		void IsEnabled(bool isEnabled, bool applyToComponents = true, bool applyToChildren = true);
 
 	private:
+		bool m_isEnabled{ true };
+
 		bool IsParentOf(GameObject* possibleParent) const;
 		void AddChild(GameObject* newChild);
 		[[nodiscard]] GameObject* RemoveChild(GameObject* newParent);
@@ -137,7 +143,7 @@ namespace dae
 		GameObject* m_parent{ nullptr };		// non-owning
 		std::vector<std::unique_ptr<GameObject>> m_children;
 
-		std::unique_ptr<Subject> m_subject{ std::make_unique<Subject>() };
+		std::unique_ptr<Subject> m_subject{ std::make_unique<Subject>(this) };
 	};
 }
 
