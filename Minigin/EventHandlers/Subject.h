@@ -12,16 +12,18 @@ namespace dae
 	class Subject
 	{
 	public:
-		Subject() = default;
+		Subject(dae::GameObject* pOwner);
 
 		void AddObserver(IObserver* observer);
-
 		void RemoveObserver(IObserver* observer);
 
 		void NotifyObservers(Event event);
 
+		dae::GameObject* GetOwner() const;
+
 	private:
 		std::vector<IObserver*> m_observers;
+		dae::GameObject* m_pOwner;
 	};
 }
 

@@ -1,6 +1,10 @@
 #include "Subject.h"
 #include "IObserver.h"
 
+dae::Subject::Subject(dae::GameObject* pOwner)
+	: m_pOwner(pOwner)
+{ }
+
 void dae::Subject::AddObserver(IObserver* observer)
 {
 	m_observers.push_back(observer);
@@ -15,4 +19,9 @@ void dae::Subject::NotifyObservers(Event event)
 {
 	for (auto observer : m_observers)
 		observer->Notify(event, this);
+}
+
+dae::GameObject* dae::Subject::GetOwner() const
+{
+	return m_pOwner;
 }

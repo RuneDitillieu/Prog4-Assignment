@@ -32,11 +32,14 @@ namespace dae
 		return sdbm_hash<N - 1>::calculate(text);
 	};
 
+	class GameObject;
 
 	struct EventArg {
 		int nr;
 		glm::vec3 dir;
+		GameObject* object;
 	};
+
 	using EventId = unsigned int;
 
 	struct Event
