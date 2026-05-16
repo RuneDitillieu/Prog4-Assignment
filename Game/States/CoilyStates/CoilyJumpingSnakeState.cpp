@@ -50,3 +50,15 @@ std::unique_ptr<QBert::CoilyState> QBert::JumpingSnakeState::Update()
 
 	return nullptr;
 }
+
+std::unique_ptr<QBert::CoilyState> QBert::JumpingSnakeState::OnNotify(dae::Event event, dae::Subject* subject)
+{
+	if (event.id == dae::make_sdbm_hash("ACTOR_FELL")
+		&& subject == m_coily->GetSubject())
+	{
+		m_pMoveComp->m_isEnabled = false;
+		return std::make_unique<QBert::FallingSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel);
+	}
+
+	return nullptr;
+}

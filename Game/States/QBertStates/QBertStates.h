@@ -35,7 +35,7 @@ namespace QBert
 
 		void OnEnter() override;
 		std::unique_ptr<QBertState> Update() override;
-		std::unique_ptr<QBertState> OnNotify(dae::Event event, dae::Subject* subject) override;
+		std::unique_ptr<QBertState> OnNotify(dae::Event event, dae::Subject*) override;
 	};
 
 	class JumpingQBertState : public QBertState
@@ -45,7 +45,7 @@ namespace QBert
 
 		void OnEnter() override;
 		std::unique_ptr<QBertState> Update() override;
-		std::unique_ptr<QBertState> OnNotify(dae::Event event, dae::Subject*) override;
+		std::unique_ptr<QBertState> OnNotify(dae::Event event, dae::Subject* subject) override;
 
 	private:
 		glm::vec3 m_moveDir;
@@ -73,6 +73,10 @@ namespace QBert
 	{
 	public:
 		FallingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
+
+		void OnEnter() override;
+		void OnExit() override;
+		std::unique_ptr<QBertState> Update() override;
 	};
 }
 

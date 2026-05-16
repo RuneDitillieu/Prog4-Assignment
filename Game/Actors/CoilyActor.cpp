@@ -21,6 +21,17 @@ void QBert::CoilyActorComp::Update()
 	}
 }
 
+void QBert::CoilyActorComp::Notify(dae::Event event, dae::Subject* subject)
+{
+	auto state = m_pState->OnNotify(event, subject);
+	if (state != nullptr)
+	{
+		m_pState->OnExit();
+		m_pState.reset(state.release());
+		m_pState->OnEnter();
+	}
+}
+
 std::type_index QBert::CoilyActorComp::GetType() const
 {
 	return typeid(CoilyActorComp);

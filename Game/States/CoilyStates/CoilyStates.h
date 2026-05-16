@@ -3,6 +3,7 @@
 
 #include "GameObject.h"
 #include "SpriteComponent.h"
+#include "Events.h"
 
 namespace QBert
 {
@@ -19,6 +20,7 @@ namespace QBert
 		virtual void OnEnter() { };
 		virtual void OnExit() { };
 		virtual std::unique_ptr<CoilyState> Update() { return nullptr; };
+		virtual std::unique_ptr<CoilyState> OnNotify(dae::Event, dae::Subject*) { return nullptr; };
 
 	protected:
 		dae::GameObject* m_coily;
@@ -82,9 +84,22 @@ namespace QBert
 
 		void OnEnter() override;
 		std::unique_ptr<CoilyState> Update() override;
+		std::unique_ptr<CoilyState> OnNotify(dae::Event event, dae::Subject* subject) override;
 
 	private:
 		QBertMoveComp* m_pQBertMoveComp;
+	};
+
+	class FallingSnakeState : public CoilyState
+	{
+	public:
+		FallingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
+
+		std::unique_ptr<CoilyState> Update() override;
+
+	private:
+		float m_secPassed{ 0.f };
+		const float m_maxSec{ 5.f };
 	};
 }
 

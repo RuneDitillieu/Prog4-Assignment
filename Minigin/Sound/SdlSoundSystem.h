@@ -24,10 +24,10 @@ namespace dae
 		MIX_Audio* m_pAudio = nullptr;
 		MIX_Track* m_pTrack = nullptr;
 
-		float m_Volume = 1.f;
-
 		std::string m_Path;
 		bool m_IsLoaded = false;
+
+		float m_Volume = 1.f;
 	};
 
 	class SdlSoundSystem final : public SoundSystem

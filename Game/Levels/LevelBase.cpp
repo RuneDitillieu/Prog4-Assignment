@@ -109,7 +109,9 @@ glm::vec3 QBert::LevelBase::GetMiddlePosOfTile(int col, int row) const
 	}
 	else
 	{
-		return glm::vec3(0, 0, 0);
+		return GetOwner()->GetWorldPosition()
+			+ glm::vec3(col * 0.5f * m_tileSize + row * -0.5f * m_tileSize, col * 0.75f * m_tileSize + row * 0.75f * m_tileSize, 0)
+			+ m_middlePosOffset;
 	}
 }
 
@@ -119,7 +121,8 @@ QBert::TileType QBert::LevelBase::GetTileType(int col, int row) const
 	{
 		return TileType::Tile;
 	}
-	else if (GetDisc(col, row) != nullptr)
+	else if (GetDisc(col, row) != nullptr
+		&& GetDisc(col, row)->IsEnabled())
 	{
 		return TileType::Disc;
 	}

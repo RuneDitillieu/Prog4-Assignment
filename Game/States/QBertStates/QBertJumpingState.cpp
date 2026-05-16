@@ -39,13 +39,18 @@ std::unique_ptr<QBert::QBertState> QBert::JumpingQBertState::Update()
 	return nullptr;
 }
 
-std::unique_ptr<QBert::QBertState> QBert::JumpingQBertState::OnNotify(dae::Event event, dae::Subject*)
+std::unique_ptr<QBert::QBertState> QBert::JumpingQBertState::OnNotify(dae::Event event, dae::Subject* subject)
 {
 	if (event.id == dae::make_sdbm_hash("DISC_USED"))
 	{
 		m_qbert->SetParent(event.args->object, true);
 		m_pMoveComp->m_isEnabled = false;
 		return std::make_unique<QBert::TransportedQBertState>(m_qbert, m_pConnSpriteComp, m_pMoveComp, m_pConnLevel);
+	}
+	else if (event.id == dae::make_sdbm_hash("ACTOR_FELL")
+		&& subject == m_qbert->GetSubject())
+	{
+		return std::make_unique<QBert::FallingQBertState>(m_qbert, m_pConnSpriteComp, m_pMoveComp, m_pConnLevel);
 	}
 
 	return nullptr;

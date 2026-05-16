@@ -17,6 +17,7 @@
 #include "QBertCommands.h"
 #include "DiscActor.h"
 #include "CoilyActor.h"
+#include "LivesDisplayComponent.h"
 
 namespace QBert::Utils
 {
@@ -177,6 +178,8 @@ namespace QBert::Utils
 		CreateLifeComp(150.f, false, pLives).release()->SetParent(lives.get(), false);
 		CreateLifeComp(100.f, false, pLives).release()->SetParent(lives.get(), false);
 
+		player1->GetSubject()->AddObserver(lives->AddComponent(std::make_unique<QBert::LivesDisplay>(lives.get(), pLives)));
+
 		scene.Add(std::move(lives));
 
 		// TOP RIGHT
@@ -276,9 +279,11 @@ namespace QBert::Utils
 		glm::vec2 texSize = rc->GetSize() * coily->GetScale();
 		coily->AddComponent(std::make_unique<dae::SpriteComp>(coily.get(), "CoilySprites.png", 10, 1, false));
 		coily->AddComponent(std::make_unique<QBert::QBertMoveComp>(coily.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), glm::vec2(0, 1), false, false));
-		coily->AddComponent(std::make_unique<QBert::CoilyActorComp>(coily.get(), level));
+		auto actor = coily->AddComponent(std::make_unique<QBert::CoilyActorComp>(coily.get(), level));
 		coily->AddComponent(std::make_unique<dae::RectColliderComp>(coily.get(), coily->GetLocalPosition(), coily->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 		coily->AddComponent(std::make_unique<dae::HealthComponent>(coily.get(), 1, 1, 1));
+
+		coily->GetSubject()->AddObserver(actor);
 
 		return coily;
 	}

@@ -54,12 +54,20 @@ void QBert::QBertMoveComp::Update()
 				m_pConnLevelComp->RevertTile(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y));
 			}
 		}
-		else if (m_pConnLevelComp->GetTileType(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y)) == QBert::TileType::Disc
-			&& m_canTurnTiles)
+		else if (m_pConnLevelComp->GetTileType(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y)) == QBert::TileType::Disc)
 		{
-			dae::Event e(dae::make_sdbm_hash("DISC_USED"));
-			e.args->object = m_pConnLevelComp->GetDisc(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y));
-			GetOwner()->GetSubject()->NotifyObservers(e);
+			if(m_canTurnTiles)
+			{
+				dae::Event e(dae::make_sdbm_hash("DISC_USED"));
+				e.args->object = m_pConnLevelComp->GetDisc(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y));
+				GetOwner()->GetSubject()->NotifyObservers(e);
+			}
+			else
+			{
+				dae::Event e(dae::make_sdbm_hash("ACTOR_FELL"));
+				e.args->object = m_pConnLevelComp->GetDisc(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y));
+				GetOwner()->GetSubject()->NotifyObservers(e);
+			}
 		}
 		else if (m_pConnLevelComp->GetTileType(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y)) == QBert::TileType::Void)
 		{
@@ -114,6 +122,7 @@ void QBert::QBertMoveComp::Reset(const glm::vec2& tile)
 		m_goalPos = goalTile->GetMiddlePos();
 		m_goalTile = tile;
 		m_currentTile = glm::vec2(-1, -1);
+		GetOwner()->SetLocalPosition(m_goalPos - m_QBertFeetPos);
 	}
 }
 

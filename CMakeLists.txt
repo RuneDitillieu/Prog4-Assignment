@@ -264,7 +264,7 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
   "Game/States/QBertStates/QBertIdleState.cpp" 
 
   "Game/States/DiscStates/DiscIdleState.cpp" 
-  "Game/States/DiscStates/DiscMovingState.cpp" "Game/States/DiscStates/DiscDropOffState.cpp" "Game/States/QBertStates/QBertDroppingState.cpp" "Game/States/QBertStates/QBertTransportedState.cpp" "Game/States/QBertStates/QBertFallingState.cpp")
+  "Game/States/DiscStates/DiscMovingState.cpp" "Game/States/DiscStates/DiscDropOffState.cpp" "Game/States/QBertStates/QBertDroppingState.cpp" "Game/States/QBertStates/QBertTransportedState.cpp" "Game/States/QBertStates/QBertFallingState.cpp" "Game/States/CoilyStates/CoilyFallingState.cpp")
 
 set(GAME_DIRS Game Game/Actors Game/Components Game/Levels 
     Game/States Game/States/CoilyStates Game/States/QBertStates Game/States/DiscStates)
