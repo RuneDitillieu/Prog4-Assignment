@@ -25,6 +25,8 @@ namespace QBert
 		void Move(const glm::vec3& direction);
 		glm::vec2 GetCurrentTile() const { return m_currentTile; }
 		bool IsMoving() const { if (m_currentTile == m_goalTile) return false; else return true; }
+		glm::vec3 GetFeetPos() { return m_QBertFeetPos; }
+		void Reset(const glm::vec2& tile);
 
 	private:
 		glm::vec3 m_QBertFeetPos;

@@ -45,10 +45,10 @@ add_library(${ENGINE_NAME} STATIC
   "Minigin/Components/FpsComponent.cpp"
   "Minigin/Components/Basics/RenderComponent.cpp"
   "Minigin/Components/RotatorComponent.cpp"
-  "Minigin/Components/ImGuiComponent.cpp"
+  
   "Minigin/Components/MovementComponent.cpp"
   "Minigin/Components/HealthComponent.cpp"
-  "Minigin/Components/ScoreComponent.cpp"
+  
 
   "Minigin/Components/Colliders/CircleColliderComponent.cpp" 
   "Minigin/Components/Colliders/RectColliderComponent.cpp"
@@ -242,12 +242,14 @@ target_link_libraries(${ENGINE_NAME} PUBLIC
 add_executable(${GAME_NAME} ${TARGET_PARAM}
   "Game/Main.cpp"
 
-  "Game/Actors/CoilyActor.h" 
   "Game/Actors/CoilyActor.cpp"
   "Game/Actors/QBertActor.cpp" 
+  "Game/Actors/DiscActor.cpp"
 
   "Game/Components/QBertScoreComponent.cpp" 
   "Game/Components/QBertMoveComponent.cpp" 
+  "Game/Components/ArrowAnimComponent.cpp" 
+  "Game/Components/LivesDisplayComponent.cpp" 
 
   "Game/Levels/TileComponent.cpp" 
   "Game/Levels/LevelBase.cpp" 
@@ -256,10 +258,17 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
   "Game/States/CoilyStates/CoilyIdleEggState.cpp"
   "Game/States/CoilyStates/CoilyIdleSnakeState.cpp" 
   "Game/States/CoilyStates/CoilyJumpingEggState.cpp"
-  "Game/States/QBertStates/QBertJumpingState.cpp" 
-  "Game/States/QBertStates/QBertIdleState.cpp" "Game/States/CoilyStates/CoilyJumpingSnakeState.cpp" "Game/Components/ArrowAnimComponent.cpp")
+  "Game/States/CoilyStates/CoilyJumpingSnakeState.cpp" 
 
-set(GAME_DIRS Game Game/Actors Game/Components Game/Levels Game/States Game/States/CoilyStates Game/States/QBertStates)
+  "Game/States/QBertStates/QBertJumpingState.cpp" 
+  "Game/States/QBertStates/QBertIdleState.cpp" 
+
+  "Game/States/DiscStates/DiscIdleState.cpp" 
+  "Game/States/DiscStates/DiscMovingState.cpp" "Game/States/DiscStates/DiscDropOffState.cpp" "Game/States/QBertStates/QBertDroppingState.cpp" "Game/States/QBertStates/QBertTransportedState.cpp" "Game/States/QBertStates/QBertFallingState.cpp")
+
+set(GAME_DIRS Game Game/Actors Game/Components Game/Levels 
+    Game/States Game/States/CoilyStates Game/States/QBertStates Game/States/DiscStates)
+
 target_include_directories(${GAME_NAME} PRIVATE ${GAME_DIRS})
 target_compile_features(${GAME_NAME} PUBLIC cxx_std_20)
 target_link_libraries(${GAME_NAME} PRIVATE ${ENGINE_NAME})

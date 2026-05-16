@@ -34,6 +34,6 @@ namespace QBert
 
 	private:
 		glm::vec3 m_moveDirection;
-		std::unique_ptr<dae::Subject> m_subject{ std::make_unique<dae::Subject>() };
+		std::unique_ptr<dae::Subject> m_subject{ std::make_unique<dae::Subject>(nullptr) };
 	};
 }

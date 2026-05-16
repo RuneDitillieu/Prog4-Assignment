@@ -9,21 +9,15 @@
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "Scene.h"
-#include "InputManager.h"
 
 #include "ComponentsInclude.h"
 #include "Subject.h"
-#include "IObserver.h"
 
-#include "Commands.h"
 #include "ServiceLocator.h"
 #include "SdlSoundSystem.h"
 
-#include "CoilyActor.h"
 #include "InitUtils.h"
-#include "QBertActor.h"
-#include "QBertCommands.h"
-#include "QBertMoveComponent.h"
+#include <unordered_map>
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -48,35 +42,27 @@ static void load()
 	scene.Add(std::move(go));
 
 	// level
-	auto level = QBert::Utils::CreateLevel(scene, 0, false, 2, 1);
+	auto levelObj = QBert::Utils::CreateLevel(scene, 0, false, 2, 1);
+	auto levelComp = levelObj->GetComponent<QBert::LevelBase>();
+
 
 	// player
-	go = std::make_unique<dae::GameObject>();
-	go->AddComponent(std::make_unique<QBert::QBertActorComp>(go.get()));
-	glm::vec2 texSize{ go->GetComponent<dae::RenderComponent>()->GetSize() * go->GetScale() };
-	go->AddComponent(std::make_unique<dae::RectColliderComp>(go.get(), go->GetLocalPosition(), go->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
-	go->AddComponent(std::make_unique<dae::HealthComponent>(go.get(), 3, 3));
-
+	go = QBert::Utils::CreatePlayer(levelComp);
 	dae::GameObject* player = go.get();
-
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(go.get(), glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
-
 	scene.Add(std::move(go));
 
+	// disc
+	std::vector<QBert::DiscActorComp*> discs{};
+	glm::vec2 tile{ -1, 3 };
+	go = QBert::Utils::CreateDisc(tile, player, levelComp);
+	discs.emplace_back(go->GetComponent<QBert::DiscActorComp>());
+	go->GetSubject()->AddObserver(player->GetComponent<QBert::QBertActorComp>());
+	scene.Add(std::move(go));
+
+	levelComp->SetDiscs(std::move(discs));
+
 	// coily
-	go = std::make_unique<dae::GameObject>();
-	auto rc = go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), "CoilySprites.png"));
-	go->SetLocalPosition(300, 300);
-	go->SetScale(3.f);
-	texSize = rc->GetSize() * go->GetScale();
-	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), "CoilySprites.png", 10, 1, false));
-	go->AddComponent(std::make_unique<QBert::QBertMoveComp>(go.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), glm::vec2(0, 1), false, false));
-	go->AddComponent(std::make_unique<QBert::Coily>(go.get(), level->GetComponent<QBert::LevelBase>()));
-	go->AddComponent(std::make_unique<dae::RectColliderComp>(go.get(), go->GetLocalPosition(), go->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
-	go->AddComponent(std::make_unique<dae::HealthComponent>(go.get(), 3, 3));
+	go = QBert::Utils::CreateCoily(levelComp);
 
 //#if defined(__EMSCRIPTEN__)
 //	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
@@ -97,8 +83,8 @@ static void load()
 //	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), XINPUT_GAMEPAD_B, 0);
 //#endif // !EMSCRIPTEN
 
-
 	scene.Add(std::move(go));
+
 
 	QBert::Utils::CreateUi(scene, player);
 }

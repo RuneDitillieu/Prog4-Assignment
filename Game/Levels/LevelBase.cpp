@@ -4,6 +4,7 @@
 #include "RenderComponent.h"
 #include "ServiceLocator.h"
 #include "Sounds.h"
+#include "DiscActor.h"
 
 QBert::LevelBase::LevelBase(dae::GameObject* pOwner, int tileType, bool revertable, int start, int win, int middle)
 	: Component(pOwner)
@@ -29,16 +30,23 @@ QBert::LevelBase::LevelBase(dae::GameObject* pOwner, int tileType, bool revertab
 			auto go = std::make_unique<dae::GameObject>();
 			m_tiles[colIdx].push_back(go->AddComponent(std::make_unique<QBert::TileComp>(go.get(), tileType, revertable, start, win, middle)));
 			float scale{ 3.f };
-			float tileSize{ (go->GetComponent<dae::RenderComponent>()->GetSize().y / 6) * scale };
-			go->SetLocalPosition(colIdx * 0.5f * tileSize + rowIdx * -0.5f * tileSize, colIdx * 0.75f * tileSize + rowIdx * 0.75f * tileSize);
+			m_tileSize = (go->GetComponent<dae::RenderComponent>()->GetSize().y / 6) * scale;
+			go->SetLocalPosition(colIdx * 0.5f * m_tileSize + rowIdx * -0.5f * m_tileSize, colIdx * 0.75f * m_tileSize + rowIdx * 0.75f * m_tileSize);
 			go.release()->SetParent(pOwner, false);
 		}
 	}
+
+	m_middlePosOffset = glm::vec3(m_tileSize / 2.f, m_tileSize / 4.f, 0);
 }
 
-QBert::TileComp* QBert::LevelBase::GetTile(size_t col, size_t row) const
+QBert::TileComp* QBert::LevelBase::GetTile(int col, int row) const
 {
-	if (m_tiles.size() > col && m_tiles[col].size() > row)
+	if (col < 0 || row < 0) 
+	{
+		return nullptr;
+	}
+	else if (m_tiles.size() > static_cast<size_t>(col) 
+		&& m_tiles[col].size() > static_cast<size_t>(row))
 	{
 		return m_tiles[col][row];
 	}
@@ -48,9 +56,13 @@ QBert::TileComp* QBert::LevelBase::GetTile(size_t col, size_t row) const
 	}
 }
 
-bool QBert::LevelBase::TurnTile(size_t col, size_t row) const
+bool QBert::LevelBase::TurnTile(int col, int row) const
 {
-	if (GetTile(col, row)->Turn())
+	if (!GetTile(col, row))
+	{
+		return false;
+	}
+	else if (GetTile(col, row)->Turn())
 	{
 		if (AreAllTilesCorrect())
 		{
@@ -67,9 +79,13 @@ bool QBert::LevelBase::TurnTile(size_t col, size_t row) const
 	}
 }
 
-bool QBert::LevelBase::RevertTile(size_t col, size_t row) const
+bool QBert::LevelBase::RevertTile(int col, int row) const
 {
-	if (GetTile(col, row)->Revert())
+	if (!GetTile(col, row))
+	{
+		return false;
+	}
+	else if (GetTile(col, row)->Revert())
 	{
 		return true;
 	}
@@ -77,6 +93,70 @@ bool QBert::LevelBase::RevertTile(size_t col, size_t row) const
 	{
 		return false;
 	}
+}
+
+glm::vec3 QBert::LevelBase::GetMiddlePosOfTile(int col, int row) const
+{
+	if (GetTile(col, row))
+	{
+		return GetTile(col, row)->GetMiddlePos();
+	}
+	else if(col == -1 || row == -1)
+	{
+		return GetOwner()->GetWorldPosition()
+			+ glm::vec3(col * 0.5f * m_tileSize + (row + 0.5f) * -0.5f * m_tileSize, col * 0.75f * m_tileSize + (row + 0.5f) * 0.75f * m_tileSize, 0) 
+			+ m_middlePosOffset;
+	}
+	else
+	{
+		return glm::vec3(0, 0, 0);
+	}
+}
+
+QBert::TileType QBert::LevelBase::GetTileType(int col, int row) const
+{
+	if (GetTile(col, row))
+	{
+		return TileType::Tile;
+	}
+	else if (GetDisc(col, row) != nullptr)
+	{
+		return TileType::Disc;
+	}
+	else
+	{
+		return TileType::Void;
+	}
+}
+
+dae::GameObject* QBert::LevelBase::GetDisc(int col, int row) const
+{
+	auto it = std::find_if(m_discs.begin(), m_discs.end(), [col, row](QBert::DiscActorComp* disc) { return disc->GetTile() == glm::vec2(col, row); });
+	if (it != m_discs.end())
+	{
+		auto disc = *it;
+		return disc->GetOwner();
+	}
+
+	else return nullptr;
+}
+
+void QBert::LevelBase::SetDiscs(std::vector<QBert::DiscActorComp*>&& discs)
+{
+	m_discs.clear();
+	m_discs = std::move(discs);
+}
+
+int QBert::LevelBase::GetActiveDiscAmount() const
+{
+	int amount{};
+	for (auto& disc : m_discs)
+	{
+		if (disc->GetOwner()->IsEnabled())
+			++amount;
+	}
+
+	return amount;
 }
 
 bool QBert::LevelBase::AreAllTilesCorrect() const

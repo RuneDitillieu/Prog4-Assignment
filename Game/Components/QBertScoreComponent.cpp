@@ -43,7 +43,7 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject*)
 		if (m_score / sizeChecker != 0)
 		{
 			int digit{ (m_score % divider) / (divider / 10) };
-			m_pConnSpriteComps[idx]->GetOwner()->m_isEnabled = true;
+			m_pConnSpriteComps[idx]->GetOwner()->IsEnabled(true);
 			m_pConnSpriteComps[idx]->SetCurFrame(digit);
 
 			divider *= 10;

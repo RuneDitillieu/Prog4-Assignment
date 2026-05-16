@@ -3,11 +3,21 @@
 
 #include <vector>
 #include "Component.h"
+#include <glm/glm.hpp>
+#include <unordered_map>
 
 namespace QBert
 {
+	enum class TileType
+	{
+		Tile,
+		Disc,
+		Void
+	};
+
 	class GameObject;
 	class TileComp;
+	class DiscActorComp;
 	class LevelBase : public dae::Component
 	{
 	public:
@@ -20,13 +30,21 @@ namespace QBert
 
 		std::type_index GetType() const override;
 
-		TileComp* GetTile(size_t col, size_t row) const;
-		bool TurnTile(size_t col, size_t row) const;
-		bool RevertTile(size_t col, size_t row) const;
+		TileComp* GetTile(int col, int row) const;
+		bool TurnTile(int col, int row) const;
+		bool RevertTile(int col, int row) const;
+		glm::vec3 GetMiddlePosOfTile(int col, int row) const;
+		TileType GetTileType(int col, int row) const;
+		dae::GameObject* GetDisc(int col, int row) const;
+		void SetDiscs(std::vector<QBert::DiscActorComp*>&& discs);
+		int GetActiveDiscAmount() const;
 
 	private:
 		bool AreAllTilesCorrect() const;
+		float m_tileSize{};
+		glm::vec3 m_middlePosOffset{};
 		std::vector<std::vector<TileComp*>> m_tiles;
+		std::vector<QBert::DiscActorComp*> m_discs{};
 	};
 }
 

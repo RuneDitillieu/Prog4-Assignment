@@ -1,10 +1,10 @@
 #include "QBertStates.h"
 #include "QBertMoveComponent.h"
 
-QBert::JumpingQBertState::JumpingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBert::QBertMoveComp* moveComp, const glm::vec3& moveDir)
-	: QBertState(qbert, spriteComp)
+QBert::JumpingQBertState::JumpingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, 
+	QBert::QBertMoveComp* moveComp, LevelBase* level, const glm::vec3& moveDir)
+	: QBertState(qbert, spriteComp, moveComp, level)
 	, m_moveDir(moveDir)
-	, m_pMoveComp(moveComp)
 { }
 
 void QBert::JumpingQBertState::OnEnter()
@@ -33,7 +33,19 @@ std::unique_ptr<QBert::QBertState> QBert::JumpingQBertState::Update()
 {
 	if (!m_pMoveComp->IsMoving())
 	{
-		return std::make_unique<QBert::IdleQBertState>(m_qbert, m_pConnSpriteComp, m_pMoveComp);
+		return std::make_unique<QBert::IdleQBertState>(m_qbert, m_pConnSpriteComp, m_pMoveComp, m_pConnLevel);
+	}
+
+	return nullptr;
+}
+
+std::unique_ptr<QBert::QBertState> QBert::JumpingQBertState::OnNotify(dae::Event event, dae::Subject*)
+{
+	if (event.id == dae::make_sdbm_hash("DISC_USED"))
+	{
+		m_qbert->SetParent(event.args->object, true);
+		m_pMoveComp->m_isEnabled = false;
+		return std::make_unique<QBert::TransportedQBertState>(m_qbert, m_pConnSpriteComp, m_pMoveComp, m_pConnLevel);
 	}
 
 	return nullptr;

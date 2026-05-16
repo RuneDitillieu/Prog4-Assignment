@@ -26,6 +26,8 @@ QBert::QBertMoveComp::QBertMoveComp(dae::GameObject* pOwner, const glm::vec3& fe
 
 void QBert::QBertMoveComp::Update()
 {
+	if (!m_isEnabled) return;
+
 	glm::vec3 dir{ glm::vec3(m_goalPos.x, m_goalPos.y, 0) 
 		- (GetOwner()->GetWorldPosition() + m_QBertFeetPos) };
 
@@ -39,15 +41,30 @@ void QBert::QBertMoveComp::Update()
 	{
 		m_currentTile = m_goalTile;
 
-		if (m_canTurnTiles &&
-			m_pConnLevelComp->TurnTile(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y)))
+		if(m_pConnLevelComp->GetTileType(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y)) == QBert::TileType::Tile)
 		{
-			dae::Event e(dae::make_sdbm_hash("TILE_TURNED"));
+			if (m_canTurnTiles &&
+				m_pConnLevelComp->TurnTile(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y)))
+			{
+				dae::Event e(dae::make_sdbm_hash("TILE_TURNED"));
+				GetOwner()->GetSubject()->NotifyObservers(e);
+			}
+			else if (m_canRevertTiles)
+			{
+				m_pConnLevelComp->RevertTile(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y));
+			}
+		}
+		else if (m_pConnLevelComp->GetTileType(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y)) == QBert::TileType::Disc
+			&& m_canTurnTiles)
+		{
+			dae::Event e(dae::make_sdbm_hash("DISC_USED"));
+			e.args->object = m_pConnLevelComp->GetDisc(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y));
 			GetOwner()->GetSubject()->NotifyObservers(e);
 		}
-		else if (m_canRevertTiles)
+		else if (m_pConnLevelComp->GetTileType(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y)) == QBert::TileType::Void)
 		{
-			m_pConnLevelComp->RevertTile(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y));
+			dae::Event e(dae::make_sdbm_hash("ACTOR_FELL"));
+			GetOwner()->GetSubject()->NotifyObservers(e);
 		}
 
 		int soundId{ rand() % 4 };
@@ -73,14 +90,30 @@ void QBert::QBertMoveComp::Update()
 
 void QBert::QBertMoveComp::Move(const glm::vec3& direction)
 {
+	if (!m_isEnabled) return;
 	if (m_currentTile != m_goalTile) return;
+	if (m_currentTile.x < -0.1f && m_currentTile.y < -0.1f) return;
 
 	glm::vec2 moveDir{ static_cast<int>(direction.x), static_cast<int>(direction.y) };
-	QBert::TileComp* goalTile = m_pConnLevelComp->GetTile(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
+	//QBert::TileComp* goalTile = m_pConnLevelComp->GetTile(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
+	//if (goalTile)
+	//{
+	//	m_goalPos = goalTile->GetMiddlePos();
+	//	m_goalTile = glm::vec2(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
+	//}
+
+	m_goalPos = m_pConnLevelComp->GetMiddlePosOfTile(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
+	m_goalTile = glm::vec2(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
+}
+
+void QBert::QBertMoveComp::Reset(const glm::vec2& tile)
+{
+	QBert::TileComp* goalTile = m_pConnLevelComp->GetTile(static_cast<int>(tile.x), static_cast<int>(tile.y));
 	if (goalTile)
 	{
 		m_goalPos = goalTile->GetMiddlePos();
-		m_goalTile = glm::vec2(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
+		m_goalTile = tile;
+		m_currentTile = glm::vec2(-1, -1);
 	}
 }
 
