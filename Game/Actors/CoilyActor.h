@@ -7,15 +7,15 @@
 namespace QBert
 {
     class GameObject;
-	class Coily : public dae::Component
+	class CoilyActorComp : public dae::Component
 	{
     public:
-        Coily(dae::GameObject* pOwner, LevelBase* pLevel);
-        ~Coily() = default;
-        Coily(const Coily& other) = delete;
-        Coily(Coily&& other) = delete;
-        Coily& operator=(const Coily& other) = delete;
-        Coily& operator=(Coily&& other) = delete;
+        CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel);
+        ~CoilyActorComp() = default;
+        CoilyActorComp(const CoilyActorComp& other) = delete;
+        CoilyActorComp(CoilyActorComp&& other) = delete;
+        CoilyActorComp& operator=(const CoilyActorComp& other) = delete;
+        CoilyActorComp& operator=(CoilyActorComp&& other) = delete;
 
         void Update() override;
 

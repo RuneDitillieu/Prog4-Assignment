@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "QBertMoveComponent.h"
 
-QBert::Coily::Coily(dae::GameObject* pOwner, LevelBase* pLevel)
+QBert::CoilyActorComp::CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel)
 	: dae::Component(pOwner)
 {
 	m_pState = std::make_unique<QBert::IdleEggState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>(), 
@@ -10,7 +10,7 @@ QBert::Coily::Coily(dae::GameObject* pOwner, LevelBase* pLevel)
 	m_pState->OnEnter();
 }
 
-void QBert::Coily::Update()
+void QBert::CoilyActorComp::Update()
 {
 	auto state = m_pState->Update();
 	if (state != nullptr)
@@ -21,7 +21,7 @@ void QBert::Coily::Update()
 	}
 }
 
-std::type_index QBert::Coily::GetType() const
+std::type_index QBert::CoilyActorComp::GetType() const
 {
-	return typeid(Coily);
+	return typeid(CoilyActorComp);
 }
