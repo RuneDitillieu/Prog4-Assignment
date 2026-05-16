@@ -9,6 +9,8 @@ dae::RectColliderComp::RectColliderComp(dae::GameObject* pOwner, const glm::vec2
 
 bool dae::RectColliderComp::IsColliding(const glm::vec2& topLeft, const glm::vec2& bottomRight) const
 {
+	if (!m_isEnabled) return false;
+
 	if (m_topLeft.x > bottomRight.x ||
 		m_bottomRight.x < topLeft.x ||
 		m_topLeft.y > bottomRight.y ||
@@ -24,6 +26,8 @@ bool dae::RectColliderComp::IsColliding(const glm::vec2& topLeft, const glm::vec
 
 bool dae::RectColliderComp::IsColliding(const glm::vec2& center, float radius) const
 {
+	if (!m_isEnabled) return false;
+
 	float w{ m_bottomRight.x - m_topLeft.x };
 	float h{ m_bottomRight.y - m_topLeft.y };
 

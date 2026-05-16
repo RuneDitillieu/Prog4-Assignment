@@ -24,6 +24,8 @@ namespace dae
 
         GameObject* GetOwner() const { return m_pOwner; }
 
+        bool m_isEnabled{ true };
+
     protected:
         explicit Component(GameObject* pOwner) : m_pOwner(pOwner) {}
 

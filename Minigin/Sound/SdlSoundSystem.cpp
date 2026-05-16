@@ -4,10 +4,9 @@
 
 // AUDIO CLIPS
 
-dae::AudioClip::AudioClip(std::string path)
-    : m_Path(path)
-{
-}
+dae::AudioClip::AudioClip(std::string path, float volume)
+    : m_Path(path), m_Volume(volume)
+{ }
 
 void dae::AudioClip::Load(MIX_Mixer* mixer)
 {
@@ -22,15 +21,15 @@ void dae::AudioClip::Load(MIX_Mixer* mixer)
     m_IsLoaded = true;
 }
 
-void dae::AudioClip::Play(float volume = -1)
+void dae::AudioClip::Play(float volume)
 {
     if (!m_pTrack || !m_pAudio)
         return;
 
-    if (volume >= 0)
-        m_Volume = volume;
+    if (volume < 0)
+        volume = m_Volume;
 
-    MIX_SetTrackGain(m_pTrack, m_Volume);
+    MIX_SetTrackGain(m_pTrack, volume);
 
     if (!MIX_PlayTrack(m_pTrack, false))
         throw std::runtime_error(SDL_GetError());
@@ -76,7 +75,7 @@ dae::SdlSoundSystem::~SdlSoundSystem()
     }
 }
 
-void dae::SdlSoundSystem::Play(const dae::SoundId id, const float volume = -1)
+void dae::SdlSoundSystem::Play(const dae::SoundId id, const float volume)
 {
     if (!m_AudioClips.contains(id))
     {
@@ -91,9 +90,9 @@ void dae::SdlSoundSystem::Play(const dae::SoundId id, const float volume = -1)
     m_AudioClips[id]->Play(volume);
 }
 
-void dae::SdlSoundSystem::AddSound(SoundId id, std::string path)
+void dae::SdlSoundSystem::AddSound(SoundId id, std::string path, float volume)
 {
-    m_AudioClips[id] = std::make_unique<AudioClip>(path);
+    m_AudioClips[id] = std::make_unique<AudioClip>(path, volume);
 }
 
 

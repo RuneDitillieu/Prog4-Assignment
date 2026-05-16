@@ -8,6 +8,8 @@ dae::CircleColliderComp::CircleColliderComp(dae::GameObject* pOwner, const glm::
 
 bool dae::CircleColliderComp::IsColliding(const glm::vec2& topLeft, const glm::vec2& bottomRight) const
 {
+	if (!m_isEnabled) return false;
+
 	float w{ bottomRight.x - topLeft.x };
 	float h{ bottomRight.y - topLeft.y };
 
@@ -30,6 +32,8 @@ bool dae::CircleColliderComp::IsColliding(const glm::vec2& topLeft, const glm::v
 
 bool dae::CircleColliderComp::IsColliding(const glm::vec2& center, float radius) const
 {
+	if (!m_isEnabled) return false;
+
 	if (glm::length(center - m_collisionCenter) <= radius + m_collisionRadius)
 		return true;
 	else
