@@ -62,6 +62,16 @@ void Scene::RemoveAll()
 	m_objects.clear();
 }
 
+void Scene::ReorderObjects()
+{
+	if (m_reorderObjects)
+	{
+		std::sort(m_objects.begin(), m_objects.end(),
+			[](const std::unique_ptr<dae::GameObject>& obj1, const std::unique_ptr<dae::GameObject>& obj2)
+			{ return obj1->GetRenderPriority() < obj2->GetRenderPriority(); });
+	}
+}
+
 void Scene::Update()
 {
 	for(auto& object : m_objects)
@@ -71,6 +81,7 @@ void Scene::Update()
 		object->Update();
 	}
 
+	ReorderObjects();
 	RemoveMarkedForRemoval();
 }
 
@@ -83,6 +94,7 @@ void Scene::LateUpdate()
 		object->LateUpdate();
 	}
 
+	ReorderObjects();
 	RemoveMarkedForRemoval();
 }
 

@@ -124,8 +124,13 @@ namespace dae
 		bool IsEnabled() const { return m_isEnabled; }
 		void IsEnabled(bool isEnabled, bool applyToComponents = true, bool applyToChildren = true);
 
+		// renderPriority
+		int GetRenderPriority() const { return m_renderPriority; }
+		void SetRenderPriority(int priority) { m_renderPriority = priority; }
+
 	private:
 		bool m_isEnabled{ true };
+		int m_renderPriority{ 1 };
 
 		bool IsParentOf(GameObject* possibleParent) const;
 		void AddChild(GameObject* newChild);

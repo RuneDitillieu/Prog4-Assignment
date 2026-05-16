@@ -46,12 +46,17 @@ namespace dae
 			return nullptr;
 		}
 
+		void RequestReorderObjects() { m_reorderObjects = true; }
+
 	private:
 		friend class SceneManager;
 		explicit Scene() = default;
 
 		std::function<void()> m_loadFunc{};
 		std::vector<std::unique_ptr<GameObject>> m_objects{};
+
+		bool m_reorderObjects{ false };
+		void ReorderObjects();
 	};
 }
 

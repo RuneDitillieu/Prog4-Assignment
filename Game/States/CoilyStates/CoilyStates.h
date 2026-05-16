@@ -95,11 +95,8 @@ namespace QBert
 	public:
 		FallingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
 
+		void OnEnter() override;
 		std::unique_ptr<CoilyState> Update() override;
-
-	private:
-		float m_secPassed{ 0.f };
-		const float m_maxSec{ 5.f };
 	};
 }
 

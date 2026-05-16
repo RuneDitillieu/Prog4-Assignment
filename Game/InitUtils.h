@@ -61,7 +61,7 @@ namespace QBert::Utils
 		return life;
 	}
 
-	void CreateUi(dae::Scene& scene, dae::GameObject* player1)
+	void CreateUi(dae::Scene& scene, dae::GameObject* player1, std::vector<dae::GameObject*> creatures)
 	{
 		// TOP LEFT
 		
@@ -93,6 +93,10 @@ namespace QBert::Utils
 		auto scoreComp = playerText->AddComponent(std::make_unique<QBert::ScoreComp>(playerText.get(), numberSprites));
 
 		player1->GetSubject()->AddObserver(scoreComp);
+		for (auto obj : creatures)
+		{
+			obj->GetSubject()->AddObserver(scoreComp);
+		}
 		auto level = scene.GetFirstObjectByType<QBert::LevelBase>()->GetOwner(); 
 		level->GetSubject()->AddObserver(scoreComp);
 
@@ -245,6 +249,7 @@ namespace QBert::Utils
 	std::unique_ptr<dae::GameObject> CreatePlayer(QBert::LevelBase* level)
 	{
 		auto player = std::make_unique<dae::GameObject>();
+		player->SetRenderPriority(2);
 		player->SetLocalPosition(100, 300);
 		player->SetScale(3.f);
 
@@ -273,6 +278,7 @@ namespace QBert::Utils
 	std::unique_ptr<dae::GameObject> CreateCoily(QBert::LevelBase* level)
 	{
 		auto coily = std::make_unique<dae::GameObject>();
+		coily->SetRenderPriority(2);
 		auto rc = coily->AddComponent(std::make_unique<dae::RenderComponent>(coily.get(), "CoilySprites.png"));
 		coily->SetLocalPosition(300, 300);
 		coily->SetScale(3.f);

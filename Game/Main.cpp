@@ -61,8 +61,10 @@ static void load()
 
 	levelComp->SetDiscs(std::move(discs));
 
+	std::vector<dae::GameObject*> creatures{};
 	// coily
 	go = QBert::Utils::CreateCoily(levelComp);
+	creatures.push_back(go.get());
 
 //#if defined(__EMSCRIPTEN__)
 //	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
@@ -86,7 +88,7 @@ static void load()
 	scene.Add(std::move(go));
 
 
-	QBert::Utils::CreateUi(scene, player);
+	QBert::Utils::CreateUi(scene, player, creatures);
 }
 
 int main(int, char*[]) {

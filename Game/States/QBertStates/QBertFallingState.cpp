@@ -5,6 +5,8 @@
 #include "QBertMoveComponent.h"
 #include "HealthComponent.h"
 #include "LevelBase.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
 QBert::FallingQBertState::FallingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBert::QBertMoveComp* moveComp, LevelBase* level)
 	: QBertState(qbert, spriteComp, moveComp, level)
@@ -12,6 +14,8 @@ QBert::FallingQBertState::FallingQBertState(dae::GameObject* qbert, dae::SpriteC
 
 void QBert::FallingQBertState::OnEnter()
 {
+	m_qbert->SetRenderPriority(0);
+	dae::SceneManager::GetInstance().GetActiveScene()->RequestReorderObjects();
 	m_pMoveComp->m_isEnabled = false;
 	dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(QBert::Sound::QBertFall));
 }
@@ -22,6 +26,8 @@ void QBert::FallingQBertState::OnExit()
 	m_pMoveComp->m_isEnabled = true;
 	m_pMoveComp->Reset(glm::vec2(0, 0));
 	m_qbert->GetComponent<dae::HealthComponent>()->LoseLife();
+	m_qbert->SetRenderPriority(2);
+	dae::SceneManager::GetInstance().GetActiveScene()->RequestReorderObjects();
 }
 
 std::unique_ptr<QBert::QBertState> QBert::FallingQBertState::Update()
