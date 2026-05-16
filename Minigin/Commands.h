@@ -1,14 +1,7 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include <SDL3/SDL.h>
 #include "GameObject.h"
-#include "MovementComponent.h"
-#include "HealthComponent.h"
-#include "ScoreComponent.h"
-#include "ServiceLocator.h"
-
-#include <glm/glm.hpp>
 
 namespace dae
 {
