@@ -9,7 +9,7 @@ namespace dae
     class HealthComponent final : public Component
     {
     public:
-        HealthComponent(GameObject* pOwner, int maxHealth, int maxLives);
+        HealthComponent(GameObject* pOwner, int maxHealth, int startLive, int maxLives);
         ~HealthComponent() = default;
         HealthComponent(const HealthComponent& other) = delete;
         HealthComponent(HealthComponent&& other) = delete;
@@ -19,6 +19,8 @@ namespace dae
         int GetMaxHealth() { return m_maxHealth; }
         int GetCurHealth() { return m_curHealth; }
         void TakeDamage(int damage);
+        void LoseLife();
+        void GainLife(int amount = 1);
 
         std::type_index GetType() const override;
 
@@ -26,7 +28,7 @@ namespace dae
         const int m_maxHealth;
         int m_curHealth;
 
-        //const int m_maxLives;
+        const int m_maxLives;
         int m_remainingLives;
     };
 }
