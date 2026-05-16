@@ -8,7 +8,7 @@ QBert::ArrowAnimComp::ArrowAnimComp(dae::GameObject* pOwner, std::vector<dae::Ga
 { 
 	for (auto arrow : m_pArrows)
 	{
-		arrow->m_isEnabled = false;
+		arrow->IsEnabled(false);
 	}
 }
 
@@ -19,7 +19,7 @@ void QBert::ArrowAnimComp::Update()
 	{
 		for (auto arrow : m_pArrows)
 		{
-			arrow->m_isEnabled = false;
+			arrow->IsEnabled(false);
 		}
 		m_secPassed -= m_secToWait * 3.f;
 	}
@@ -27,13 +27,13 @@ void QBert::ArrowAnimComp::Update()
 	{
 		for (auto arrow : m_pArrows)
 		{
-			arrow->m_isEnabled = true;
+			arrow->IsEnabled(true);
 		}
 	}
 	else if (m_secPassed >= m_secToWait)
 	{
-		m_pArrows[0]->m_isEnabled = true;
-		m_pArrows[3]->m_isEnabled = true;
+		m_pArrows[0]->IsEnabled(true);
+		m_pArrows[3]->IsEnabled(true);
 	}
 }
 
