@@ -41,6 +41,9 @@ std::unique_ptr<QBert::QBertState> QBert::JumpingQBertState::Update()
 
 std::unique_ptr<QBert::QBertState> QBert::JumpingQBertState::OnNotify(dae::Event event, dae::Subject* subject)
 {
+	auto state = QBertState::OnNotify(event, subject);
+	if (state != nullptr) return state;
+
 	if (event.id == dae::make_sdbm_hash("DISC_USED"))
 	{
 		m_qbert->SetParent(event.args->object, true);

@@ -3,13 +3,19 @@
 
 QBert::JumpingSnakeState::JumpingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
 	QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
-	: CoilyState(coily, spriteComp, moveComp, level)
-	, m_pQBertMoveComp(qbertMoveComp)
+	: CoilyState(coily, spriteComp, moveComp, level, qbertMoveComp)
 { }
 
 void QBert::JumpingSnakeState::OnEnter()
 {
 	glm::vec2 moveDir{ m_pQBertMoveComp->GetCurrentTile() - m_pMoveComp->GetCurrentTile() };
+
+	if (moveDir.x == 0 && moveDir.y == 0)
+	{
+		m_pConnSprite->SetCurFrame(m_pConnSprite->GetCurFrame() + 1);
+		return;
+	}
+
 	if (abs(moveDir.x) > abs(moveDir.y))
 	{
 		moveDir.y = 0;
@@ -43,6 +49,8 @@ void QBert::JumpingSnakeState::OnEnter()
 
 std::unique_ptr<QBert::CoilyState> QBert::JumpingSnakeState::Update()
 {
+	CoilyState::Update();
+
 	if (!m_pMoveComp->IsMoving())
 	{
 		return std::make_unique<QBert::IdleSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
@@ -53,11 +61,14 @@ std::unique_ptr<QBert::CoilyState> QBert::JumpingSnakeState::Update()
 
 std::unique_ptr<QBert::CoilyState> QBert::JumpingSnakeState::OnNotify(dae::Event event, dae::Subject* subject)
 {
+	auto state = CoilyState::OnNotify(event, subject);
+	if (state != nullptr) return state;
+
 	if (event.id == dae::make_sdbm_hash("ACTOR_FELL")
 		&& subject == m_coily->GetSubject())
 	{
 		m_pMoveComp->m_isEnabled = false;
-		return std::make_unique<QBert::FallingSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel);
+		return std::make_unique<QBert::FallingSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 	}
 
 	return nullptr;

@@ -4,8 +4,8 @@
 #include "Scene.h"
 
 QBert::FallingSnakeState::FallingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
-	QBertMoveComp* moveComp, LevelBase* level)
-	: CoilyState(coily, spriteComp, moveComp, level)
+	QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
+	: CoilyState(coily, spriteComp, moveComp, level, qbertMoveComp)
 { }
 
 void QBert::FallingSnakeState::OnEnter()

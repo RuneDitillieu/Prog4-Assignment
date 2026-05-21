@@ -275,7 +275,7 @@ namespace QBert::Utils
 		return player;
 	}
 
-	std::unique_ptr<dae::GameObject> CreateCoily(QBert::LevelBase* level)
+	std::unique_ptr<dae::GameObject> CreateCoily(QBert::LevelBase* level, QBert::QBertMoveComp* playerMove)
 	{
 		auto coily = std::make_unique<dae::GameObject>();
 		coily->SetRenderPriority(2);
@@ -285,11 +285,13 @@ namespace QBert::Utils
 		glm::vec2 texSize = rc->GetSize() * coily->GetScale();
 		coily->AddComponent(std::make_unique<dae::SpriteComp>(coily.get(), "CoilySprites.png", 10, 1, false));
 		coily->AddComponent(std::make_unique<QBert::QBertMoveComp>(coily.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), glm::vec2(0, 1), false, false));
-		auto actor = coily->AddComponent(std::make_unique<QBert::CoilyActorComp>(coily.get(), level));
+		auto actor = coily->AddComponent(std::make_unique<QBert::CoilyActorComp>(coily.get(), level, playerMove));
 		coily->AddComponent(std::make_unique<dae::RectColliderComp>(coily.get(), coily->GetLocalPosition(), coily->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 		coily->AddComponent(std::make_unique<dae::HealthComponent>(coily.get(), 1, 1, 1));
 
 		coily->GetSubject()->AddObserver(actor);
+		coily->GetSubject()->AddObserver(playerMove->GetOwner()->GetComponent<QBert::QBertActorComp>());
+		playerMove->GetOwner()->GetSubject()->AddObserver(actor);
 
 		return coily;
 	}

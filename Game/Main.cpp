@@ -63,7 +63,7 @@ static void load()
 
 	std::vector<dae::GameObject*> creatures{};
 	// coily
-	go = QBert::Utils::CreateCoily(levelComp);
+	go = QBert::Utils::CreateCoily(levelComp, player->GetComponent<QBert::QBertMoveComp>());
 	creatures.push_back(go.get());
 
 //#if defined(__EMSCRIPTEN__)

@@ -3,8 +3,7 @@
 
 QBert::IdleSnakeState::IdleSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
 	QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
-	: CoilyState(coily, spriteComp, moveComp, level)
-	, m_pQBertMoveComp(qbertMoveComp)
+	: CoilyState(coily, spriteComp, moveComp, level, qbertMoveComp)
 {
 }
 
@@ -16,6 +15,8 @@ void QBert::IdleSnakeState::OnEnter()
 
 std::unique_ptr<QBert::CoilyState> QBert::IdleSnakeState::Update()
 {
+	CoilyState::Update();
+
 	m_secPassed += dae::DeltaTime::GetInstance().GetDeltaTime();
 
 	if (m_secPassed >= m_idleSec)

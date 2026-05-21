@@ -53,8 +53,7 @@ add_library(${ENGINE_NAME} STATIC
   "Minigin/Components/Colliders/CircleColliderComponent.cpp" 
   "Minigin/Components/Colliders/RectColliderComponent.cpp"
   "Minigin/Components/Basics/SpriteComponent.cpp"
-
-  
+ 
   "Minigin/EventHandlers/Subject.cpp"
 
   "Minigin/Sound/SdlSoundSystem.cpp" 
@@ -259,12 +258,21 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
   "Game/States/CoilyStates/CoilyIdleSnakeState.cpp" 
   "Game/States/CoilyStates/CoilyJumpingEggState.cpp"
   "Game/States/CoilyStates/CoilyJumpingSnakeState.cpp" 
+  "Game/States/CoilyStates/CoilyFallingState.cpp" 
+  "Game/States/CoilyStates/CoilyState.cpp" 
+  "Game/States/CoilyStates/CoilyStunnedState.cpp"
 
   "Game/States/QBertStates/QBertJumpingState.cpp" 
-  "Game/States/QBertStates/QBertIdleState.cpp" 
+  "Game/States/QBertStates/QBertIdleState.cpp"
+  "Game/States/QBertStates/QBertDroppingState.cpp" 
+  "Game/States/QBertStates/QBertTransportedState.cpp" 
+  "Game/States/QBertStates/QBertFallingState.cpp"
+   "Game/States/QBertStates/QBertState.cpp" 
+  "Game/States/QBertStates/QBertStunnedState.cpp" 
 
   "Game/States/DiscStates/DiscIdleState.cpp" 
-  "Game/States/DiscStates/DiscMovingState.cpp" "Game/States/DiscStates/DiscDropOffState.cpp" "Game/States/QBertStates/QBertDroppingState.cpp" "Game/States/QBertStates/QBertTransportedState.cpp" "Game/States/QBertStates/QBertFallingState.cpp" "Game/States/CoilyStates/CoilyFallingState.cpp")
+  "Game/States/DiscStates/DiscMovingState.cpp" 
+  "Game/States/DiscStates/DiscDropOffState.cpp" )
 
 set(GAME_DIRS Game Game/Actors Game/Components Game/Levels 
     Game/States Game/States/CoilyStates Game/States/QBertStates Game/States/DiscStates)

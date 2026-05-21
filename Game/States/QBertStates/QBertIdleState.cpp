@@ -16,8 +16,11 @@ std::unique_ptr<QBert::QBertState> QBert::IdleQBertState::Update()
 	return nullptr;
 }
 
-std::unique_ptr<QBert::QBertState> QBert::IdleQBertState::OnNotify(dae::Event event, dae::Subject*)
+std::unique_ptr<QBert::QBertState> QBert::IdleQBertState::OnNotify(dae::Event event, dae::Subject* subject)
 {
+	auto state = QBertState::OnNotify(event, subject);
+	if (state != nullptr) return state;
+
 	if (event.id == dae::make_sdbm_hash("OnMove"))
 	{
 		return std::make_unique<QBert::JumpingQBertState>(m_qbert, m_pConnSpriteComp, m_pMoveComp, m_pConnLevel, event.args->dir);

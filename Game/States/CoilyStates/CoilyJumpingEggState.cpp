@@ -2,8 +2,9 @@
 #include "QBertMoveComponent.h"
 #include "LevelBase.h"
 
-QBert::JumpingEggState::JumpingEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level)
-	: CoilyState(coily, spriteComp, moveComp, level)
+QBert::JumpingEggState::JumpingEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, 
+	LevelBase* level, QBertMoveComp* qbertMoveComp)
+	: CoilyState(coily, spriteComp, moveComp, level, qbertMoveComp)
 { }
 
 void QBert::JumpingEggState::OnEnter()
@@ -23,9 +24,11 @@ void QBert::JumpingEggState::OnEnter()
 
 std::unique_ptr<QBert::CoilyState> QBert::JumpingEggState::Update()
 {
+	CoilyState::Update();
+
 	if (!m_pMoveComp->IsMoving())
 	{
-		return std::make_unique<QBert::IdleEggState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel);
+		return std::make_unique<QBert::IdleEggState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 	}
 
 	return nullptr;
