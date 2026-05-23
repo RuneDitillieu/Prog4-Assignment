@@ -31,9 +31,9 @@ void dae::SceneManager::Render()
 	m_scenes[m_activeSceneIdx]->Render();
 }
 
-dae::Scene& dae::SceneManager::CreateScene()
+dae::Scene& dae::SceneManager::CreateScene(std::function<void(Scene&)> loadFunc)
 {
-	m_scenes.emplace_back(new Scene());
+	m_scenes.emplace_back(new Scene(loadFunc));
 	return *m_scenes.back();
 }
 

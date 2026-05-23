@@ -27,74 +27,74 @@ std::unique_ptr<dae::SoundSystem> dae::ServiceLocator::_ss_instance{ std::make_u
 
 static void load()
 {
-	auto& scene = dae::SceneManager::GetInstance().CreateScene();
-	std::function<void(dae::Scene&)> loadFunc = [](dae::Scene& scene)
-	{
-	// scene & sound
+	// sound
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SdlSoundSystem>());
 	dae::ServiceLocator::GetSoundSystem().Init();
 	QBert::Utils::AddSounds();
 
-	// font
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
+	std::function<void(dae::Scene&)> loadFunc = [](dae::Scene& scene)
+	{
+		// font
+		auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
 
-	// fps
-	auto go = std::make_unique<dae::GameObject>();
-	go->SetLocalPosition(10, 10);
-	go->AddComponent(std::make_unique<dae::FpsComponent>(go.get(), "0.0 FPS", font));
-	scene.Add(std::move(go));
+		// fps
+		auto go = std::make_unique<dae::GameObject>();
+		go->SetLocalPosition(10, 10);
+		go->AddComponent(std::make_unique<dae::FpsComponent>(go.get(), "0.0 FPS", font));
+		scene.Add(std::move(go));
 
-	// level
-	auto levelObj = QBert::Utils::CreateLevel(scene, 0, false, 2, 1);
-	auto levelComp = levelObj->GetComponent<QBert::LevelBase>();
+		// level
+		auto levelObj = QBert::Utils::CreateLevel(scene, 0, false, 2, 1);
+		auto levelComp = levelObj->GetComponent<QBert::LevelBase>();
 
 
-	// player
-	go = QBert::Utils::CreatePlayer(levelComp);
-	dae::GameObject* player = go.get();
-	scene.Add(std::move(go));
+		// player
+		go = QBert::Utils::CreatePlayer(levelComp);
+		dae::GameObject* player = go.get();
+		scene.Add(std::move(go));
 
-	// disc
-	std::vector<QBert::DiscActorComp*> discs{};
-	glm::vec2 tile{ -1, 3 };
-	go = QBert::Utils::CreateDisc(tile, levelComp);
-	discs.emplace_back(go->GetComponent<QBert::DiscActorComp>());
-	scene.Add(std::move(go));
+		// disc
+		std::vector<QBert::DiscActorComp*> discs{};
+		glm::vec2 tile{ -1, 3 };
+		go = QBert::Utils::CreateDisc(tile, levelComp);
+		discs.emplace_back(go->GetComponent<QBert::DiscActorComp>());
+		scene.Add(std::move(go));
 
-	levelComp->SetDiscs(std::move(discs));
+		levelComp->SetDiscs(std::move(discs));
 
-	std::vector<dae::GameObject*> creatures{};
-	// coily
-	go = QBert::Utils::CreateCoily(levelComp, player->GetComponent<QBert::QBertMoveComp>());
-	creatures.push_back(go.get());
+		std::vector<dae::GameObject*> creatures{};
 
-	//#if defined(__EMSCRIPTEN__)
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
-	//
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TakeDamageCommand>(go.get(), 3), SDL_SCANCODE_Q, SDL_EVENT_KEY_DOWN);
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), SDL_SCANCODE_T, SDL_EVENT_KEY_DOWN);
-	//
-	//#else
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), XINPUT_GAMEPAD_DPAD_UP, 0);
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), XINPUT_GAMEPAD_DPAD_DOWN, 0);
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), XINPUT_GAMEPAD_DPAD_LEFT, 0);
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), XINPUT_GAMEPAD_DPAD_RIGHT, 0);
-	//
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TakeDamageCommand>(go.get(), 3), XINPUT_GAMEPAD_A, 0);
-	//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), XINPUT_GAMEPAD_B, 0);
-	//#endif // !EMSCRIPTEN
+		// coily
+		go = QBert::Utils::CreateCoily(levelComp, player->GetComponent<QBert::QBertMoveComp>());
+		creatures.push_back(go.get());
 
-	scene.Add(std::move(go));
+		//#if defined(__EMSCRIPTEN__)
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
+		//
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TakeDamageCommand>(go.get(), 3), SDL_SCANCODE_Q, SDL_EVENT_KEY_DOWN);
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), SDL_SCANCODE_T, SDL_EVENT_KEY_DOWN);
+		//
+		//#else
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), XINPUT_GAMEPAD_DPAD_UP, 0);
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), XINPUT_GAMEPAD_DPAD_DOWN, 0);
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(-1, 0, 0)), XINPUT_GAMEPAD_DPAD_LEFT, 0);
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(1, 0, 0)), XINPUT_GAMEPAD_DPAD_RIGHT, 0);
+		//
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TakeDamageCommand>(go.get(), 3), XINPUT_GAMEPAD_A, 0);
+		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), XINPUT_GAMEPAD_B, 0);
+		//#endif // !EMSCRIPTEN
 
-	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MuteCommand>(), SDL_SCANCODE_F2, SDL_EVENT_KEY_DOWN);
+		scene.Add(std::move(go));
 
-	QBert::Utils::CreateUi(scene, creatures);
-};
+		dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MuteCommand>(), SDL_SCANCODE_F2, SDL_EVENT_KEY_DOWN);
 
-	scene.SetLoadFunc(loadFunc);
+		QBert::Utils::CreateUi(scene, creatures);
+	};
+
+	auto& scene = dae::SceneManager::GetInstance().CreateScene(loadFunc);
 	scene.Load();
 }
 

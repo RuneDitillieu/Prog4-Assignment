@@ -4,10 +4,9 @@
 
 using namespace dae;
 
-void Scene::SetLoadFunc(std::function<void(Scene&)> func)
-{
-	m_loadFunc = func;
-}
+Scene::Scene(std::function<void(Scene&)> loadFunc)
+	: m_loadFunc(loadFunc)
+{ }
 
 void Scene::Load()
 {

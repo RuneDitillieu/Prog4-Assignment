@@ -13,7 +13,7 @@ namespace dae
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
-		Scene& CreateScene();
+		Scene& CreateScene(std::function<void(Scene&)> loadFunc);
 
 		Scene* GetActiveScene() const;
 		void SetActiveScene(int sceneIdx);

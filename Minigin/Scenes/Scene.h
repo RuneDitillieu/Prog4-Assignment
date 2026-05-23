@@ -12,7 +12,6 @@ namespace dae
 	class Scene final
 	{
 	public:
-		void SetLoadFunc(std::function<void(Scene&)> func);
 		void Load();
 		void UnLoad();
 
@@ -26,6 +25,7 @@ namespace dae
 
 		[[nodiscard]] GameObject* GetGameObjectOwnership(GameObject* pObject);
 
+		Scene(std::function<void(Scene&)> loadFunc);
 		~Scene() = default;
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
@@ -54,7 +54,7 @@ namespace dae
 		friend class SceneManager;
 		explicit Scene() = default;
 
-		std::function<void(Scene&)> m_loadFunc{};
+		std::function<void(Scene&)> m_loadFunc;
 		std::vector<std::unique_ptr<GameObject>> m_objects{};
 
 		bool m_reorderObjects{ false };
