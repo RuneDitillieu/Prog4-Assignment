@@ -13,12 +13,13 @@ namespace QBert
 	{
 	public:
 		LivesDisplay(dae::GameObject* pOwner, std::vector<dae::GameObject*> lives);
-		~LivesDisplay() = default;
+		~LivesDisplay();
 		LivesDisplay(const LivesDisplay& other) = delete;
 		LivesDisplay(LivesDisplay&& other) = delete;
 		LivesDisplay& operator=(const LivesDisplay& other) = delete;
 		LivesDisplay& operator=(LivesDisplay&& other) = delete;
 
+		void Start() override;
 		void Notify(dae::Event event, dae::Subject*) override;
 
 		std::type_index GetType() const override;

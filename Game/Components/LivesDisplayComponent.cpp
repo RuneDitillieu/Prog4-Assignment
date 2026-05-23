@@ -1,10 +1,31 @@
 #include "LivesDisplayComponent.h"
 #include "GameObject.h"
+#include "SceneManager.h"
+#include "Scene.h"
+#include "Tags.h"
 
 QBert::LivesDisplay::LivesDisplay(dae::GameObject* pOwner, std::vector<dae::GameObject*> lives)
 	: dae::Component(pOwner)
 	, m_pLives(lives)
 { }
+
+QBert::LivesDisplay::~LivesDisplay()
+{
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	for (auto qbert : qberts)
+	{
+		qbert->GetSubject()->RemoveObserver(this);
+	}
+}
+
+void QBert::LivesDisplay::Start()
+{
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	for (auto qbert : qberts)
+	{
+		qbert->GetSubject()->AddObserver(this);
+	}
+}
 
 void QBert::LivesDisplay::Notify(dae::Event event, dae::Subject*)
 {

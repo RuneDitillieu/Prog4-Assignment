@@ -14,12 +14,13 @@ namespace QBert
 	{
 	public:
 		DiscActorComp(dae::GameObject* pOwner, const glm::vec2& tile);
-		~DiscActorComp() = default;
+		~DiscActorComp();
 		DiscActorComp(const DiscActorComp& other) = delete;
 		DiscActorComp(DiscActorComp&& other) = delete;
 		DiscActorComp& operator=(const DiscActorComp& other) = delete;
 		DiscActorComp& operator=(DiscActorComp&& other) = delete;
 
+		void Start() override;
 		void Update() override;
 		void Notify(dae::Event event, dae::Subject* subject) override;
 		glm::vec2 GetTile() const { return m_tile; }

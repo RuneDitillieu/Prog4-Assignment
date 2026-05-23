@@ -1,4 +1,7 @@
 #include "DiscActor.h"
+#include "SceneManager.h"
+#include "Scene.h"
+#include "Tags.h"
 
 QBert::DiscActorComp::DiscActorComp(dae::GameObject* pOwner, const glm::vec2& tile)
 	: dae::Component(pOwner)
@@ -6,6 +9,24 @@ QBert::DiscActorComp::DiscActorComp(dae::GameObject* pOwner, const glm::vec2& ti
 { 
 	m_pState = std::make_unique<QBert::IdleDiscState>(pOwner);
 	m_pState->OnEnter();
+}
+
+QBert::DiscActorComp::~DiscActorComp()
+{
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	for (auto qbert : qberts)
+	{
+		qbert->GetSubject()->RemoveObserver(this);
+	}
+}
+
+void QBert::DiscActorComp::Start()
+{
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	for (auto qbert : qberts)
+	{
+		qbert->GetSubject()->AddObserver(this);
+	}
 }
 
 void QBert::DiscActorComp::Update()

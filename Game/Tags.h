@@ -8,7 +8,8 @@ namespace QBert
 		UnTagged,
 		Player,
 		Coily,
-		Disc
+		Disc,
+		Level
 	};
 }
 

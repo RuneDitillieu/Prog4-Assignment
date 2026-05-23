@@ -16,6 +16,12 @@ QBert::QBertActorComp::~QBertActorComp()
 	{
 		coily->GetSubject()->RemoveObserver(this);
 	}
+
+	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Disc));
+	for (auto disc : discs)
+	{
+		disc->GetSubject()->RemoveObserver(this);
+	}
 }
 
 void QBert::QBertActorComp::Start()
@@ -25,6 +31,12 @@ void QBert::QBertActorComp::Start()
 	for (auto coily : coilys)
 	{
 		coily->GetSubject()->AddObserver(this);
+	}
+
+	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Disc));
+	for (auto disc : discs)
+	{
+		disc->GetSubject()->AddObserver(this);
 	}
 }
 

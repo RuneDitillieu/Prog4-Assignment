@@ -57,9 +57,8 @@ static void load()
 	// disc
 	std::vector<QBert::DiscActorComp*> discs{};
 	glm::vec2 tile{ -1, 3 };
-	go = QBert::Utils::CreateDisc(tile, player, levelComp);
+	go = QBert::Utils::CreateDisc(tile, levelComp);
 	discs.emplace_back(go->GetComponent<QBert::DiscActorComp>());
-	go->GetSubject()->AddObserver(player->GetComponent<QBert::QBertActorComp>());
 	scene.Add(std::move(go));
 
 	levelComp->SetDiscs(std::move(discs));
@@ -92,7 +91,7 @@ static void load()
 
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MuteCommand>(), SDL_SCANCODE_F2, SDL_EVENT_KEY_DOWN);
 
-	QBert::Utils::CreateUi(scene, player, creatures);
+	QBert::Utils::CreateUi(scene, creatures);
 };
 
 	scene.SetLoadFunc(loadFunc);

@@ -24,7 +24,7 @@ namespace QBert::Utils
 {
 	dae::GameObject* CreateLevel(dae::Scene& scene, int tileType, bool revertableTiles, int startTile, int winTile, int intermediateTile = -1)
 	{
-		auto go = std::make_unique<dae::GameObject>();
+		auto go = std::make_unique<dae::GameObject>(dae::Tag(QBert::Tag::Level));
 		go->SetLocalPosition(350.f, 150.f);
 		go->SetScale(3.f);
 		go->AddComponent(std::make_unique<QBert::LevelBase>(go.get(), tileType, revertableTiles, startTile, winTile, intermediateTile));
@@ -62,7 +62,7 @@ namespace QBert::Utils
 		return life;
 	}
 
-	void CreateUi(dae::Scene& scene, dae::GameObject* player1, std::vector<dae::GameObject*> creatures)
+	void CreateUi(dae::Scene& scene, std::vector<dae::GameObject*> creatures)
 	{
 		// TOP LEFT
 		
@@ -91,15 +91,7 @@ namespace QBert::Utils
 		CreateNumberComp(48.f, 25.f, false, numberSprites).release()->SetParent(playerText.get(), false);
 		CreateNumberComp(68.f, 25.f, false, numberSprites).release()->SetParent(playerText.get(), false);
 		CreateNumberComp(88.f, 25.f, false, numberSprites).release()->SetParent(playerText.get(), false);
-		auto scoreComp = playerText->AddComponent(std::make_unique<QBert::ScoreComp>(playerText.get(), numberSprites));
-
-		player1->GetSubject()->AddObserver(scoreComp);
-		for (auto obj : creatures)
-		{
-			obj->GetSubject()->AddObserver(scoreComp);
-		}
-		auto level = scene.GetFirstObjectByType<QBert::LevelBase>()->GetOwner(); 
-		level->GetSubject()->AddObserver(scoreComp);
+		playerText->AddComponent(std::make_unique<QBert::ScoreComp>(playerText.get(), numberSprites));
 
 		// text "Change to:"
 		auto changeToText = std::make_unique<dae::GameObject>();
@@ -183,7 +175,7 @@ namespace QBert::Utils
 		CreateLifeComp(150.f, false, pLives).release()->SetParent(lives.get(), false);
 		CreateLifeComp(100.f, false, pLives).release()->SetParent(lives.get(), false);
 
-		player1->GetSubject()->AddObserver(lives->AddComponent(std::make_unique<QBert::LivesDisplay>(lives.get(), pLives)));
+		lives->AddComponent(std::make_unique<QBert::LivesDisplay>(lives.get(), pLives));
 
 		scene.Add(std::move(lives));
 
@@ -262,8 +254,6 @@ namespace QBert::Utils
 		sprite->SetCurFrame(5);
 		player->AddComponent(std::make_unique<QBert::QBertActorComp>(player.get(), sprite, move, level));
 
-		//player->GetSubject()->AddObserver(actor);
-
 		glm::vec2 texSize{ player->GetComponent<dae::RenderComponent>()->GetSize() * player->GetScale() };
 		player->AddComponent(std::make_unique<dae::RectColliderComp>(player.get(), player->GetLocalPosition(), player->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 		player->AddComponent(std::make_unique<dae::HealthComponent>(player.get(), 1, 3, 5));
@@ -294,18 +284,14 @@ namespace QBert::Utils
 		glm::vec2 texSize = rc->GetSize() * coily->GetScale();
 		coily->AddComponent(std::make_unique<dae::SpriteComp>(coily.get(), "CoilySprites.png", 10, 1, false));
 		coily->AddComponent(std::make_unique<QBert::QBertMoveComp>(coily.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), glm::vec2(0, 1), false, false));
-		auto actor = coily->AddComponent(std::make_unique<QBert::CoilyActorComp>(coily.get(), level, playerMove));
+		coily->AddComponent(std::make_unique<QBert::CoilyActorComp>(coily.get(), level, playerMove));
 		coily->AddComponent(std::make_unique<dae::RectColliderComp>(coily.get(), coily->GetLocalPosition(), coily->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 		coily->AddComponent(std::make_unique<dae::HealthComponent>(coily.get(), 1, 1, 1));
-
-		//coily->GetSubject()->AddObserver(actor);
-		//coily->GetSubject()->AddObserver(playerMove->GetOwner()->GetComponent<QBert::QBertActorComp>());
-		playerMove->GetOwner()->GetSubject()->AddObserver(actor);
 
 		return coily;
 	}
 
-	std::unique_ptr<dae::GameObject> CreateDisc(const glm::vec2& tile, dae::GameObject* player, QBert::LevelBase* level)
+	std::unique_ptr<dae::GameObject> CreateDisc(const glm::vec2& tile, QBert::LevelBase* level)
 	{
 		auto disc = std::make_unique<dae::GameObject>(dae::Tag(QBert::Tag::Disc));
 		disc->SetScale(3.f);
@@ -313,13 +299,11 @@ namespace QBert::Utils
 		auto rc = disc->AddComponent(std::make_unique<dae::RenderComponent>(disc.get(), "DiscSprites.png"));
 		auto sprite = disc->AddComponent(std::make_unique<dae::SpriteComp>(disc.get(), rc, "DiscSprites.png", 4, 1,
 			rc->GetSize().x / 45, rc->GetSize().y / 2, glm::vec2(0, 0), true));
-		auto discActor = disc->AddComponent(std::make_unique<QBert::DiscActorComp>(disc.get(), tile));
+		disc->AddComponent(std::make_unique<QBert::DiscActorComp>(disc.get(), tile));
 		
 		disc->SetLocalPosition(level->GetMiddlePosOfTile(static_cast<int>(tile.x), static_cast<int>(tile.y))
 			- glm::vec3((sprite->GetSpriteSize().x * disc->GetScale() / 2.f), 
 			sprite->GetSpriteSize().y * disc->GetScale() / 2.f, 0));
-
-		player->GetSubject()->AddObserver(discActor);
 
 		return disc;
 	}

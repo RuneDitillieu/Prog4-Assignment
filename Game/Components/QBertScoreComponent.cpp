@@ -1,10 +1,67 @@
 #include "QBertScoreComponent.h"
 #include "GameObject.h"
+#include "SceneManager.h"
+#include "Scene.h"
+#include "Tags.h"
 
 QBert::ScoreComp::ScoreComp(dae::GameObject* pOwner, const std::vector<dae::SpriteComp*>& numberSprites)
 	: dae::Component(pOwner)
 	, m_pConnSpriteComps(numberSprites)
 { }
+
+QBert::ScoreComp::~ScoreComp()
+{
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	for (auto qbert : qberts)
+	{
+		qbert->GetSubject()->RemoveObserver(this);
+	}
+
+	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
+	for (auto coily : coilys)
+	{
+		coily->GetSubject()->RemoveObserver(this);
+	}
+
+	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Disc));
+	for (auto disc : discs)
+	{
+		disc->GetSubject()->RemoveObserver(this);
+	}
+
+	auto levels = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Level));
+	for (auto level : levels)
+	{
+		level->GetSubject()->RemoveObserver(this);
+	}
+}
+
+void QBert::ScoreComp::Start()
+{
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	for (auto qbert : qberts)
+	{
+		qbert->GetSubject()->AddObserver(this);
+	}
+
+	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
+	for (auto coily : coilys)
+	{
+		coily->GetSubject()->AddObserver(this);
+	}
+
+	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Disc));
+	for (auto disc : discs)
+	{
+		disc->GetSubject()->AddObserver(this);
+	}
+
+	auto levels = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Level));
+	for (auto level : levels)
+	{
+		level->GetSubject()->AddObserver(this);
+	}
+}
 
 void QBert::ScoreComp::Notify(dae::Event event, dae::Subject*)
 {

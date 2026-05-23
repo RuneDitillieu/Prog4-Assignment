@@ -14,7 +14,7 @@ namespace QBert
 	{
     public:
         CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel, QBertMoveComp* qbertMove);
-        ~CoilyActorComp() = default;
+        ~CoilyActorComp();
         CoilyActorComp(const CoilyActorComp& other) = delete;
         CoilyActorComp(CoilyActorComp&& other) = delete;
         CoilyActorComp& operator=(const CoilyActorComp& other) = delete;

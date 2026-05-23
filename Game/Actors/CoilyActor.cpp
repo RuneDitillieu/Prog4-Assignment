@@ -1,6 +1,9 @@
 #include "CoilyActor.h"
 #include "GameObject.h"
 #include "QBertMoveComponent.h"
+#include "SceneManager.h"
+#include "Scene.h"
+#include "Tags.h"
 
 QBert::CoilyActorComp::CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel, QBertMoveComp* qbertMove)
 	: dae::Component(pOwner)
@@ -10,9 +13,23 @@ QBert::CoilyActorComp::CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel
 	m_pState->OnEnter();
 }
 
+QBert::CoilyActorComp::~CoilyActorComp()
+{
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	for (auto qbert : qberts)
+	{
+		qbert->GetSubject()->RemoveObserver(this);
+	}
+}
+
 void QBert::CoilyActorComp::Start()
 {
 	GetOwner()->GetSubject()->AddObserver(this);
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	for (auto qbert : qberts)
+	{
+		qbert->GetSubject()->AddObserver(this);
+	}
 }
 
 void QBert::CoilyActorComp::Update()

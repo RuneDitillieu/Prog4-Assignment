@@ -13,11 +13,13 @@ namespace QBert
 	{
 	public:
 		ScoreComp(dae::GameObject* pOwner, const std::vector<dae::SpriteComp*>& numberSprites);
-		~ScoreComp() = default;
+		~ScoreComp();
 		ScoreComp(const ScoreComp& other) = delete;
 		ScoreComp(ScoreComp&& other) = delete;
 		ScoreComp& operator=(const ScoreComp& other) = delete;
 		ScoreComp& operator=(ScoreComp&& other) = delete;
+
+		void Start() override;
 
 		std::type_index GetType() const override;
 

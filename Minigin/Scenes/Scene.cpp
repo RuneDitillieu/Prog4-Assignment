@@ -85,8 +85,8 @@ void Scene::Update()
 		object->Update();
 	}
 
-	ReorderObjects();
 	RemoveMarkedForRemoval();
+	ReorderObjects();
 }
 
 void Scene::LateUpdate()
@@ -98,8 +98,8 @@ void Scene::LateUpdate()
 		object->LateUpdate();
 	}
 
-	ReorderObjects();
 	RemoveMarkedForRemoval();
+	ReorderObjects();
 }
 
 void Scene::Render() const
@@ -118,7 +118,7 @@ std::vector<GameObject*> Scene::GetObjectsByTag(dae::Tag tag) const
 
 	for (auto& object : m_objects)
 	{
-		if (object->GetTag() == tag)
+		if (object != nullptr && object->GetTag() == tag)
 		{
 			vec.emplace_back(object.get());
 		}
