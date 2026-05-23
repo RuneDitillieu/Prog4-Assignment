@@ -77,6 +77,8 @@ dae::SdlSoundSystem::~SdlSoundSystem()
 
 void dae::SdlSoundSystem::Play(const dae::SoundId id, const float volume)
 {
+    if (m_isMuted) return;
+
     if (!m_AudioClips.contains(id))
     {
         throw std::runtime_error("Invalid sound_id");
@@ -93,6 +95,11 @@ void dae::SdlSoundSystem::Play(const dae::SoundId id, const float volume)
 void dae::SdlSoundSystem::AddSound(SoundId id, std::string path, float volume)
 {
     m_AudioClips[id] = std::make_unique<AudioClip>(path, volume);
+}
+
+void dae::SdlSoundSystem::MuteUnmuteSound()
+{
+    m_isMuted = !m_isMuted;
 }
 
 

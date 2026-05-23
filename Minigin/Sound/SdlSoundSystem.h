@@ -40,12 +40,14 @@ namespace dae
 
 		void Play(const SoundId id, const float volume = -1) override;
 		void AddSound(SoundId id, std::string path, float volume) override;
+		void MuteUnmuteSound() override;
 
 	private:
 		std::unordered_map<SoundId, std::unique_ptr<AudioClip>> m_AudioClips{};
 
 		SDL_AudioDeviceID m_pDevice = 0;
 		MIX_Mixer* m_pMixer = nullptr;
+		bool m_isMuted{ false };
 	};
 }
 
