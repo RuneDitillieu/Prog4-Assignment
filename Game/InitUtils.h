@@ -62,7 +62,7 @@ namespace QBert::Utils
 		return life;
 	}
 
-	void CreateUi(dae::Scene& scene, std::vector<dae::GameObject*> creatures)
+	void CreateUi(dae::Scene& scene)
 	{
 		// TOP LEFT
 		

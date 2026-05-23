@@ -23,12 +23,6 @@ QBert::ScoreComp::~ScoreComp()
 		coily->GetSubject()->RemoveObserver(this);
 	}
 
-	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Disc));
-	for (auto disc : discs)
-	{
-		disc->GetSubject()->RemoveObserver(this);
-	}
-
 	auto levels = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Level));
 	for (auto level : levels)
 	{
@@ -48,12 +42,6 @@ void QBert::ScoreComp::Start()
 	for (auto coily : coilys)
 	{
 		coily->GetSubject()->AddObserver(this);
-	}
-
-	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Disc));
-	for (auto disc : discs)
-	{
-		disc->GetSubject()->AddObserver(this);
 	}
 
 	auto levels = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Level));
