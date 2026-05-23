@@ -8,6 +8,8 @@
 
 namespace dae
 {
+	using Tag = unsigned short;
+
 	class Subject;
 	class Font;
 	class TextComponent;
@@ -16,6 +18,7 @@ namespace dae
 	{
 	public:
 		GameObject() = default;
+		GameObject(Tag tag) : m_tag(tag) {}
 		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -23,6 +26,7 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 		// basics
+		void Start();
 		void Update();
 		void LateUpdate();
 		void Render();
@@ -128,7 +132,10 @@ namespace dae
 		int GetRenderPriority() const { return m_renderPriority; }
 		void SetRenderPriority(int priority) { m_renderPriority = priority; }
 
+		Tag GetTag() const { return m_tag; }
+
 	private:
+		Tag m_tag{ 0 };
 		bool m_isEnabled{ true };
 		int m_renderPriority{ 1 };
 

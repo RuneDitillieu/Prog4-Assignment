@@ -15,12 +15,13 @@ namespace QBert
 	{
 	public:
 		QBertActorComp(dae::GameObject* pOwner, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* pLevel);
-		~QBertActorComp() = default;
+		~QBertActorComp();
 		QBertActorComp(const QBertActorComp& other) = delete;
 		QBertActorComp(QBertActorComp&& other) = delete;
 		QBertActorComp& operator=(const QBertActorComp& other) = delete;
 		QBertActorComp& operator=(QBertActorComp&& other) = delete;
 
+		void Start() override;
 		void Update() override;
 		void Notify(dae::Event event, dae::Subject* subject) override;
 

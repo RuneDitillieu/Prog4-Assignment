@@ -1,9 +1,31 @@
 #include "QBertActor.h"
+#include "SceneManager.h"
+#include "Scene.h"
+#include "Tags.h"
 
 QBert::QBertActorComp::QBertActorComp(dae::GameObject* pOwner, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, QBert::LevelBase* pLevel)
 	: dae::Component(pOwner)
 { 
 	m_pState = std::make_unique<QBert::IdleQBertState>(pOwner, spriteComp, moveComp, pLevel);
+}
+
+QBert::QBertActorComp::~QBertActorComp()
+{
+	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
+	for (auto coily : coilys)
+	{
+		coily->GetSubject()->RemoveObserver(this);
+	}
+}
+
+void QBert::QBertActorComp::Start()
+{
+	GetOwner()->GetSubject()->AddObserver(this);
+	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
+	for (auto coily : coilys)
+	{
+		coily->GetSubject()->AddObserver(this);
+	}
 }
 
 void QBert::QBertActorComp::Update()

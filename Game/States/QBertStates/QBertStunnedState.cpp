@@ -2,6 +2,8 @@
 #include "HealthComponent.h"
 #include "DeltaTime.h"
 #include "Events.h"
+#include "ServiceLocator.h"
+#include "Sounds.h"
 
 QBert::StunnedQBertState::StunnedQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp,
 	QBert::QBertMoveComp* moveComp, LevelBase* level)
@@ -13,11 +15,16 @@ void QBert::StunnedQBertState::OnEnter()
 	/*m_qbert->GetComponent<dae::HealthComponent>()->LoseLife();
 	dae::Event e{ dae::make_sdbm_hash("QBERT_KILLED") };
 	m_qbert->GetSubject()->NotifyObservers(e);*/
+
+	m_qbert->GetChildAt(0)->IsEnabled(true);
+	dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(QBert::Sound::Speech2));
 }
 
 void QBert::StunnedQBertState::OnExit()
 {
 	m_pConnSpriteComp->SetCurFrame(7);
+
+	m_qbert->GetChildAt(0)->IsEnabled(false);
 }
 
 std::unique_ptr<QBert::QBertState> QBert::StunnedQBertState::Update()

@@ -20,6 +20,7 @@ namespace QBert
         CoilyActorComp& operator=(const CoilyActorComp& other) = delete;
         CoilyActorComp& operator=(CoilyActorComp&& other) = delete;
 
+        void Start() override;
         void Update() override;
         void Notify(dae::Event event, dae::Subject* subject) override;
 

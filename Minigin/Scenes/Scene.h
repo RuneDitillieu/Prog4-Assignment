@@ -12,7 +12,7 @@ namespace dae
 	class Scene final
 	{
 	public:
-		void SetLoadFunc(std::function<void()> func);
+		void SetLoadFunc(std::function<void(Scene&)> func);
 		void Load();
 		void UnLoad();
 
@@ -46,13 +46,15 @@ namespace dae
 			return nullptr;
 		}
 
+		std::vector<GameObject*> GetObjectsByTag(dae::Tag tag) const;
+
 		void RequestReorderObjects() { m_reorderObjects = true; }
 
 	private:
 		friend class SceneManager;
 		explicit Scene() = default;
 
-		std::function<void()> m_loadFunc{};
+		std::function<void(Scene&)> m_loadFunc{};
 		std::vector<std::unique_ptr<GameObject>> m_objects{};
 
 		bool m_reorderObjects{ false };

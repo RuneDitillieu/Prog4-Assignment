@@ -49,7 +49,6 @@ add_library(${ENGINE_NAME} STATIC
   "Minigin/Components/MovementComponent.cpp"
   "Minigin/Components/HealthComponent.cpp"
   
-
   "Minigin/Components/Colliders/CircleColliderComponent.cpp" 
   "Minigin/Components/Colliders/RectColliderComponent.cpp"
   "Minigin/Components/Basics/SpriteComponent.cpp"
@@ -267,14 +266,14 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
   "Game/States/QBertStates/QBertDroppingState.cpp" 
   "Game/States/QBertStates/QBertTransportedState.cpp" 
   "Game/States/QBertStates/QBertFallingState.cpp"
-   "Game/States/QBertStates/QBertState.cpp" 
+  "Game/States/QBertStates/QBertState.cpp" 
   "Game/States/QBertStates/QBertStunnedState.cpp" 
 
   "Game/States/DiscStates/DiscIdleState.cpp" 
   "Game/States/DiscStates/DiscMovingState.cpp" 
   "Game/States/DiscStates/DiscDropOffState.cpp" )
 
-set(GAME_DIRS Game Game/Actors Game/Components Game/Levels 
+set(GAME_DIRS Game Game/Actors Game/Components Game/Levels Game/Managers
     Game/States Game/States/CoilyStates Game/States/QBertStates Game/States/DiscStates)
 
 target_include_directories(${GAME_NAME} PRIVATE ${GAME_DIRS})

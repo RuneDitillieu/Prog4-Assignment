@@ -2,6 +2,19 @@
 #include "Subject.h"
 #include "SceneManager.h"
 
+void dae::GameObject::Start()
+{
+	for (auto& component : m_components)
+	{
+		component->Start();
+	}
+
+	for (auto& child : m_children)
+	{
+		child->Start();
+	}
+}
+
 void dae::GameObject::Update()
 {
 	if (!m_isEnabled) return;

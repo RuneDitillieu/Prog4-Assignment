@@ -10,6 +10,11 @@ QBert::CoilyActorComp::CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel
 	m_pState->OnEnter();
 }
 
+void QBert::CoilyActorComp::Start()
+{
+	GetOwner()->GetSubject()->AddObserver(this);
+}
+
 void QBert::CoilyActorComp::Update()
 {
 	auto state = m_pState->Update();

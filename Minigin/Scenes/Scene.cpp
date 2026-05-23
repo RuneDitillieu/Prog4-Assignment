@@ -4,14 +4,18 @@
 
 using namespace dae;
 
-void Scene::SetLoadFunc(std::function<void()> func)
+void Scene::SetLoadFunc(std::function<void(Scene&)> func)
 {
 	m_loadFunc = func;
 }
 
 void Scene::Load()
 {
-	m_loadFunc();
+	m_loadFunc(*this);
+	for (auto& object : m_objects)
+	{
+		object->Start();
+	}
 }
 
 void Scene::UnLoad()
@@ -106,6 +110,21 @@ void Scene::Render() const
 			continue;
 		object->Render();
 	}
+}
+
+std::vector<GameObject*> Scene::GetObjectsByTag(dae::Tag tag) const
+{
+	std::vector<GameObject*> vec{};
+
+	for (auto& object : m_objects)
+	{
+		if (object->GetTag() == tag)
+		{
+			vec.emplace_back(object.get());
+		}
+	}
+
+	return vec;
 }
 
 [[nodiscard]] GameObject* dae::Scene::GetGameObjectOwnership(GameObject* pObject)

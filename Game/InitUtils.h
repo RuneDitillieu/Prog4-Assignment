@@ -18,6 +18,7 @@
 #include "DiscActor.h"
 #include "CoilyActor.h"
 #include "LivesDisplayComponent.h"
+#include "Tags.h"
 
 namespace QBert::Utils
 {
@@ -248,7 +249,7 @@ namespace QBert::Utils
 
 	std::unique_ptr<dae::GameObject> CreatePlayer(QBert::LevelBase* level)
 	{
-		auto player = std::make_unique<dae::GameObject>();
+		auto player = std::make_unique<dae::GameObject>(dae::Tag(QBert::Tag::Player));
 		player->SetRenderPriority(2);
 		player->SetLocalPosition(100, 300);
 		player->SetScale(3.f);
@@ -259,13 +260,21 @@ namespace QBert::Utils
 			glm::vec3((rc->GetSize().x / 8.f) * player->GetScale() / 2.f, (rc->GetSize().y * player->GetScale()) / 10.f * 9.f, 0),
 			glm::vec2(0, 0), true, false));
 		sprite->SetCurFrame(5);
-		auto actor = player->AddComponent(std::make_unique<QBert::QBertActorComp>(player.get(), sprite, move, level));
+		player->AddComponent(std::make_unique<QBert::QBertActorComp>(player.get(), sprite, move, level));
 
-		player->GetSubject()->AddObserver(actor);
+		//player->GetSubject()->AddObserver(actor);
 
 		glm::vec2 texSize{ player->GetComponent<dae::RenderComponent>()->GetSize() * player->GetScale() };
 		player->AddComponent(std::make_unique<dae::RectColliderComp>(player.get(), player->GetLocalPosition(), player->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 		player->AddComponent(std::make_unique<dae::HealthComponent>(player.get(), 1, 3, 5));
+
+		auto speechBubble = std::make_unique<dae::GameObject>();
+		auto speechRc = speechBubble->AddComponent(std::make_unique<dae::RenderComponent>(speechBubble.get(), "SpeechBubble.png"));
+		speechBubble->SetScale(2.f);
+		speechBubble->SetLocalPosition((rc->GetSize().x / 16.f) * player->GetScale() - (speechRc->GetSize().x / 2.f) * speechBubble->GetScale(), 
+			-speechRc->GetSize().y * speechBubble->GetScale());
+		speechBubble->IsEnabled(false);
+		speechBubble.release()->SetParent(player.get(), false);
 
 		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
 		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
@@ -277,7 +286,7 @@ namespace QBert::Utils
 
 	std::unique_ptr<dae::GameObject> CreateCoily(QBert::LevelBase* level, QBert::QBertMoveComp* playerMove)
 	{
-		auto coily = std::make_unique<dae::GameObject>();
+		auto coily = std::make_unique<dae::GameObject>(dae::Tag(QBert::Tag::Coily));
 		coily->SetRenderPriority(2);
 		auto rc = coily->AddComponent(std::make_unique<dae::RenderComponent>(coily.get(), "CoilySprites.png"));
 		coily->SetLocalPosition(300, 300);
@@ -289,8 +298,8 @@ namespace QBert::Utils
 		coily->AddComponent(std::make_unique<dae::RectColliderComp>(coily.get(), coily->GetLocalPosition(), coily->GetLocalPosition() + glm::vec3(texSize.x, texSize.y, 0)));
 		coily->AddComponent(std::make_unique<dae::HealthComponent>(coily.get(), 1, 1, 1));
 
-		coily->GetSubject()->AddObserver(actor);
-		coily->GetSubject()->AddObserver(playerMove->GetOwner()->GetComponent<QBert::QBertActorComp>());
+		//coily->GetSubject()->AddObserver(actor);
+		//coily->GetSubject()->AddObserver(playerMove->GetOwner()->GetComponent<QBert::QBertActorComp>());
 		playerMove->GetOwner()->GetSubject()->AddObserver(actor);
 
 		return coily;
@@ -298,7 +307,7 @@ namespace QBert::Utils
 
 	std::unique_ptr<dae::GameObject> CreateDisc(const glm::vec2& tile, dae::GameObject* player, QBert::LevelBase* level)
 	{
-		auto disc = std::make_unique<dae::GameObject>();
+		auto disc = std::make_unique<dae::GameObject>(dae::Tag(QBert::Tag::Disc));
 		disc->SetScale(3.f);
 
 		auto rc = disc->AddComponent(std::make_unique<dae::RenderComponent>(disc.get(), "DiscSprites.png"));
