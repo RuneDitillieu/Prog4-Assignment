@@ -29,7 +29,6 @@ namespace QBert
 		std::type_index GetType() const override;
 
 	private:
-		float m_secPassed{ 0.f };
 		std::unique_ptr<SlickSamState> m_pState{ nullptr };
 	};
 }

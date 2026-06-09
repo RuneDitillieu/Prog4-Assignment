@@ -11,27 +11,19 @@ QBert::QBertActorComp::QBertActorComp(dae::GameObject* pOwner, dae::SpriteComp* 
 
 QBert::QBertActorComp::~QBertActorComp()
 {
-	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Coily));
-	for (auto coily : coilys)
-	{
-		coily->GetSubject()->RemoveObserver(this);
-	}
-
 	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Disc));
 	for (auto disc : discs)
 	{
-		disc->GetSubject()->RemoveObserver(this);
+		if (GetOwner()->GetParent() != disc)
+		{
+			disc->GetSubject()->RemoveObserver(this);
+		}
 	}
 }
 
 void QBert::QBertActorComp::Start()
 {
 	GetOwner()->GetSubject()->AddObserver(this);
-	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Coily));
-	for (auto coily : coilys)
-	{
-		coily->GetSubject()->AddObserver(this);
-	}
 
 	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Disc));
 	for (auto disc : discs)

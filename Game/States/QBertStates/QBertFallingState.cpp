@@ -24,7 +24,7 @@ void QBert::FallingQBertState::OnExit()
 {
 	//m_qbert->SetLocalPosition(m_pConnLevel->GetMiddlePosOfTile(0, 0) + m_pMoveComp->GetFeetPos());
 	m_pMoveComp->m_isEnabled = true;
-	m_pMoveComp->Reset(glm::vec2(0, 0));
+	m_pMoveComp->Reset(glm::vec2(0, 0), true);
 	m_qbert->GetComponent<dae::HealthComponent>()->LoseLife();
 	m_qbert->SetRenderPriority(2);
 	dae::SceneManager::GetInstance().GetActiveScene()->RequestReorderObjects();

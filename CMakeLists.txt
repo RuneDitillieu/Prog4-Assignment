@@ -277,7 +277,8 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
   Game/States/SlickSamStates/IdleSlickSamState.cpp
         Game/States/SlickSamStates/JumpingSlickSamState.cpp
         Game/States/SlickSamStates/FallingSlickSamState.cpp
-        Game/States/SlickSamStates/SlickSamState.cpp)
+        Game/States/SlickSamStates/SlickSamState.cpp
+        Game/InitUtils.cpp)
 
 set(GAME_DIRS Game Game/Actors Game/Components Game/Levels Game/Managers
     Game/States Game/States/CoilyStates Game/States/QBertStates Game/States/DiscStates

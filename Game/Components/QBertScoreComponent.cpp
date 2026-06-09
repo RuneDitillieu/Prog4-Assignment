@@ -1,5 +1,6 @@
 #include "QBertScoreComponent.h"
 #include "GameObject.h"
+#include "LevelManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Tags.h"
@@ -17,17 +18,14 @@ QBert::ScoreComp::~ScoreComp()
 		qbert->GetSubject()->RemoveObserver(this);
 	}
 
-	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
-	for (auto coily : coilys)
-	{
-		coily->GetSubject()->RemoveObserver(this);
-	}
+	// auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
+	// for (auto coily : coilys)
+	// {
+	// 	coily->GetSubject()->RemoveObserver(this);
+	// }
 
-	auto levels = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Level));
-	for (auto level : levels)
-	{
-		level->GetSubject()->RemoveObserver(this);
-	}
+	//auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
+	//levelManager->GetOwner()->GetSubject()->RemoveObserver(this);
 }
 
 void QBert::ScoreComp::Start()
@@ -38,17 +36,14 @@ void QBert::ScoreComp::Start()
 		qbert->GetSubject()->AddObserver(this);
 	}
 
-	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
-	for (auto coily : coilys)
-	{
-		coily->GetSubject()->AddObserver(this);
-	}
+	// auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
+	// for (auto coily : coilys)
+	// {
+	// 	coily->GetSubject()->AddObserver(this);
+	// }
 
-	auto levels = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Level));
-	for (auto level : levels)
-	{
-		level->GetSubject()->AddObserver(this);
-	}
+	auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
+	levelManager->GetOwner()->GetSubject()->AddObserver(this);
 }
 
 void QBert::ScoreComp::Notify(dae::Event event, dae::Subject*)

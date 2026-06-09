@@ -1,6 +1,8 @@
 #include "CoilyActor.h"
 #include "GameObject.h"
+#include "QBertActor.h"
 #include "QBertMoveComponent.h"
+#include "QBertScoreComponent.h"
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Tags.h"
@@ -29,7 +31,11 @@ void QBert::CoilyActorComp::Start()
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->AddObserver(this);
+		GetOwner()->GetSubject()->AddObserver(qbert->GetComponent<QBertActorComp>());
 	}
+
+	auto score = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<ScoreComp>();
+	GetOwner()->GetSubject()->AddObserver(score);
 }
 
 void QBert::CoilyActorComp::Update()

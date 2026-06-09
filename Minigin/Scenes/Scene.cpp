@@ -38,6 +38,7 @@ void Scene::Add(std::unique_ptr<GameObject> object)
 	else
 	{
 		m_objects.emplace_back(std::move(object));
+		m_invalidVec = true;
 	}
 }
 
@@ -59,10 +60,12 @@ void Scene::RemoveMarkedForRemoval()
 		m_objects.end()
 	);
 }
+
 void Scene::RemoveAll()
 {
 	m_objects.clear();
 }
+
 void Scene::ReorderObjects()
 {
 	if (m_reorderObjects)
@@ -72,14 +75,17 @@ void Scene::ReorderObjects()
 			{ return obj1->GetRenderPriority() < obj2->GetRenderPriority(); });
 	}
 }
+
 void Scene::Update()
 {
 	for(auto& object : m_objects)
 	{
-		if (object == nullptr)
+		if (object == nullptr || m_invalidVec)
 			continue;
 		object->Update();
 	}
+
+	m_invalidVec = false;
 
 	RemoveMarkedForRemoval();
 	ReorderObjects();

@@ -8,6 +8,8 @@
 
 namespace QBert
 {
+	struct TileParams;
+
 	enum class TileType
 	{
 		Tile,
@@ -36,15 +38,17 @@ namespace QBert
 		glm::vec3 GetMiddlePosOfTile(int col, int row) const;
 		TileType GetTileType(int col, int row) const;
 		dae::GameObject* GetDisc(int col, int row) const;
-		void SetDiscs(std::vector<QBert::DiscActorComp*>&& discs);
+		void SetDiscs(std::vector<DiscActorComp*>&& discs);
 		int GetActiveDiscAmount() const;
+
+		void ResetBase(TileParams tileParams);
 
 	private:
 		bool AreAllTilesCorrect() const;
 		float m_tileSize{};
 		glm::vec3 m_middlePosOffset{};
 		std::vector<std::vector<TileComp*>> m_tiles;
-		std::vector<QBert::DiscActorComp*> m_discs{};
+		std::vector<DiscActorComp*> m_discs{};
 	};
 }
 

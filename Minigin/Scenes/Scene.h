@@ -59,6 +59,8 @@ namespace dae
 
 		bool m_reorderObjects{ false };
 		void ReorderObjects();
+
+		bool m_invalidVec{ false };
 	};
 }
 

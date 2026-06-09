@@ -19,6 +19,8 @@
 #include "Commands.h"
 
 #include <filesystem>
+#include "DiscActor.h"
+#include "InputManager.h"
 namespace fs = std::filesystem;
 
 std::unique_ptr<dae::SoundSystem> dae::ServiceLocator::_ss_instance{ std::make_unique<dae::NullSoundSystem>() };
@@ -48,8 +50,8 @@ static void load()
 
 		// player
 		go = QBert::Utils::CreatePlayer(levelComp);
-		dae::GameObject* player = go.get();
-		auto playerMove{ player->GetComponent<QBert::QBertMoveComp>() };
+		//dae::GameObject* player = go.get();
+		//auto playerMove{ player->GetComponent<QBert::QBertMoveComp>() };
 		scene.Add(std::move(go));
 
 		// disc
@@ -62,7 +64,7 @@ static void load()
 		levelComp->SetDiscs(std::move(discs));
 
 		// coily
-		go = QBert::Utils::CreateCoily(levelComp, playerMove);
+		//go = QBert::Utils::CreateCoily(levelComp, playerMove);
 
 		//#if defined(__EMSCRIPTEN__)
 		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
@@ -83,10 +85,10 @@ static void load()
 		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), XINPUT_GAMEPAD_B, 0);
 		//#endif // !EMSCRIPTEN
 
-		scene.Add(std::move(go));
+		//scene.Add(std::move(go));
 
-		go = QBert::Utils::CreateSlick(levelComp, playerMove);
-		scene.Add(std::move(go));
+		//go = QBert::Utils::CreateSlick(levelComp, playerMove);
+		//scene.Add(std::move(go));
 		dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MuteCommand>(), SDL_SCANCODE_F2, SDL_EVENT_KEY_DOWN);
 
 		QBert::Utils::CreateUi(scene);

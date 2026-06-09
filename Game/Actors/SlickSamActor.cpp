@@ -22,9 +22,6 @@ QBert::SlickSamActorComp::~SlickSamActorComp()
 	{
 		qbert->GetSubject()->RemoveObserver(this);
 	}
-
-	//auto scoreComp = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<ScoreComp>();
-	//GetOwner()->GetSubject()->RemoveObserver(scoreComp);
 }
 
 void QBert::SlickSamActorComp::Start()
@@ -42,8 +39,6 @@ void QBert::SlickSamActorComp::Start()
 
 void QBert::SlickSamActorComp::Update()
 {
-	m_secPassed += dae::DeltaTime::GetInstance().GetDeltaTime();
-	if (m_secPassed < 3) return;
 	auto state = m_pState->Update();
 	if (state != nullptr)
 	{

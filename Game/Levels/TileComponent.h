@@ -7,11 +7,22 @@
 
 namespace QBert
 {
+	struct TileParams
+	{
+		int tileType;
+		bool revertable;
+
+		int startTile;
+		int winTile;
+		int middleTile = -1;
+	};
+
 	class GameObject;
 	class TileComp : public dae::Component
 	{
 	public:
 		TileComp(dae::GameObject* pOwner, int tileType, bool revertable, int start, int win, int middle = -1);
+		TileComp(dae::GameObject* pOwner, const TileParams& tileParams);
 		~TileComp() = default;
 		TileComp(const TileComp& other) = delete;
 		TileComp(TileComp&& other) = delete;
@@ -23,16 +34,18 @@ namespace QBert
 		std::type_index GetType() const override;
 
 	private:
+		void ResetTile(const TileParams& tileParams);
+
 		bool Turn();
 		bool Revert();
 		bool IsWinColor() { return m_currentTile == m_winTile; }
 
-		const int m_tileType;
-		const bool m_revertable;
+		int m_tileType;
+		bool m_revertable;
 
-		const int m_startTile;
-		const int m_winTile;
-		const int m_middleTile;
+		int m_startTile;
+		int m_winTile;
+		int m_middleTile;
 
 		int m_currentTile;
 

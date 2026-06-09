@@ -18,7 +18,7 @@ std::unique_ptr<QBert::QBertState> QBert::DroppingQBertState::Update()
 	if (glm::length(qbertPos - tilePos) <= 5.f)
 	{
 		m_pMoveComp->m_isEnabled = true;
-		m_pMoveComp->Reset(glm::vec2(0, 0));
+		m_pMoveComp->Reset(glm::vec2(0, 0), true);
 		return std::make_unique<QBert::IdleQBertState>(m_qbert, m_pConnSpriteComp, m_pMoveComp, m_pConnLevel);
 	}
 

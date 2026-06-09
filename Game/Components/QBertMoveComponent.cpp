@@ -114,14 +114,21 @@ void QBert::QBertMoveComp::Move(const glm::vec3& direction)
 	m_goalTile = glm::vec2(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
 }
 
-void QBert::QBertMoveComp::Reset(const glm::vec2& tile)
+void QBert::QBertMoveComp::Reset(const glm::vec2& tile, bool shouldTurn)
 {
-	QBert::TileComp* goalTile = m_pConnLevelComp->GetTile(static_cast<int>(tile.x), static_cast<int>(tile.y));
+	TileComp* goalTile = m_pConnLevelComp->GetTile(static_cast<int>(tile.x), static_cast<int>(tile.y));
 	if (goalTile)
 	{
 		m_goalPos = goalTile->GetMiddlePos();
 		m_goalTile = tile;
-		m_currentTile = glm::vec2(-1, -1);
+		if (shouldTurn)
+		{
+			m_currentTile = glm::vec2(-1, -1);
+		}
+		else
+		{
+			m_currentTile = tile;
+		}
 		GetOwner()->SetLocalPosition(m_goalPos - m_QBertFeetPos);
 	}
 }

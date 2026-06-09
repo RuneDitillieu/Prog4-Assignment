@@ -76,6 +76,11 @@ void dae::SpriteComp::Set(int cols, int rows, float frameW, float frameH, const 
 	m_accuSec = 0.f;
 }
 
+void dae::SpriteComp::SetStartPos(const glm::vec2& startPos)
+{
+	m_startPos = startPos;
+}
+
 std::type_index dae::SpriteComp::GetType() const
 {
 	return typeid(SpriteComp);

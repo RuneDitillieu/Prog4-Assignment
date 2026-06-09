@@ -13,11 +13,28 @@ QBert::TileComp::TileComp(dae::GameObject* pOwner, int tileType, bool revertable
 { 
 	auto rc = pOwner->AddComponent(std::make_unique<dae::RenderComponent>(pOwner, "GroundPieces.png"));
 	pOwner->SetScale(3.f);
-	glm::vec2 size{ rc->GetSize().x / 22.5f, rc->GetSize().y / 6 };
+	glm::vec2 size{ rc->GetSize().x / 6, rc->GetSize().y / 3 };
 	m_pConnSprite = pOwner->AddComponent(std::make_unique<dae::SpriteComp>(pOwner, rc, "GroundPieces.png", 1, 3, 
 		size.x, size.y, glm::vec2(m_tileType * size.x, 0), false));
 
+	m_pConnSprite->SetCurFrame(start);
 	m_middlePos = glm::vec3((size.x * pOwner->GetScale()) / 2.f, (size.y * pOwner->GetScale()) / 4.f, 0);
+}
+
+QBert::TileComp::TileComp(dae::GameObject* pOwner, const TileParams& tileParams)
+	: TileComp(pOwner, tileParams.tileType, tileParams.revertable, tileParams.startTile, tileParams.winTile, tileParams.middleTile)
+{ }
+
+void QBert::TileComp::ResetTile(const TileParams& tileParams)
+{
+	m_tileType = tileParams.tileType;
+	m_revertable = tileParams.revertable;
+	m_startTile = tileParams.startTile;
+	m_winTile = tileParams.winTile;
+	m_middleTile = tileParams.middleTile;
+
+	m_currentTile = m_startTile;
+	m_pConnSprite->SetStartPos(glm::vec2(m_tileType * m_pConnSprite->GetSpriteSize().x, 0));
 }
 
 bool QBert::TileComp::Turn()
@@ -55,6 +72,8 @@ bool QBert::TileComp::Turn()
 
 bool QBert::TileComp::Revert()
 {
+	if (!m_revertable) return false;
+
 	int curTile{ m_currentTile };
 
 	if (m_currentTile == m_startTile)

@@ -13,7 +13,7 @@ void dae::Subject::AddObserver(IObserver* observer)
 void dae::Subject::RemoveObserver(IObserver* observer)
 {
 	m_observers.erase(std::remove_if(m_observers.begin(), m_observers.end(),
-		[observer](auto obs) { return observer == obs; }));
+		[observer](auto obs) { return observer == obs; }), m_observers.end());
 }
 
 void dae::Subject::NotifyObservers(Event event)
