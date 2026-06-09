@@ -33,5 +33,5 @@ namespace QBert
 	};
 }
 
-#endif // !DISC_H
+#endif // DISCACTOR_H
 

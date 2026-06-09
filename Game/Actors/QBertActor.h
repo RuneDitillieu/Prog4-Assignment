@@ -32,4 +32,4 @@ namespace QBert
 	};
 }
 
-#endif // !QBERT_H
+#endif // QBERTACTOR_H

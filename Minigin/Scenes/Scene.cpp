@@ -54,17 +54,15 @@ void Scene::RemoveMarkedForRemoval()
 		std::remove_if(
 			m_objects.begin(),
 			m_objects.end(),
-			[](const auto& ptr) { return ptr.get()->GetIsMarkedForRemoval(); }
+			[](const std::unique_ptr<GameObject>& ptr) { return ptr.get()->GetIsMarkedForRemoval(); }
 		),
 		m_objects.end()
 	);
 }
-
 void Scene::RemoveAll()
 {
 	m_objects.clear();
 }
-
 void Scene::ReorderObjects()
 {
 	if (m_reorderObjects)
@@ -74,7 +72,6 @@ void Scene::ReorderObjects()
 			{ return obj1->GetRenderPriority() < obj2->GetRenderPriority(); });
 	}
 }
-
 void Scene::Update()
 {
 	for(auto& object : m_objects)
@@ -120,6 +117,13 @@ std::vector<GameObject*> Scene::GetObjectsByTag(dae::Tag tag) const
 		if (object != nullptr && object->GetTag() == tag)
 		{
 			vec.emplace_back(object.get());
+		}
+		if (object != nullptr)
+		{
+			for (GameObject* child : object->GetChildrenByTag(tag))
+			{
+				vec.emplace_back(child);
+			}
 		}
 	}
 

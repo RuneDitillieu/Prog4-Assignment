@@ -16,7 +16,7 @@ namespace dae
 		Scene& CreateScene(std::function<void(Scene&)> loadFunc);
 
 		Scene* GetActiveScene() const;
-		void SetActiveScene(int sceneIdx);
+		void SetActiveScene(size_t sceneIdx);
 
 		void Update();
 		void LateUpdate();
@@ -26,7 +26,7 @@ namespace dae
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
 
-		int m_activeSceneIdx{ 0 };
+		size_t m_activeSceneIdx{ 0 };
 		std::vector<std::unique_ptr<Scene>> m_scenes{};
 	};
 }

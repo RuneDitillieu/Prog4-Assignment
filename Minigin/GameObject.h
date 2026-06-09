@@ -133,6 +133,7 @@ namespace dae
 		void SetRenderPriority(int priority) { m_renderPriority = priority; }
 
 		Tag GetTag() const { return m_tag; }
+		std::vector<GameObject*> GetChildrenByTag(Tag tag) const;
 
 	private:
 		Tag m_tag{ 0 };

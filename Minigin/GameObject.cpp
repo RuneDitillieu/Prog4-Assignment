@@ -235,3 +235,22 @@ void dae::GameObject::IsEnabled(bool isEnabled, bool applyToComponents, bool app
 		}
 	}
 }
+
+std::vector<dae::GameObject*> dae::GameObject::GetChildrenByTag(Tag tag) const
+{
+	std::vector<GameObject*> objects{};
+	for (auto& child : m_children)
+	{
+		if (child->GetTag() == tag)
+		{
+			objects.emplace_back(child.get());
+		}
+
+		for (auto& childChild : child->GetChildrenByTag(tag))
+		{
+			objects.emplace_back(childChild);
+		}
+	}
+
+	return objects;
+}

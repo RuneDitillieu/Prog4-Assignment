@@ -8,14 +8,14 @@
 QBert::CoilyActorComp::CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel, QBertMoveComp* qbertMove)
 	: dae::Component(pOwner)
 {
-	m_pState = std::make_unique<QBert::IdleEggState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>(), 
-		GetOwner()->GetComponent<QBert::QBertMoveComp>(), pLevel, qbertMove);
+	m_pState = std::make_unique<IdleEggState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>(),
+		GetOwner()->GetComponent<QBertMoveComp>(), pLevel, qbertMove);
 	m_pState->OnEnter();
 }
 
 QBert::CoilyActorComp::~CoilyActorComp()
 {
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->RemoveObserver(this);
@@ -25,7 +25,7 @@ QBert::CoilyActorComp::~CoilyActorComp()
 void QBert::CoilyActorComp::Start()
 {
 	GetOwner()->GetSubject()->AddObserver(this);
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->AddObserver(this);

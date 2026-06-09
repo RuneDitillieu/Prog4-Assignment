@@ -3,21 +3,21 @@
 #include "Scene.h"
 #include "Tags.h"
 
-QBert::QBertActorComp::QBertActorComp(dae::GameObject* pOwner, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, QBert::LevelBase* pLevel)
+QBert::QBertActorComp::QBertActorComp(dae::GameObject* pOwner, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* pLevel)
 	: dae::Component(pOwner)
 { 
-	m_pState = std::make_unique<QBert::IdleQBertState>(pOwner, spriteComp, moveComp, pLevel);
+	m_pState = std::make_unique<IdleQBertState>(pOwner, spriteComp, moveComp, pLevel);
 }
 
 QBert::QBertActorComp::~QBertActorComp()
 {
-	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
+	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Coily));
 	for (auto coily : coilys)
 	{
 		coily->GetSubject()->RemoveObserver(this);
 	}
 
-	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Disc));
+	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Disc));
 	for (auto disc : discs)
 	{
 		disc->GetSubject()->RemoveObserver(this);
@@ -27,13 +27,13 @@ QBert::QBertActorComp::~QBertActorComp()
 void QBert::QBertActorComp::Start()
 {
 	GetOwner()->GetSubject()->AddObserver(this);
-	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
+	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Coily));
 	for (auto coily : coilys)
 	{
 		coily->GetSubject()->AddObserver(this);
 	}
 
-	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Disc));
+	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Disc));
 	for (auto disc : discs)
 	{
 		disc->GetSubject()->AddObserver(this);

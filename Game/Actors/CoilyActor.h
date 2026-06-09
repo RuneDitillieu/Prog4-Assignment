@@ -31,4 +31,4 @@ namespace QBert
 	};
 }
 
-#endif // !COILY_H
+#endif // COILYACTOR_H
