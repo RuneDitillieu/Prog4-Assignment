@@ -53,7 +53,7 @@ std::unique_ptr<QBert::CoilyState> QBert::JumpingSnakeState::Update()
 
 	if (!m_pMoveComp->IsMoving())
 	{
-		return std::make_unique<QBert::IdleSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+		return std::make_unique<IdleSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 	}
 
 	return nullptr;
@@ -68,7 +68,7 @@ std::unique_ptr<QBert::CoilyState> QBert::JumpingSnakeState::OnNotify(dae::Event
 		&& subject == m_coily->GetSubject())
 	{
 		m_pMoveComp->m_isEnabled = false;
-		return std::make_unique<QBert::FallingSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+		return std::make_unique<FallingSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 	}
 
 	return nullptr;

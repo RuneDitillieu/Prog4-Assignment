@@ -21,7 +21,7 @@ std::unique_ptr<QBert::CoilyState> QBert::IdleSnakeState::Update()
 
 	if (m_secPassed >= m_idleSec)
 	{
-		return std::make_unique<QBert::JumpingSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+		return std::make_unique<JumpingSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 	}
 
 	return nullptr;

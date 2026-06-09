@@ -8,6 +8,8 @@ namespace QBert
 		UnTagged,
 		Player,
 		Coily,
+		SlickSam,
+		UggWrongway,
 		Disc,
 		Level
 	};

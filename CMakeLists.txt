@@ -238,43 +238,50 @@ target_link_libraries(${ENGINE_NAME} PUBLIC
 
 # list source files
 add_executable(${GAME_NAME} ${TARGET_PARAM}
-  "Game/Main.cpp"
+  Game/Main.cpp
 
-  "Game/Actors/CoilyActor.cpp"
-  "Game/Actors/QBertActor.cpp" 
-  "Game/Actors/DiscActor.cpp"
+  Game/Actors/CoilyActor.cpp
+  Game/Actors/QBertActor.cpp
+  Game/Actors/DiscActor.cpp
+  Game/Actors/SlickSamActor.cpp
 
-  "Game/Components/QBertScoreComponent.cpp" 
-  "Game/Components/QBertMoveComponent.cpp" 
-  "Game/Components/ArrowAnimComponent.cpp" 
-  "Game/Components/LivesDisplayComponent.cpp" 
+  Game/Components/QBertScoreComponent.cpp
+  Game/Components/QBertMoveComponent.cpp
+  Game/Components/ArrowAnimComponent.cpp
+  Game/Components/LivesDisplayComponent.cpp
 
-  "Game/Levels/TileComponent.cpp" 
-  "Game/Levels/LevelBase.cpp" 
-  "Game/Levels/LevelManager.cpp" 
+  Game/Levels/TileComponent.cpp
+  Game/Levels/LevelBase.cpp
+  Game/Levels/LevelManager.cpp
 
-  "Game/States/CoilyStates/CoilyIdleEggState.cpp"
-  "Game/States/CoilyStates/CoilyIdleSnakeState.cpp" 
-  "Game/States/CoilyStates/CoilyJumpingEggState.cpp"
-  "Game/States/CoilyStates/CoilyJumpingSnakeState.cpp" 
-  "Game/States/CoilyStates/CoilyFallingState.cpp" 
-  "Game/States/CoilyStates/CoilyState.cpp" 
-  "Game/States/CoilyStates/CoilyStunnedState.cpp"
+  Game/States/CoilyStates/CoilyIdleEggState.cpp
+  Game/States/CoilyStates/CoilyIdleSnakeState.cpp
+  Game/States/CoilyStates/CoilyJumpingEggState.cpp
+  Game/States/CoilyStates/CoilyJumpingSnakeState.cpp
+  Game/States/CoilyStates/CoilyFallingState.cpp
+  Game/States/CoilyStates/CoilyState.cpp
+  Game/States/CoilyStates/CoilyStunnedState.cpp
 
-  "Game/States/QBertStates/QBertJumpingState.cpp" 
-  "Game/States/QBertStates/QBertIdleState.cpp"
-  "Game/States/QBertStates/QBertDroppingState.cpp" 
-  "Game/States/QBertStates/QBertTransportedState.cpp" 
-  "Game/States/QBertStates/QBertFallingState.cpp"
-  "Game/States/QBertStates/QBertState.cpp" 
-  "Game/States/QBertStates/QBertStunnedState.cpp" 
+  Game/States/QBertStates/QBertJumpingState.cpp
+  Game/States/QBertStates/QBertIdleState.cpp
+  Game/States/QBertStates/QBertDroppingState.cpp
+  Game/States/QBertStates/QBertTransportedState.cpp
+  Game/States/QBertStates/QBertFallingState.cpp
+  Game/States/QBertStates/QBertState.cpp
+  Game/States/QBertStates/QBertStunnedState.cpp
 
-  "Game/States/DiscStates/DiscIdleState.cpp" 
-  "Game/States/DiscStates/DiscMovingState.cpp" 
-  "Game/States/DiscStates/DiscDropOffState.cpp" )
+  Game/States/DiscStates/DiscIdleState.cpp
+  Game/States/DiscStates/DiscMovingState.cpp
+  Game/States/DiscStates/DiscDropOffState.cpp
+
+  Game/States/SlickSamStates/IdleSlickSamState.cpp
+        Game/States/SlickSamStates/JumpingSlickSamState.cpp
+        Game/States/SlickSamStates/FallingSlickSamState.cpp
+        Game/States/SlickSamStates/SlickSamState.cpp)
 
 set(GAME_DIRS Game Game/Actors Game/Components Game/Levels Game/Managers
-    Game/States Game/States/CoilyStates Game/States/QBertStates Game/States/DiscStates)
+    Game/States Game/States/CoilyStates Game/States/QBertStates Game/States/DiscStates
+    Game/States/SlickSamStates)
 
 target_include_directories(${GAME_NAME} PRIVATE ${GAME_DIRS})
 target_compile_features(${GAME_NAME} PUBLIC cxx_std_20)

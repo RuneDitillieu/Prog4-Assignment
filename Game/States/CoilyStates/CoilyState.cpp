@@ -1,6 +1,5 @@
 #include "CoilyStates.h"
 #include "QBertMoveComponent.h"
-#include "HealthComponent.h"
 
 QBert::CoilyState::CoilyState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
 	: m_coily(coily), m_pConnSprite(spriteComp), m_pMoveComp(moveComp), m_pConnLevel(level), m_pQBertMoveComp(qbertMoveComp)
@@ -20,7 +19,7 @@ std::unique_ptr<QBert::CoilyState> QBert::CoilyState::Update()
 			e.args->object = m_pQBertMoveComp->GetOwner();
 			m_coily->GetSubject()->NotifyObservers(e);
 
-			return std::make_unique<QBert::StunnedCoilyState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+			return std::make_unique<StunnedCoilyState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 		}
 	}
 
@@ -31,7 +30,7 @@ std::unique_ptr<QBert::CoilyState> QBert::CoilyState::OnNotify(dae::Event event,
 {
 	if (event.id == dae::make_sdbm_hash("QBERT_KILLED"))
 	{
-		return std::make_unique<QBert::StunnedCoilyState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+		return std::make_unique<StunnedCoilyState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 	}
 
 	return nullptr;

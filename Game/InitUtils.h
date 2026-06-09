@@ -18,6 +18,7 @@
 #include "DiscActor.h"
 #include "CoilyActor.h"
 #include "LivesDisplayComponent.h"
+#include "SlickSamActor.h"
 #include "Tags.h"
 
 namespace QBert::Utils
@@ -241,7 +242,7 @@ namespace QBert::Utils
 
 	std::unique_ptr<dae::GameObject> CreatePlayer(QBert::LevelBase* level)
 	{
-		auto player = std::make_unique<dae::GameObject>(dae::Tag(QBert::Tag::Player));
+		auto player = std::make_unique<dae::GameObject>(dae::Tag(Tag::Player));
 		player->SetRenderPriority(2);
 		player->SetLocalPosition(100, 300);
 		player->SetScale(3.f);
@@ -306,6 +307,29 @@ namespace QBert::Utils
 			sprite->GetSpriteSize().y * disc->GetScale() / 2.f, 0));
 
 		return disc;
+	}
+
+	std::unique_ptr<dae::GameObject> CreateSlick(LevelBase* level, QBertMoveComp* playerMove)
+	{
+		auto slick = std::make_unique<dae::GameObject>(dae::Tag(Tag::SlickSam));
+		slick->SetRenderPriority(2);
+		auto rc = slick->AddComponent(std::make_unique<dae::RenderComponent>(slick.get(), "SlickSprites.png"));
+		slick->SetLocalPosition(300, 300);
+		slick->SetScale(3.f);
+		glm::vec2 texSize = rc->GetSize() * slick->GetScale();
+		slick->AddComponent(std::make_unique<dae::SpriteComp>(slick.get(), "SlickSprites.png", 8, 1, false));
+		slick->AddComponent(std::make_unique<QBertMoveComp>(slick.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), glm::vec2(0, 1), false, true));
+		slick->AddComponent(std::make_unique<SlickSamActorComp>(slick.get(), level, playerMove));
+		slick->AddComponent(std::make_unique<dae::HealthComponent>(slick.get(), 1, 1, 1));
+
+		return slick;
+	}
+
+	std::unique_ptr<dae::GameObject> CreateSam(LevelBase* level, QBertMoveComp* playerMove)
+	{
+		auto sam = CreateSlick(level, playerMove);
+		sam->GetComponent<dae::RenderComponent>()->SetTexture("SamSprites.png");
+		return sam;
 	}
 }
 

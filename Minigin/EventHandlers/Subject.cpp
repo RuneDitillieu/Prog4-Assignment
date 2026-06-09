@@ -12,13 +12,16 @@ void dae::Subject::AddObserver(IObserver* observer)
 
 void dae::Subject::RemoveObserver(IObserver* observer)
 {
-	m_observers.erase(std::remove_if(m_observers.begin(), m_observers.end(), [observer](auto obs) { return observer == obs; }));
+	m_observers.erase(std::remove_if(m_observers.begin(), m_observers.end(),
+		[observer](auto obs) { return observer == obs; }));
 }
 
 void dae::Subject::NotifyObservers(Event event)
 {
 	for (auto observer : m_observers)
+	{
 		observer->Notify(event, this);
+	}
 }
 
 dae::GameObject* dae::Subject::GetOwner() const

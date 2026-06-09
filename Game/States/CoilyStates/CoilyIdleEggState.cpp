@@ -3,7 +3,6 @@
 #include "QBertMoveComponent.h"
 #include "LevelBase.h"
 #include "SceneManager.h"
-#include "QBertActor.h"
 
 QBert::IdleEggState::IdleEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
 	: CoilyState(coily, spriteComp, moveComp, level, qbertMoveComp)
@@ -30,11 +29,11 @@ std::unique_ptr<QBert::CoilyState> QBert::IdleEggState::Update()
 
 	if (m_secPassed >= m_idleSec && !hasReachedBottom)
 	{
-		return std::make_unique<QBert::JumpingEggState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+		return std::make_unique<JumpingEggState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 	}
 	else if(m_secPassed >= m_idleSec * 3.f)
 	{
-		return std::make_unique<QBert::IdleSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+		return std::make_unique<IdleSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 	}
 
 	return nullptr;

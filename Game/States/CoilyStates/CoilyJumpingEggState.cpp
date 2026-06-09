@@ -28,7 +28,7 @@ std::unique_ptr<QBert::CoilyState> QBert::JumpingEggState::Update()
 
 	if (!m_pMoveComp->IsMoving())
 	{
-		return std::make_unique<QBert::IdleEggState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+		return std::make_unique<IdleEggState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 	}
 
 	return nullptr;
