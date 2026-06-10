@@ -1,5 +1,6 @@
 #include "CoilyStates.h"
 #include "QBertMoveComponent.h"
+#include "LevelBase.h"
 
 QBert::JumpingSnakeState::JumpingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
 	QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
@@ -16,15 +17,34 @@ void QBert::JumpingSnakeState::OnEnter()
 		return;
 	}
 
+	bool hasReachedBottom{ !m_pConnLevel->GetTile(static_cast<int>(m_pMoveComp->GetCurrentTile().x + 1),
+		static_cast<int>(m_pMoveComp->GetCurrentTile().y)) };
+
 	if (abs(moveDir.x) > abs(moveDir.y))
 	{
-		moveDir.y = 0;
-		moveDir.x /= abs(moveDir.x);
+		if (hasReachedBottom && moveDir.x > 0)
+		{
+			moveDir.x = 0;
+			moveDir.y = -1;
+		}
+		else
+		{
+			moveDir.y = 0;
+			moveDir.x /= abs(moveDir.x);
+		}
 	}
 	else
 	{
-		moveDir.x = 0;
-		moveDir.y /= abs(moveDir.y);
+		if (hasReachedBottom && moveDir.y > 0)
+		{
+			moveDir.x = -1;
+			moveDir.y = 0;
+		}
+		else
+		{
+			moveDir.x = 0;
+			moveDir.y /= abs(moveDir.y);
+		}
 	}
 
 	m_pMoveComp->Move(glm::vec3(moveDir.x, moveDir.y, 0));
