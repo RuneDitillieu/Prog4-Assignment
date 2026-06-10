@@ -4,11 +4,12 @@
 #include <memory>
 #include <vector>
 #include "GameObject.h"
-#include "IObserver.h"
 #include <functional>
 
 namespace dae
 {
+	using SceneName = unsigned short;
+
 	class Scene final
 	{
 	public:
@@ -25,7 +26,7 @@ namespace dae
 
 		[[nodiscard]] GameObject* GetGameObjectOwnership(GameObject* pObject);
 
-		Scene(std::function<void(Scene&)> loadFunc);
+		Scene(SceneName sceneName, std::function<void(Scene&)> loadFunc);
 		~Scene() = default;
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
@@ -49,10 +50,13 @@ namespace dae
 		std::vector<GameObject*> GetObjectsByTag(dae::Tag tag) const;
 
 		void RequestReorderObjects() { m_reorderObjects = true; }
+		SceneName GetSceneName() const { return m_sceneName; }
 
 	private:
 		friend class SceneManager;
 		explicit Scene() = default;
+
+		SceneName m_sceneName{};
 
 		std::function<void(Scene&)> m_loadFunc;
 		std::vector<std::unique_ptr<GameObject>> m_objects{};

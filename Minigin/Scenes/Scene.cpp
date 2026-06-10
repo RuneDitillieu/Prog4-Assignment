@@ -4,8 +4,8 @@
 
 using namespace dae;
 
-Scene::Scene(std::function<void(Scene&)> loadFunc)
-	: m_loadFunc(loadFunc)
+Scene::Scene(SceneName sceneName, std::function<void(Scene&)> loadFunc)
+	: m_sceneName(sceneName), m_loadFunc(loadFunc)
 { }
 
 void Scene::Load()

@@ -13,6 +13,15 @@ namespace QBert
 		Disc,
 		Level
 	};
+
+	enum class SceneName
+	{
+		IntroScene,
+		SinglePlayerScene,
+		CoopScene,
+		VersusScene,
+		HighscoreScene
+	};
 }
 
 #endif
