@@ -22,8 +22,9 @@
 #include "LivesDisplayComponent.h"
 #include "SlickSamActor.h"
 #include "Tags.h"
+#include "UggWrongwayActor.h"
 
-	dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool revertableTiles, int startTile, int winTile, int intermediateTile)
+dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool revertableTiles, int startTile, int winTile, int intermediateTile)
 	{
 		auto go = std::make_unique<dae::GameObject>(dae::Tag(Tag::Level));
 		go->SetLocalPosition(350.f, 150.f);
@@ -194,7 +195,8 @@
 		levelText->SetScale(3.f);
 		rc = levelText->AddComponent(std::make_unique<dae::RenderComponent>(levelText.get(), "LevelUi.png"));
 		levelText->AddComponent(std::make_unique<dae::SpriteComp>(levelText.get(), rc, "LevelUi.png",
-			1, 1, rc->GetSize().x / 3.f * 2.f, rc->GetSize().y / 5.f, glm::vec2(0, rc->GetSize().y / 5.f * 2.f), false));
+			1, 1, rc->GetSize().x / 3.f * 2.f, rc->GetSize().y / 5.f,
+			glm::vec2(0, rc->GetSize().y / 5.f * 2.f), false));
 
 		// nr of the current level
 		auto levelNrText = std::make_unique<dae::GameObject>();
@@ -202,7 +204,8 @@
 		levelNrText->SetScale(3.f);
 		rc = levelNrText->AddComponent(std::make_unique<dae::RenderComponent>(levelNrText.get(), "Fonts.png"));
 		auto levelNrSprite = levelNrText->AddComponent(std::make_unique<dae::SpriteComp>(levelNrText.get(), rc, "Fonts.png",
-			10, 1, rc->GetSize().x / 26.f, rc->GetSize().y / 8.f, glm::vec2(0, 0), false));
+			10, 1, rc->GetSize().x / 26.f, rc->GetSize().y / 8.f,
+			glm::vec2(0, 0), false));
 		levelNrSprite->SetCurFrame(1);
 		levelNrText.release()->SetParent(levelText.get(), false);
 
@@ -231,21 +234,50 @@
 
 	void QBert::Utils::AddSounds()
 	{
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump1), "./Data/Sounds/Jump-1.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump2), "./Data/Sounds/Jump-2.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump3), "./Data/Sounds/Jump-3.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump4), "./Data/Sounds/Jump-4.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Coin), "./Data/Sounds/Coin.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::QBertFall), "./Data/Sounds/QBertFall.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::CoilyFall), "./Data/Sounds/CoilyFall.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Lift), "./Data/Sounds/Lift.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Speech1), "./Data/Sounds/Speech-1.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Speech2), "./Data/Sounds/Speech-2.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Speech3), "./Data/Sounds/Speech-3.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::LevelStart), "./Data/Sounds/LevelStart.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Tune), "./Data/Sounds/Tune.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Victory), "./Data/Sounds/Victory.mp3", 0.5f);
-		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Prize), "./Data/Sounds/Prize.mp3", 0.5f);
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump1),
+			"./Data/Sounds/Jump-1.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump2),
+			"./Data/Sounds/Jump-2.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump3),
+			"./Data/Sounds/Jump-3.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump4),
+			"./Data/Sounds/Jump-4.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Coin),
+			"./Data/Sounds/Coin.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::QBertFall),
+			"./Data/Sounds/QBertFall.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::CoilyFall),
+			"./Data/Sounds/CoilyFall.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Lift),
+			"./Data/Sounds/Lift.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Speech1),
+			"./Data/Sounds/Speech-1.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Speech2),
+			"./Data/Sounds/Speech-2.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Speech3),
+			"./Data/Sounds/Speech-3.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::LevelStart),
+			"./Data/Sounds/LevelStart.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Tune),
+			"./Data/Sounds/Tune.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Victory),
+			"./Data/Sounds/Victory.mp3", 0.5f);
+
+		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Prize),
+			"./Data/Sounds/Prize.mp3", 0.5f);
 	}
 
 	std::unique_ptr<dae::GameObject> QBert::Utils::CreatePlayer(LevelBase* level)
@@ -266,36 +298,54 @@
 		player->AddComponent(std::make_unique<dae::HealthComponent>(player.get(), 1, 3, 5));
 
 		auto speechBubble = std::make_unique<dae::GameObject>();
-		auto speechRc = speechBubble->AddComponent(std::make_unique<dae::RenderComponent>(speechBubble.get(), "SpeechBubble.png"));
+		auto speechRc = speechBubble->AddComponent(std::make_unique<dae::RenderComponent>(speechBubble.get(),
+			"SpeechBubble.png"));
 		speechBubble->SetScale(2.f);
 		speechBubble->SetLocalPosition((rc->GetSize().x / 16.f) * player->GetScale() - (speechRc->GetSize().x / 2.f) * speechBubble->GetScale(),
 			-speechRc->GetSize().y * speechBubble->GetScale());
 		speechBubble->IsEnabled(false);
 		speechBubble.release()->SetParent(player.get(), false);
 
-		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
-		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
-		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(), glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
-		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(), glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
+		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
+			glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
+		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
+			glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
+		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
+			glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
+		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
+			glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
 
 		return player;
 	}
 
-	std::unique_ptr<dae::GameObject> QBert::Utils::CreateCoily(LevelBase* level, QBertMoveComp* playerMove)
-	{
-		auto coily = std::make_unique<dae::GameObject>(dae::Tag(QBert::Tag::Coily));
-		coily->SetRenderPriority(2);
-		auto rc = coily->AddComponent(std::make_unique<dae::RenderComponent>(coily.get(), "CoilySprites.png"));
-		coily->SetLocalPosition(300, 300);
-		coily->SetScale(3.f);
-		glm::vec2 texSize = rc->GetSize() * coily->GetScale();
-		coily->AddComponent(std::make_unique<dae::SpriteComp>(coily.get(), "CoilySprites.png", 10, 1, false));
-		coily->AddComponent(std::make_unique<QBert::QBertMoveComp>(coily.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), glm::vec2(0, 1), false, false));
-		coily->AddComponent(std::make_unique<QBert::CoilyActorComp>(coily.get(), level, playerMove));
-		coily->AddComponent(std::make_unique<dae::HealthComponent>(coily.get(), 1, 1, 1));
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateCoily(LevelBase* level, QBertMoveComp* playerMove)
+{
+	auto coily = std::make_unique<dae::GameObject>(dae::Tag(QBert::Tag::Coily));
+	coily->SetRenderPriority(2);
+	auto rc = coily->AddComponent(std::make_unique<dae::RenderComponent>(coily.get(), "CoilySprites.png"));
+	coily->SetLocalPosition(300, 300);
+	coily->SetScale(3.f);
+	glm::vec2 texSize = rc->GetSize() * coily->GetScale();
+	coily->AddComponent(std::make_unique<dae::SpriteComp>(coily.get(), "CoilySprites.png", 10, 1, false));
 
-		return coily;
+	int randNr = rand() % 2;
+	glm::vec2 spawnTile{0, 0};
+	if (randNr == 0)
+	{
+		spawnTile.x = 1;
 	}
+	else
+	{
+		spawnTile.y = 1;
+	}
+
+	coily->AddComponent(std::make_unique<QBert::QBertMoveComp>(coily.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0),
+		spawnTile, false, false));
+	coily->AddComponent(std::make_unique<QBert::CoilyActorComp>(coily.get(), level, playerMove));
+	coily->AddComponent(std::make_unique<dae::HealthComponent>(coily.get(), 1, 1, 1));
+
+	return coily;
+}
 
 	std::unique_ptr<dae::GameObject> QBert::Utils::CreateDisc(const glm::vec2& tile, LevelBase* level)
 	{
@@ -314,21 +364,33 @@
 		return disc;
 	}
 
-	std::unique_ptr<dae::GameObject> QBert::Utils::CreateSlick(LevelBase* level, QBertMoveComp* playerMove)
-	{
-		auto slick = std::make_unique<dae::GameObject>(dae::Tag(Tag::SlickSam));
-		slick->SetRenderPriority(2);
-		auto rc = slick->AddComponent(std::make_unique<dae::RenderComponent>(slick.get(), "SlickSprites.png"));
-		slick->SetLocalPosition(300, 300);
-		slick->SetScale(3.f);
-		glm::vec2 texSize = rc->GetSize() * slick->GetScale();
-		slick->AddComponent(std::make_unique<dae::SpriteComp>(slick.get(), "SlickSprites.png", 8, 1, false));
-		slick->AddComponent(std::make_unique<QBertMoveComp>(slick.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), glm::vec2(0, 1), false, true));
-		slick->AddComponent(std::make_unique<SlickSamActorComp>(slick.get(), level, playerMove));
-		slick->AddComponent(std::make_unique<dae::HealthComponent>(slick.get(), 1, 1, 1));
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateSlick(LevelBase* level, QBertMoveComp* playerMove)
+{
+	auto slick = std::make_unique<dae::GameObject>(dae::Tag(Tag::SlickSam));
+	slick->SetRenderPriority(2);
+	auto rc = slick->AddComponent(std::make_unique<dae::RenderComponent>(slick.get(), "SlickSprites.png"));
+	slick->SetLocalPosition(300, 300);
+	slick->SetScale(3.f);
+	glm::vec2 texSize = rc->GetSize() * slick->GetScale();
+	slick->AddComponent(std::make_unique<dae::SpriteComp>(slick.get(), "SlickSprites.png", 8, 1, false));
 
-		return slick;
+	int randNr = rand() % 2;
+	glm::vec2 spawnTile{ 0, 0};
+	if (randNr == 0)
+	{
+		spawnTile.x = 1;
 	}
+	else
+	{
+		spawnTile.y = 1;
+	}
+
+	slick->AddComponent(std::make_unique<QBertMoveComp>(slick.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), spawnTile, false, true));
+	slick->AddComponent(std::make_unique<SlickSamActorComp>(slick.get(), level, playerMove));
+	slick->AddComponent(std::make_unique<dae::HealthComponent>(slick.get(), 1, 1, 1));
+
+	return slick;
+}
 
 	std::unique_ptr<dae::GameObject> QBert::Utils::CreateSam(LevelBase* level, QBertMoveComp* playerMove)
 	{
@@ -336,3 +398,61 @@
 		sam->GetComponent<dae::RenderComponent>()->SetTexture("SamSprites.png");
 		return sam;
 	}
+
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateSlickSam(LevelBase* level, QBertMoveComp* playerMove)
+{
+	int randNr = rand() % 2;
+	if (randNr == 0)
+	{
+		return CreateSlick(level, playerMove);
+	}
+	else
+	{
+		return CreateSam(level, playerMove);
+	}
+}
+
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateUgg(LevelBase* level, QBertMoveComp* playerMove)
+{
+		auto ugg = std::make_unique<dae::GameObject>(dae::Tag(Tag::UggWrongway));
+		ugg->SetRenderPriority(2);
+		auto rc = ugg->AddComponent(std::make_unique<dae::RenderComponent>(ugg.get(), "UggSprites.png"));
+		ugg->SetLocalPosition(300, 300);
+		ugg->SetScale(3.f);
+		glm::vec2 texSize = rc->GetSize() * ugg->GetScale();
+		ugg->AddComponent(std::make_unique<dae::SpriteComp>(ugg.get(), "UggSprites.png", 8, 1, false));
+		ugg->AddComponent(std::make_unique<QBertMoveComp>(ugg.get(),
+			glm::vec3(texSize.x / 12 - (0.5f * 32 * 3), texSize.y / 8.f * 7.f - (0.75f * 32 * 3), 0), glm::vec2(6, 0), false, true));
+		ugg->AddComponent(std::make_unique<UggWrongwayActor>(ugg.get(), level, playerMove, false));
+
+		return ugg;
+}
+
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateWrongway(LevelBase* level, QBertMoveComp* playerMove)
+{
+	auto ugg = std::make_unique<dae::GameObject>(dae::Tag(Tag::UggWrongway));
+	ugg->SetRenderPriority(2);
+	auto rc = ugg->AddComponent(std::make_unique<dae::RenderComponent>(ugg.get(), "WrongwaySprites.png"));
+	ugg->SetLocalPosition(300, 300);
+	ugg->SetScale(3.f);
+	glm::vec2 texSize = rc->GetSize() * ugg->GetScale();
+	ugg->AddComponent(std::make_unique<dae::SpriteComp>(ugg.get(), "WrongwaySprites.png", 8, 1, false));
+	ugg->AddComponent(std::make_unique<QBertMoveComp>(ugg.get(),
+		glm::vec3(texSize.x / 20 - (-0.5f * 32 * 3), texSize.y / 10.f * 9.f - (0.75f * 32 * 3), 0), glm::vec2(0, 6), false, true));
+	ugg->AddComponent(std::make_unique<UggWrongwayActor>(ugg.get(), level, playerMove, true));
+
+	return ugg;
+}
+
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateUggWrongway(LevelBase* level, QBertMoveComp* playerMove)
+{
+	int randNr = rand() % 2;
+	if (randNr == 0)
+	{
+		return CreateUgg(level, playerMove);
+	}
+	else
+	{
+		return CreateWrongway(level, playerMove);
+	}
+}

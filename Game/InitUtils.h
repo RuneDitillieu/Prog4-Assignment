@@ -32,6 +32,14 @@ namespace QBert::Utils
 	std::unique_ptr<dae::GameObject> CreateSlick(LevelBase* level, QBertMoveComp* playerMove);
 
 	std::unique_ptr<dae::GameObject> CreateSam(LevelBase* level, QBertMoveComp* playerMove);
+
+	std::unique_ptr<dae::GameObject> CreateSlickSam(LevelBase* level, QBertMoveComp* playerMove);
+
+	std::unique_ptr<dae::GameObject> CreateUgg(LevelBase* level, QBertMoveComp* playerMove);
+
+	std::unique_ptr<dae::GameObject> CreateWrongway(LevelBase* level, QBertMoveComp* playerMove);
+
+	std::unique_ptr<dae::GameObject> CreateUggWrongway(LevelBase* level, QBertMoveComp* playerMove);
 }
 
 #endif // !INITUTILS_H

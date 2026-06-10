@@ -82,6 +82,8 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 
 	Renderer::GetInstance().Init(g_window);
 	ResourceManager::GetInstance().Init(dataPath);
+
+	std::srand(static_cast<unsigned int>(std::time({})));
 }
 
 dae::Minigin::~Minigin()

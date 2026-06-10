@@ -9,18 +9,20 @@
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "Scene.h"
-
-#include "ComponentsInclude.h"
-
+#include "InputManager.h"
+#include "Commands.h"
 #include "ServiceLocator.h"
 #include "SdlSoundSystem.h"
 
+#include "ComponentsInclude.h"
+
 #include "InitUtils.h"
-#include "Commands.h"
+#include "DiscActor.h"
+#include "Tags.h"
 
 #include <filesystem>
-#include "DiscActor.h"
-#include "InputManager.h"
+#include <iostream>
+
 namespace fs = std::filesystem;
 
 std::unique_ptr<dae::SoundSystem> dae::ServiceLocator::_ss_instance{ std::make_unique<dae::NullSoundSystem>() };
@@ -35,23 +37,20 @@ static void load()
 	std::function<void(dae::Scene&)> loadFunc = [](dae::Scene& scene)
 	{
 		// font
-		auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
+		auto font = dae::ResourceManager::GetInstance().LoadFont("QBertFont.ttf", 20);
 
 		// fps
 		auto go = std::make_unique<dae::GameObject>();
 		go->SetLocalPosition(10, 10);
-		go->AddComponent(std::make_unique<dae::FpsComponent>(go.get(), "0.0 FPS", font));
+		go->AddComponent(std::make_unique<dae::FpsComponent>(go.get(), "0.0 FPS", font, SDL_Color{77, 206, 77, 255}));
 		scene.Add(std::move(go));
 
 		// level
 		auto levelObj = QBert::Utils::CreateLevel(scene, 0, false, 0, 1);
 		auto levelComp = levelObj->GetComponent<QBert::LevelBase>();
 
-
 		// player
 		go = QBert::Utils::CreatePlayer(levelComp);
-		//dae::GameObject* player = go.get();
-		//auto playerMove{ player->GetComponent<QBert::QBertMoveComp>() };
 		scene.Add(std::move(go));
 
 		// disc
@@ -62,9 +61,6 @@ static void load()
 		scene.Add(std::move(go));
 
 		levelComp->SetDiscs(std::move(discs));
-
-		// coily
-		//go = QBert::Utils::CreateCoily(levelComp, playerMove);
 
 		//#if defined(__EMSCRIPTEN__)
 		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
@@ -85,16 +81,12 @@ static void load()
 		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::TurnTileCommand>(go.get(), 10), XINPUT_GAMEPAD_B, 0);
 		//#endif // !EMSCRIPTEN
 
-		//scene.Add(std::move(go));
-
-		//go = QBert::Utils::CreateSlick(levelComp, playerMove);
-		//scene.Add(std::move(go));
 		dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MuteCommand>(), SDL_SCANCODE_F2, SDL_EVENT_KEY_DOWN);
 
 		QBert::Utils::CreateUi(scene);
 	};
 
-	auto& scene = dae::SceneManager::GetInstance().CreateScene(loadFunc);
+	auto& scene = dae::SceneManager::GetInstance().CreateScene(dae::SceneName(QBert::SceneName::SinglePlayerScene), loadFunc);
 	scene.Load();
 }
 

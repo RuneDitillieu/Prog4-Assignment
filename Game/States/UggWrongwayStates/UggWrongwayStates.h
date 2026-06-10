@@ -1,0 +1,83 @@
+﻿#ifndef UGGWRONGWAYSTATES_H
+#define UGGWRONGWAYSTATES_H
+
+#include "GameObject.h"
+#include "SpriteComponent.h"
+
+namespace QBert
+{
+    class QBertMoveComp;
+    class LevelBase;
+
+    // base state
+    class UggWrongwayState
+    {
+    public:
+        UggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
+            QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp, bool goesRight);
+        virtual ~UggWrongwayState() = default;
+        virtual void OnEnter() {};
+        virtual void OnExit() {};
+        virtual std::unique_ptr<UggWrongwayState> Update();
+        virtual std::unique_ptr<UggWrongwayState> OnNotify(dae::Event, dae::Subject*);
+
+        bool m_goesRight;
+    protected:
+        dae::GameObject* m_uggWrongway;
+        dae::SpriteComp* m_pConnSprite;
+        QBertMoveComp* m_pMoveComp;
+        LevelBase* m_pConnLevel;
+        QBertMoveComp* m_pQBertMoveComp;
+    };
+
+    class IdleUggWrongwayState final : public UggWrongwayState
+    {
+    public:
+        IdleUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
+            QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp, bool goesRight);
+
+        void OnEnter() override;
+        std::unique_ptr<UggWrongwayState> Update() override;
+
+    private:
+        float m_secPassed{ 0.f };
+        const float m_idleSec{ 0.5f };
+    };
+
+    class JumpingUggWrongwayState final : public UggWrongwayState
+    {
+    public:
+        JumpingUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
+            QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp, bool goesRight);
+
+        void OnEnter() override;
+        std::unique_ptr<UggWrongwayState> Update() override;
+        std::unique_ptr<UggWrongwayState> OnNotify(dae::Event, dae::Subject*) override;
+    };
+
+    class FallingUggWrongwayState final : public UggWrongwayState
+    {
+    public:
+        FallingUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
+            QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp, bool goesRight);
+
+        void OnEnter() override;
+        std::unique_ptr<UggWrongwayState> Update() override;
+    };
+
+    class StunnedUggWrongwayState final : public UggWrongwayState
+    {
+    public:
+        StunnedUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
+            QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp, bool goesRight);
+
+        void OnEnter() override;
+        std::unique_ptr<UggWrongwayState> Update() override;
+
+    private:
+        float m_secPassed{ 0.f };
+        const float m_maxSec{ 1.5f };
+    };
+}
+
+#endif //UGGWRONGWAYSTATES_H

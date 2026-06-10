@@ -63,6 +63,20 @@ namespace QBert
 		void OnEnter() override;
 		std::unique_ptr<SlickSamState> Update() override;
 	};
+
+	class StunnedSlickSamState final : public SlickSamState
+	{
+	public:
+		StunnedSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
+			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+
+		void OnEnter() override;
+		std::unique_ptr<SlickSamState> Update() override;
+
+	private:
+		float m_secPassed{ 0.f };
+		const float m_maxSec{ 1.5f };
+	};
 }
 
 #endif

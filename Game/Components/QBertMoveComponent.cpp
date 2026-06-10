@@ -103,12 +103,6 @@ void QBert::QBertMoveComp::Move(const glm::vec3& direction)
 	if (m_currentTile.x < -0.1f && m_currentTile.y < -0.1f) return;
 
 	glm::vec2 moveDir{ static_cast<int>(direction.x), static_cast<int>(direction.y) };
-	//QBert::TileComp* goalTile = m_pConnLevelComp->GetTile(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
-	//if (goalTile)
-	//{
-	//	m_goalPos = goalTile->GetMiddlePos();
-	//	m_goalTile = glm::vec2(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
-	//}
 
 	m_goalPos = m_pConnLevelComp->GetMiddlePosOfTile(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));
 	m_goalTile = glm::vec2(static_cast<int>(m_currentTile.x + moveDir.x), static_cast<int>(m_currentTile.y + moveDir.y));

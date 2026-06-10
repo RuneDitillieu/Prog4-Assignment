@@ -1,6 +1,5 @@
 #include "SlickSamActor.h"
 
-#include "DeltaTime.h"
 #include "GameObject.h"
 #include "QBertMoveComponent.h"
 #include "QBertScoreComponent.h"
