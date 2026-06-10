@@ -5,7 +5,9 @@
 #include "SDL3_mixer/SDL_mixer.h"
 #include <unordered_map>
 #include <memory>
+#include <mutex>
 #include <string>
+#include <queue>
 
 namespace dae
 {
@@ -43,11 +45,20 @@ namespace dae
 		void MuteUnmuteSound() override;
 
 	private:
+		void AudioThreadLoop(std::stop_token stopToken);
 		std::unordered_map<SoundId, std::unique_ptr<AudioClip>> m_AudioClips{};
 
 		SDL_AudioDeviceID m_pDevice = 0;
 		MIX_Mixer* m_pMixer = nullptr;
 		bool m_isMuted{ false };
+
+		std::stop_source m_stopSource{};
+		std::stop_token m_stopToken{ m_stopSource.get_token() };
+		std::condition_variable m_conditionVar{};
+		std::jthread m_thread{};
+		std::mutex m_mutex{};
+
+		std::queue<std::pair<SoundId, float>> m_soundQueue{};
 	};
 }
 

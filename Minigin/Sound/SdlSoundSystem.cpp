@@ -1,6 +1,6 @@
 #include "SdlSoundSystem.h"
-#include <algorithm>
 #include <stdexcept>
+#include <cassert>
 
 // AUDIO CLIPS
 
@@ -31,8 +31,8 @@ void dae::AudioClip::Play(float volume)
 
     MIX_SetTrackGain(m_pTrack, volume);
 
-    if (!MIX_PlayTrack(m_pTrack, false))
-        throw std::runtime_error(SDL_GetError());
+    bool playResult{ MIX_PlayTrack(m_pTrack, false) };
+    assert(playResult || "Failed to play sound");
 }
 
 
@@ -40,10 +40,11 @@ void dae::AudioClip::Play(float volume)
 
 void dae::SdlSoundSystem::Init()
 {
-    if (!SDL_Init(SDL_INIT_AUDIO))
-        throw std::runtime_error(SDL_GetError());
-    if (!MIX_Init())
-        throw std::runtime_error(SDL_GetError());
+    bool initResult = SDL_Init(SDL_INIT_AUDIO);
+    assert(initResult || "Couldn't initialize SDL audio");
+
+    initResult = MIX_Init();
+    assert(initResult || "Couldn't initialize MIX");
 
     SDL_AudioSpec spec{};
     spec.freq = 48000;
@@ -51,18 +52,23 @@ void dae::SdlSoundSystem::Init()
     spec.channels = 2;
 
     m_pDevice = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
-
-    if (m_pDevice == 0)
-        throw std::runtime_error(SDL_GetError());
+    assert(m_pDevice != 0 || "Failed to open audio device");
 
     m_pMixer = MIX_CreateMixerDevice(m_pDevice, &spec);
+    assert(m_pMixer || "Failed to create mixer device");
 
-    if (!m_pMixer)
-        throw std::runtime_error(SDL_GetError());
+    m_thread = std::jthread{ &SdlSoundSystem::AudioThreadLoop, this, m_stopToken };
 }
 
 dae::SdlSoundSystem::~SdlSoundSystem()
 {
+    // stop thread
+    std::unique_lock<std::mutex> lock{ m_mutex };
+    m_stopSource.request_stop();
+    m_conditionVar.notify_all();
+    lock.unlock();
+
+    // de-initialize
     if (m_pMixer)
     {
         m_pMixer = nullptr;
@@ -77,19 +83,9 @@ dae::SdlSoundSystem::~SdlSoundSystem()
 
 void dae::SdlSoundSystem::Play(const dae::SoundId id, const float volume)
 {
-    if (m_isMuted) return;
-
-    if (!m_AudioClips.contains(id))
-    {
-        throw std::runtime_error("Invalid sound_id");
-    }
-
-    if (!m_AudioClips[id]->IsLoaded())
-    {
-        m_AudioClips[id]->Load(m_pMixer);
-    }
-
-    m_AudioClips[id]->Play(volume);
+    std::unique_lock<std::mutex> lock{ m_mutex };
+    m_soundQueue.emplace(id, volume);
+    m_conditionVar.notify_all();
 }
 
 void dae::SdlSoundSystem::AddSound(SoundId id, std::string path, float volume)
@@ -102,4 +98,42 @@ void dae::SdlSoundSystem::MuteUnmuteSound()
     m_isMuted = !m_isMuted;
 }
 
+void dae::SdlSoundSystem::AudioThreadLoop(std::stop_token stopToken)
+{
+    while (!stopToken.stop_requested())
+    {
+        // lock thread
+        std::unique_lock<std::mutex> lock{ m_mutex };
+
+        while (!stopToken.stop_requested() && m_soundQueue.empty())
+        {
+            m_conditionVar.wait(lock);
+        }
+        while (!m_soundQueue.empty())
+        {
+            // grab sound request from the queue
+            auto [id, volume] { m_soundQueue.front() };
+            m_soundQueue.pop();
+            lock.unlock();
+
+            // play/load sound
+            if (m_isMuted) return;
+
+            assert(m_AudioClips.contains(id) || "Invalid SoundId");
+
+            if (!m_AudioClips[id]->IsLoaded())
+            {
+                m_AudioClips[id]->Load(m_pMixer);
+            }
+
+            m_AudioClips[id]->Play(volume);
+
+            lock.lock();
+        }
+
+        // extra unlock for safety
+        // would sometimes not unlock upon quitting the program
+        lock.unlock();
+    }
+}
 
