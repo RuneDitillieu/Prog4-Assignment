@@ -6,6 +6,7 @@
 #include "Tags.h"
 #include "QBertMoveComponent.h"
 #include "InitUtils.h"
+#include "DiscActor.h"
 
 QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level)
 	: dae::Component(pOwner)
@@ -25,6 +26,19 @@ QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level)
 	levelParams.discSpawns = std::vector<glm::vec2>{{-1, 5}, {6, -1}};
 	levelParams.tileParams = TileParams{ 1, false, 1, 0 };
 	m_levelParams.emplace_back(levelParams);
+
+	auto activeScene = dae::SceneManager::GetInstance().GetActiveScene();
+
+	std::vector<QBert::DiscActorComp*> discs{};
+	auto disc = Utils::CreateDisc(m_levelParams[0].discSpawns[0], m_pConnLevel);
+	discs.emplace_back(disc->GetComponent<DiscActorComp>());
+	activeScene->Add(std::move(disc));
+
+	disc = Utils::CreateDisc(m_levelParams[0].discSpawns[1], m_pConnLevel);
+	discs.emplace_back(disc->GetComponent<DiscActorComp>());
+	activeScene->Add(std::move(disc));
+
+	m_pConnLevel->SetDiscs(std::move(discs));
 }
 
 QBert::LevelManager::~LevelManager()
@@ -117,7 +131,8 @@ void QBert::LevelManager::GoToNextLevel()
 			player->Reset(glm::vec2(0, 0), false);
 		}
 
-		m_pConnLevel->ResetBase(m_levelParams[m_curLevelParams].tileParams);
+		m_pConnLevel->ResetBase(m_levelParams[m_curLevelParams].tileParams,
+			m_levelParams[m_curLevelParams].discSpawns[0], m_levelParams[m_curLevelParams].discSpawns[1]);
 	}
 	else
 	{

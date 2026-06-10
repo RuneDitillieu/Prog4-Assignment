@@ -251,7 +251,7 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
         Game/Components/QBertMoveComponent.cpp
         Game/Components/ArrowAnimComponent.cpp
         Game/Components/LivesDisplayComponent.cpp
-        Game/Components/QBertHighscoreComponent.cpp
+        #Game/Components/QBertHighscoreComponent.cpp
 
         Game/Levels/TileComponent.cpp
         Game/Levels/LevelBase.cpp

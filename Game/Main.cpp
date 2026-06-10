@@ -53,15 +53,6 @@ static void load()
 		go = QBert::Utils::CreatePlayer(levelComp);
 		scene.Add(std::move(go));
 
-		// disc
-		std::vector<QBert::DiscActorComp*> discs{};
-		glm::vec2 tile{ -1, 3 };
-		go = QBert::Utils::CreateDisc(tile, levelComp);
-		discs.emplace_back(go->GetComponent<QBert::DiscActorComp>());
-		scene.Add(std::move(go));
-
-		levelComp->SetDiscs(std::move(discs));
-
 		//#if defined(__EMSCRIPTEN__)
 		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
 		//	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MoveCommand>(go.get(), glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);

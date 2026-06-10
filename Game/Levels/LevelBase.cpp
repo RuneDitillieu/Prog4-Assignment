@@ -103,8 +103,18 @@ glm::vec3 QBert::LevelBase::GetMiddlePosOfTile(int col, int row) const
 	}
 	else if(col == -1 || row == -1)
 	{
+		glm::vec2 offset{ 0.f, 0.f};
+		if (col == -1 && row != -1)
+		{
+			offset.y = 0.5f;
+		}
+		if (row == -1 && col != -1)
+		{
+			offset.x = 0.5f;
+		}
+
 		return GetOwner()->GetWorldPosition()
-			+ glm::vec3(col * 0.5f * m_tileSize + (row + 0.5f) * -0.5f * m_tileSize, col * 0.75f * m_tileSize + (row + 0.5f) * 0.75f * m_tileSize, 0) 
+			+ glm::vec3((col + offset.x)  * 0.5f * m_tileSize + (row + offset.y) * -0.5f * m_tileSize, (col + offset.x) * 0.75f * m_tileSize + (row + offset.y) * 0.75f * m_tileSize, 0)
 			+ m_middlePosOffset;
 	}
 	else
@@ -178,7 +188,7 @@ bool QBert::LevelBase::AreAllTilesCorrect() const
 	return true;
 }
 
-void QBert::LevelBase::ResetBase(TileParams tileParams)
+void QBert::LevelBase::ResetBase(TileParams tileParams, const glm::vec2& tilePos1, const glm::vec2& tilePos2)
 {
 	for (auto col : m_tiles)
 	{
@@ -187,6 +197,11 @@ void QBert::LevelBase::ResetBase(TileParams tileParams)
 			tile->ResetTile(tileParams);
 		}
 	}
+
+	m_discs[0]->ResetDisc(tilePos1, this);
+	m_discs[0]->GetOwner()->IsEnabled(true);
+	m_discs[1]->ResetDisc(tilePos2, this);
+	m_discs[1]->GetOwner()->IsEnabled(true);
 }
 
 std::type_index QBert::LevelBase::GetType() const

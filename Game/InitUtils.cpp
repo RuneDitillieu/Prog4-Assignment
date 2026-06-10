@@ -180,8 +180,9 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool
 		CreateLifeComp(0.f, true, pLives).release()->SetParent(lives.get(), false);
 		CreateLifeComp(50.f, true, pLives).release()->SetParent(lives.get(), false);
 		CreateLifeComp(100.f, true, pLives).release()->SetParent(lives.get(), false);
-		CreateLifeComp(150.f, false, pLives).release()->SetParent(lives.get(), false);
-		CreateLifeComp(100.f, false, pLives).release()->SetParent(lives.get(), false);
+		CreateLifeComp(150.f, true, pLives).release()->SetParent(lives.get(), false);
+		CreateLifeComp(200.f, true, pLives).release()->SetParent(lives.get(), false);
+		CreateLifeComp(250.f, true, pLives).release()->SetParent(lives.get(), false);
 
 		lives->AddComponent(std::make_unique<QBert::LivesDisplay>(lives.get(), pLives));
 
@@ -295,7 +296,7 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool
 		sprite->SetCurFrame(5);
 		player->AddComponent(std::make_unique<QBertActorComp>(player.get(), sprite, move, level));
 
-		player->AddComponent(std::make_unique<dae::HealthComponent>(player.get(), 1, 3, 5));
+		player->AddComponent(std::make_unique<dae::HealthComponent>(player.get(), 1, 6, 6));
 
 		auto speechBubble = std::make_unique<dae::GameObject>();
 		auto speechRc = speechBubble->AddComponent(std::make_unique<dae::RenderComponent>(speechBubble.get(),

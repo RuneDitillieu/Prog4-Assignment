@@ -7,8 +7,14 @@
 #include "DiscStates.h"
 #include <memory>
 
+namespace dae
+{
+	class SpriteComp;
+}
+
 namespace QBert
 {
+	class LevelBase;
 	class GameObject;
 	class DiscActorComp final : public dae::Component, public dae::IObserver
 	{
@@ -24,12 +30,14 @@ namespace QBert
 		void Update() override;
 		void Notify(dae::Event event, dae::Subject* subject) override;
 		glm::vec2 GetTile() const { return m_tile; }
+		void ResetDisc(const glm::vec2& newTile, LevelBase* level);
 
 		std::type_index GetType() const override;
 
 	private:
 		glm::vec2 m_tile;
-		std::unique_ptr<DiscState> m_pState;
+		std::unique_ptr<DiscState> m_pState{ nullptr };
+		dae::SpriteComp* m_pConnSprite{ nullptr };
 	};
 }
 

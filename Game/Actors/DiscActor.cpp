@@ -2,6 +2,8 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Tags.h"
+#include "LevelBase.h"
+#include "SpriteComponent.h"
 
 QBert::DiscActorComp::DiscActorComp(dae::GameObject* pOwner, const glm::vec2& tile)
 	: dae::Component(pOwner)
@@ -9,6 +11,8 @@ QBert::DiscActorComp::DiscActorComp(dae::GameObject* pOwner, const glm::vec2& ti
 { 
 	m_pState = std::make_unique<IdleDiscState>(pOwner);
 	m_pState->OnEnter();
+
+	m_pConnSprite = pOwner->GetComponent<dae::SpriteComp>();
 }
 
 QBert::DiscActorComp::~DiscActorComp()
@@ -49,6 +53,18 @@ void QBert::DiscActorComp::Notify(dae::Event event, dae::Subject* subject)
 		m_pState.reset(state.release());
 		m_pState->OnEnter();
 	}
+}
+
+void QBert::DiscActorComp::ResetDisc(const glm::vec2& newTile, LevelBase* level)
+{
+	m_tile = newTile;
+
+	m_pState = std::make_unique<IdleDiscState>(GetOwner());
+	m_pState->OnEnter();
+
+	GetOwner()->SetLocalPosition(level->GetMiddlePosOfTile(static_cast<int>(newTile.x), static_cast<int>(newTile.y))
+			- glm::vec3((m_pConnSprite->GetSpriteSize().x * GetOwner()->GetScale() / 2.f),
+			m_pConnSprite->GetSpriteSize().y * GetOwner()->GetScale() / 2.f, 0));
 }
 
 std::type_index QBert::DiscActorComp::GetType() const
