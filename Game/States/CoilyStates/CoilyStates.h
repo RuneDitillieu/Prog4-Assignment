@@ -33,7 +33,7 @@ namespace QBert
 
 	// egg states
 
-	class IdleEggState : public CoilyState
+	class IdleEggState final : public CoilyState
 	{
 	public:
 		IdleEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
@@ -48,7 +48,7 @@ namespace QBert
 		const float m_idleSec{ 0.5f };
 	};
 
-	class JumpingEggState : public CoilyState
+	class JumpingEggState final : public CoilyState
 	{
 	public:
 		JumpingEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
@@ -61,7 +61,7 @@ namespace QBert
 
 	// snake states
 
-	class IdleSnakeState : public CoilyState
+	class IdleSnakeState final : public CoilyState
 	{
 	public:
 		IdleSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
@@ -75,7 +75,7 @@ namespace QBert
 		const float m_idleSec{ 0.5f };
 	};
 
-	class JumpingSnakeState : public CoilyState
+	class JumpingSnakeState final : public CoilyState
 	{
 	public:
 		JumpingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
@@ -86,7 +86,7 @@ namespace QBert
 		std::unique_ptr<CoilyState> OnNotify(dae::Event event, dae::Subject* subject) override;
 	};
 
-	class FallingSnakeState : public CoilyState
+	class FallingSnakeState final : public CoilyState
 	{
 	public:
 		FallingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
@@ -96,7 +96,7 @@ namespace QBert
 		std::unique_ptr<CoilyState> Update() override;
 	};
 
-	class StunnedCoilyState : public CoilyState
+	class StunnedCoilyState final : public CoilyState
 	{
 	public:
 		StunnedCoilyState(dae::GameObject* coily, dae::SpriteComp* spriteComp,

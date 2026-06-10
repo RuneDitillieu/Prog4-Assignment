@@ -27,7 +27,7 @@ namespace QBert
 		LevelBase* m_pConnLevel;
 	};
 
-	class IdleQBertState : public QBertState
+	class IdleQBertState final : public QBertState
 	{
 	public:
 		IdleQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
@@ -37,7 +37,7 @@ namespace QBert
 		std::unique_ptr<QBertState> OnNotify(dae::Event event, dae::Subject*) override;
 	};
 
-	class JumpingQBertState : public QBertState
+	class JumpingQBertState final : public QBertState
 	{
 	public:
 		JumpingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level, const glm::vec3& moveDir);
@@ -50,7 +50,7 @@ namespace QBert
 		glm::vec3 m_moveDir;
 	};
 
-	class TransportedQBertState : public QBertState
+	class TransportedQBertState final : public QBertState
 	{
 	public:
 		TransportedQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
@@ -60,7 +60,7 @@ namespace QBert
 		std::unique_ptr<QBertState> OnNotify(dae::Event event, dae::Subject*) override;
 	};
 
-	class DroppingQBertState : public QBertState
+	class DroppingQBertState final : public QBertState
 	{
 	public:
 		DroppingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
@@ -68,7 +68,7 @@ namespace QBert
 		std::unique_ptr<QBertState> Update() override;
 	};
 
-	class FallingQBertState : public QBertState
+	class FallingQBertState final : public QBertState
 	{
 	public:
 		FallingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
@@ -78,7 +78,7 @@ namespace QBert
 		std::unique_ptr<QBertState> Update() override;
 	};
 
-	class StunnedQBertState : public QBertState
+	class StunnedQBertState final : public QBertState
 	{
 	public:
 		StunnedQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);

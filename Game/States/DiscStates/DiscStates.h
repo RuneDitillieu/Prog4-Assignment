@@ -22,7 +22,7 @@ namespace QBert
 		dae::GameObject* m_disc;
 	};
 
-	class IdleDiscState : public DiscState
+	class IdleDiscState final : public DiscState
 	{
 	public:
 		IdleDiscState(dae::GameObject* disc);
@@ -30,7 +30,7 @@ namespace QBert
 		std::unique_ptr<DiscState> OnNotify(dae::Event event, dae::Subject*) override;
 	};
 
-	class MovingDiscState : public DiscState
+	class MovingDiscState final : public DiscState
 	{
 	public:
 		MovingDiscState(dae::GameObject* disc);
@@ -43,7 +43,7 @@ namespace QBert
 		glm::vec3 m_goalLocation{};
 	};
 
-	class DropOffDiscState : public DiscState
+	class DropOffDiscState final : public DiscState
 	{
 	public:
 		DropOffDiscState(dae::GameObject* disc);

@@ -9,7 +9,7 @@ namespace QBert
 {
 	class LevelBase;
 	class GameObject;
-	class QBertMoveComp : public dae::Component
+	class QBertMoveComp final : public dae::Component
 	{
 	public:
 		QBertMoveComp(dae::GameObject* pOwner, const glm::vec3& feetPos, const glm::vec2& startTile, bool canTurn, bool canRevert);

@@ -18,7 +18,7 @@ namespace QBert
 	};
 
 	class GameObject;
-	class TileComp : public dae::Component
+	class TileComp final : public dae::Component
 	{
 	public:
 		TileComp(dae::GameObject* pOwner, int tileType, bool revertable, int start, int win, int middle = -1);

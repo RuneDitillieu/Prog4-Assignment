@@ -20,7 +20,7 @@ namespace QBert
 		TileParams tileParams;
 	};
 
-	class LevelManager : public dae::Component, public dae::IObserver
+	class LevelManager final : public dae::Component, public dae::IObserver
 	{
 	public:
 		LevelManager(dae::GameObject* pOwner, LevelBase* level);

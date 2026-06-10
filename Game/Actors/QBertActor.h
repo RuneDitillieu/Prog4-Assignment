@@ -11,7 +11,7 @@ namespace QBert
 	class GameObject;
 	class Subject;
 	class LevelBase;
-	class QBertActorComp : public dae::Component, public dae::IObserver
+	class QBertActorComp final : public dae::Component, public dae::IObserver
 	{
 	public:
 		QBertActorComp(dae::GameObject* pOwner, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* pLevel);

@@ -9,7 +9,7 @@
 namespace QBert
 {
 	class GameObject;
-	class LivesDisplay : public dae::Component, public dae::IObserver
+	class LivesDisplay final : public dae::Component, public dae::IObserver
 	{
 	public:
 		LivesDisplay(dae::GameObject* pOwner, std::vector<dae::GameObject*> lives);

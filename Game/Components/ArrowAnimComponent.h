@@ -7,7 +7,7 @@
 namespace QBert
 {
 	class GameObject;
-	class ArrowAnimComp : public dae::Component
+	class ArrowAnimComp final : public dae::Component
 	{
 	public:
 		ArrowAnimComp(dae::GameObject* pOwner, std::vector<dae::GameObject*> arrows);

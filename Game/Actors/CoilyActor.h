@@ -10,7 +10,7 @@ namespace QBert
 {
     class GameObject;
     class QBertMoveComp;
-	class CoilyActorComp : public dae::Component, public dae::IObserver
+	class CoilyActorComp final : public dae::Component, public dae::IObserver
 	{
     public:
         CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel, QBertMoveComp* qbertMove);

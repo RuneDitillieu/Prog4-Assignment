@@ -12,7 +12,7 @@ namespace QBert
 	class QBertMoveComp;
 	class LevelBase;
 
-	class SlickSamActorComp : public dae::Component, public dae::IObserver
+	class SlickSamActorComp final : public dae::Component, public dae::IObserver
 	{
 	public:
 		SlickSamActorComp(dae::GameObject* pOwner, LevelBase* pLevel, QBertMoveComp* qbertMove);

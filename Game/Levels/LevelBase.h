@@ -20,7 +20,7 @@ namespace QBert
 	class GameObject;
 	class TileComp;
 	class DiscActorComp;
-	class LevelBase : public dae::Component
+	class LevelBase final : public dae::Component
 	{
 	public:
 		LevelBase(dae::GameObject* pOwner, int tileType, bool revertable, int start, int win, int middle = -1);

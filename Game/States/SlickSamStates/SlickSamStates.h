@@ -29,7 +29,7 @@ namespace QBert
 		QBertMoveComp* m_pQBertMoveComp;
 	};
 
-	class IdleSlickSamState : public SlickSamState
+	class IdleSlickSamState final : public SlickSamState
 	{
 	public:
 		IdleSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
@@ -43,7 +43,7 @@ namespace QBert
 		const float m_idleSec{ 0.5f };
 	};
 
-	class JumpingSlickSamState : public SlickSamState
+	class JumpingSlickSamState final : public SlickSamState
 	{
 	public:
 		JumpingSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
@@ -54,7 +54,7 @@ namespace QBert
 		std::unique_ptr<SlickSamState> OnNotify(dae::Event, dae::Subject*) override;
 	};
 
-	class FallingSlickSamState : public SlickSamState
+	class FallingSlickSamState final : public SlickSamState
 	{
 	public:
 		FallingSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,

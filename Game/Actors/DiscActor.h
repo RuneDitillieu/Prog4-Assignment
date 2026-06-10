@@ -10,7 +10,7 @@
 namespace QBert
 {
 	class GameObject;
-	class DiscActorComp : public dae::Component, public dae::IObserver
+	class DiscActorComp final : public dae::Component, public dae::IObserver
 	{
 	public:
 		DiscActorComp(dae::GameObject* pOwner, const glm::vec2& tile);

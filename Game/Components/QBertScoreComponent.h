@@ -9,7 +9,7 @@
 namespace QBert
 {
 	class GameObject;
-	class ScoreComp : public dae::Component, public dae::IObserver
+	class ScoreComp final : public dae::Component, public dae::IObserver
 	{
 	public:
 		ScoreComp(dae::GameObject* pOwner, const std::vector<dae::SpriteComp*>& numberSprites);
