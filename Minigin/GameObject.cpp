@@ -111,7 +111,7 @@ void dae::GameObject::SetParent(GameObject* newParent, bool keepWorldPosition)
 		&& !IsParentOf(newParent)
 		&& m_parent != newParent)	
 	{
-		GameObject* thisOwnership{ nullptr };
+		std::unique_ptr<GameObject> thisOwnership{ nullptr };
 
 		if (newParent == nullptr)
 		{
@@ -139,18 +139,19 @@ void dae::GameObject::SetParent(GameObject* newParent, bool keepWorldPosition)
 
 		if (!thisOwnership)
 		{
-			// currently owner by main.cpp, but scene has a check so you can't still add it 
-			// when an object already has a parent
-			thisOwnership = this;
+			// currently owned by main.cpp, but scene has a check so you can't still add it
+			// when an object already has a parent:
+			// will just release the double
+			thisOwnership = std::unique_ptr<GameObject>(this);
 		}
 
 		if (m_parent)
 		{
-			m_parent->AddChild(thisOwnership);
+			m_parent->AddChild(std::move(thisOwnership));
 		}
 		else
 		{
-			SceneManager::GetInstance().GetActiveScene()->Add(std::unique_ptr<GameObject>(thisOwnership));
+			SceneManager::GetInstance().GetActiveScene()->Add(std::move(thisOwnership));
 		}
 	}
 }
@@ -182,20 +183,20 @@ bool dae::GameObject::IsParentOf(GameObject* possibleParent) const
 	return false;
 }
 
-void dae::GameObject::AddChild(GameObject* newChild)
+void dae::GameObject::AddChild(std::unique_ptr<GameObject> newChild)
 {
-	m_children.push_back(std::unique_ptr<GameObject>(newChild));
+	m_children.push_back(std::move(newChild));
 }
 
-[[nodiscard]] dae::GameObject* dae::GameObject::RemoveChild(GameObject* childToRemove)
+[[nodiscard]] std::unique_ptr<dae::GameObject> dae::GameObject::RemoveChild(GameObject* childToRemove)
 {
 	// get object
 	auto it = std::find_if(m_children.begin(), m_children.end(), [childToRemove](auto& ptr) { return ptr.get() == childToRemove; });
 
 	if (it != m_children.end())
 	{
-		// release ownership
-		GameObject* object = it->release();
+		// grab ownership
+		std::unique_ptr<GameObject> object = std::move(*it);
 		*it = nullptr;
 
 		// erase empty slot

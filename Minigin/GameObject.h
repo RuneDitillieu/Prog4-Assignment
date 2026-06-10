@@ -141,8 +141,8 @@ namespace dae
 		int m_renderPriority{ 1 };
 
 		bool IsParentOf(GameObject* possibleParent) const;
-		void AddChild(GameObject* newChild);
-		[[nodiscard]] GameObject* RemoveChild(GameObject* newParent);
+		void AddChild(std::unique_ptr<GameObject> newChild);
+		[[nodiscard]] std::unique_ptr<GameObject> RemoveChild(GameObject* newParent);
 
 		void UpdateWorldPosition();
 		void SetPositionDirty();

@@ -24,7 +24,7 @@ namespace dae
 		void LateUpdate();
 		void Render() const;
 
-		[[nodiscard]] GameObject* GetGameObjectOwnership(GameObject* pObject);
+		[[nodiscard]] std::unique_ptr<GameObject> GetGameObjectOwnership(GameObject* pObject);
 
 		Scene(SceneName sceneName, std::function<void(Scene&)> loadFunc);
 		~Scene() = default;

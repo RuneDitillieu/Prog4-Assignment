@@ -136,19 +136,19 @@ std::vector<GameObject*> Scene::GetObjectsByTag(dae::Tag tag) const
 	return vec;
 }
 
-[[nodiscard]] GameObject* dae::Scene::GetGameObjectOwnership(GameObject* pObject)
+[[nodiscard]] std::unique_ptr<GameObject> dae::Scene::GetGameObjectOwnership(GameObject* pObject)
 {
 	// get object
 	auto it = std::find_if(m_objects.begin(), m_objects.end(), [pObject](auto& obj) { return obj.get() == pObject; });
 
 	if (it != m_objects.end())
 	{
-		// release ownership
-		GameObject* object = it->release();
+		// grab ownership
+		std::unique_ptr<GameObject> object = std::move(*it);
 		*it = nullptr;
 
 		// erase empty slot
-		//m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), nullptr));
+		m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), *it));
 
 		// give ownership
 		return object;
