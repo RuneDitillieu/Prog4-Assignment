@@ -15,7 +15,7 @@ QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level)
 
 	// 1 1
 	levelParams.coilySpawns = std::vector<float>{ 1.f };
-	levelParams.uggWrongwaySpawns = std::vector<float>{ 3.f };
+	levelParams.samSlickSpawns = std::vector<float>{ 3.f };
 	levelParams.discSpawns = std::vector<glm::vec2>{ {-1, 4}, {4, -1} };
 	levelParams.tileParams = TileParams{0, false, 1, 0};
 	m_levelParams.emplace_back(levelParams);

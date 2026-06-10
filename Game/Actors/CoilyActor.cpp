@@ -10,7 +10,7 @@
 QBert::CoilyActorComp::CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel, QBertMoveComp* qbertMove)
 	: dae::Component(pOwner)
 {
-	m_pState = std::make_unique<IdleEggState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>(),
+	m_pState = std::make_unique<DroppingEggState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>(),
 		GetOwner()->GetComponent<QBertMoveComp>(), pLevel, qbertMove);
 	m_pState->OnEnter();
 }

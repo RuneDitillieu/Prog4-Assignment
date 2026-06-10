@@ -29,6 +29,16 @@ namespace QBert
 		QBertMoveComp* m_pQBertMoveComp;
 	};
 
+	class DroppingSlickSamState final : public SlickSamState
+	{
+	public:
+		DroppingSlickSamState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
+			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+
+		void OnEnter() override;
+		std::unique_ptr<SlickSamState> Update() override;
+	};
+
 	class IdleSlickSamState final : public SlickSamState
 	{
 	public:

@@ -9,7 +9,7 @@
 QBert::SlickSamActorComp::SlickSamActorComp(dae::GameObject* pOwner, LevelBase* pLevel, QBertMoveComp* qbertMove)
 	: Component(pOwner)
 {
-	m_pState = std::make_unique<IdleSlickSamState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>(),
+	m_pState = std::make_unique<DroppingSlickSamState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>(),
 	GetOwner()->GetComponent<QBertMoveComp>(), pLevel, qbertMove);
 	m_pState->OnEnter();
 }

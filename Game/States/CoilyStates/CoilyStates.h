@@ -33,6 +33,16 @@ namespace QBert
 
 	// egg states
 
+	class DroppingEggState final : public CoilyState
+	{
+	public:
+		DroppingEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
+			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+
+		void OnEnter() override;
+		std::unique_ptr<CoilyState> Update() override;
+	};
+
 	class IdleEggState final : public CoilyState
 	{
 	public:

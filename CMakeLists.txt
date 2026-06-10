@@ -264,6 +264,7 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
         Game/States/CoilyStates/CoilyFallingState.cpp
         Game/States/CoilyStates/CoilyState.cpp
         Game/States/CoilyStates/CoilyStunnedState.cpp
+        Game/States/CoilyStates/CoilyDroppingEggState.cpp
 
         Game/States/QBertStates/QBertJumpingState.cpp
         Game/States/QBertStates/QBertIdleState.cpp
@@ -282,6 +283,7 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
         Game/States/SlickSamStates/FallingSlickSamState.cpp
         Game/States/SlickSamStates/SlickSamState.cpp
         Game/States/SlickSamStates/StunnedSlickSamState.cpp
+        Game/States/SlickSamStates/DroppingSlickSamState.cpp
 
         Game/States/UggWrongwayStates/IdleUggWrongwayState.cpp
         Game/States/UggWrongwayStates/FallingUggWrongwayState.cpp
