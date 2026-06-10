@@ -6,11 +6,10 @@
 #include "RenderComponent.h"
 #include "Scene.h"
 #include "SceneManager.h"
-//#include "SpriteComponent.h"
+
 #include "ServiceLocator.h"
 #include "InputManager.h"
 
-//#include "LevelBase.h"
 #include "Sounds.h"
 #include "QBertScoreComponent.h"
 #include "ArrowAnimComponent.h"
@@ -35,6 +34,7 @@
 
 		go = std::make_unique<dae::GameObject>();
 		go->AddComponent(std::make_unique<LevelManager>(go.get(), levelComp));
+		dae::InputManager::GetInstance().BindCommand(std::make_unique<SkipLevelCommand>(go.get()), SDL_SCANCODE_F1, SDL_EVENT_KEY_DOWN);
 		scene.Add(std::move(go));
 
 		return level;

@@ -37,10 +37,11 @@ namespace QBert
 		int GetCurrentRound() const { return m_currentRound; }
 		int GetCurrentLevel() const { return m_currentLevel; }
 
+		void GoToNextLevel();
+
 		std::type_index GetType() const override;
 
 	private:
-		void GoToNextLevel();
 		void MarkAllCreaturesForRemoval() const;
 
 		int m_currentRound{ 0 };

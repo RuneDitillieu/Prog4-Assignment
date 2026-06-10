@@ -1,8 +1,8 @@
 #pragma once
 #include "Commands.h"
 #include "GameObject.h"
-#include "QBertMoveComponent.h"
 #include "Subject.h"
+#include "LevelManager.h"
 
 namespace QBert
 {
@@ -35,5 +35,26 @@ namespace QBert
 	private:
 		glm::vec3 m_moveDirection;
 		std::unique_ptr<dae::Subject> m_subject{ std::make_unique<dae::Subject>(nullptr) };
+	};
+
+	class SkipLevelCommand final : public dae::GameActorCommand
+	{
+	public:
+		SkipLevelCommand(dae::GameObject* actor)
+			: GameActorCommand(actor)
+		{
+			m_levelManager = actor->GetComponent<LevelManager>();
+		}
+
+		void Execute() override
+		{
+			if (m_levelManager)
+			{
+				m_levelManager->GoToNextLevel();
+			}
+		}
+
+	private:
+		LevelManager* m_levelManager{ nullptr };
 	};
 }

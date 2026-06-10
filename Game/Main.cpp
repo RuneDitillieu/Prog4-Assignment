@@ -44,7 +44,7 @@ static void load()
 		scene.Add(std::move(go));
 
 		// level
-		auto levelObj = QBert::Utils::CreateLevel(scene, 0, false, 2, 1);
+		auto levelObj = QBert::Utils::CreateLevel(scene, 0, false, 0, 1);
 		auto levelComp = levelObj->GetComponent<QBert::LevelBase>();
 
 

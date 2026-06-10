@@ -35,6 +35,7 @@ void QBert::TileComp::ResetTile(const TileParams& tileParams)
 
 	m_currentTile = m_startTile;
 	m_pConnSprite->SetStartPos(glm::vec2(m_tileType * m_pConnSprite->GetSpriteSize().x, 0));
+	m_pConnSprite->SetCurFrame(m_currentTile);
 }
 
 bool QBert::TileComp::Turn()

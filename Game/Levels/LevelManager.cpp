@@ -17,7 +17,7 @@ QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level)
 	levelParams.coilySpawns = std::vector<float>{ 1.f };
 	levelParams.samSlickSpawns = std::vector<float>{ 3.f };
 	levelParams.discSpawns = std::vector<glm::vec2>{ {-1, 4}, {4, -1} };
-	levelParams.tileParams = TileParams{0, false, 2, 1};
+	levelParams.tileParams = TileParams{0, false, 1, 0};
 	m_levelParams.emplace_back(levelParams);
 
 	// 1 2
@@ -90,21 +90,7 @@ void QBert::LevelManager::Notify(dae::Event event, dae::Subject*)
 {
 	if (event.id == dae::make_sdbm_hash("LEVEL_COMPLETED"))
 	{
-		if (m_currentRound < 3)
-		{
-			++m_currentRound;
-		}
-		else
-		{
-			m_currentRound = 0;
-			++m_currentLevel;
-		}
-
-		int Idx{ m_currentLevel * 3 + m_currentRound };
-		if (Idx < m_levelParams.size())
-		{
-			GoToNextLevel();
-		}
+		GoToNextLevel();
 
 		// notify score manager
 		GetOwner()->GetSubject()->NotifyObservers(event);
@@ -113,15 +99,30 @@ void QBert::LevelManager::Notify(dae::Event event, dae::Subject*)
 
 void QBert::LevelManager::GoToNextLevel()
 {
-	++m_curLevelParams;
-	m_secPassed = 0.f;
-	MarkAllCreaturesForRemoval();
-
-	for (auto player : m_pPlayers)
+	if (m_currentRound < 3)
 	{
-		player->Reset(glm::vec2(0, 0), false);
+		++m_currentRound;
 	}
-	m_pConnLevel->ResetBase(m_levelParams[m_curLevelParams].tileParams);
+	else
+	{
+		m_currentRound = 0;
+		++m_currentLevel;
+	}
+
+	size_t Idx{ static_cast<size_t>(m_currentLevel * 3 + m_currentRound) };
+	if (Idx < m_levelParams.size())
+	{
+		++m_curLevelParams;
+		m_secPassed = 0.f;
+		MarkAllCreaturesForRemoval();
+
+		for (auto player : m_pPlayers)
+		{
+			player->Reset(glm::vec2(0, 0), false);
+		}
+
+		m_pConnLevel->ResetBase(m_levelParams[m_curLevelParams].tileParams);
+	}
 }
 
 void QBert::LevelManager::MarkAllCreaturesForRemoval() const
