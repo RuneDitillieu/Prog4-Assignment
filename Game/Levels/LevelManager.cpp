@@ -48,10 +48,8 @@ void QBert::LevelManager::Update()
 
 	auto activeScene = dae::SceneManager::GetInstance().GetActiveScene();
 
-	int Idx{ -1 };
 	for (auto& coilySpawn : m_levelParams[m_curLevelParams].coilySpawns)
 	{
-		++Idx;
 		if (coilySpawn >= 0 && m_secPassed >= coilySpawn)
 		{
 			auto coily = Utils::CreateCoily(m_pConnLevel, m_pPlayers[0]);
@@ -60,11 +58,9 @@ void QBert::LevelManager::Update()
 			coilySpawn = -1;
 		}
 	}
-	Idx = -1;
 
 	for (auto& slickSamSpawn : m_levelParams[m_curLevelParams].samSlickSpawns)
 	{
-		++Idx;
 		if (slickSamSpawn >= 0 && m_secPassed >= slickSamSpawn)
 		{
 			auto slickSam = Utils::CreateSlick(m_pConnLevel, m_pPlayers[0]);
@@ -73,11 +69,9 @@ void QBert::LevelManager::Update()
 			slickSamSpawn = -1;
 		}
 	}
-	Idx = -1;
 
 	for (auto& uggWrongwaySpawn : m_levelParams[m_curLevelParams].uggWrongwaySpawns)
 	{
-		++Idx;
 		if (uggWrongwaySpawn >= 0 && m_secPassed >= uggWrongwaySpawn)
 		{
 

@@ -27,7 +27,7 @@ namespace dae
 	};
 
 
-	class MuteCommand : public Command
+	class MuteCommand final : public Command
 	{
 	public:
 		MuteCommand() : Command() {}
@@ -35,6 +35,60 @@ namespace dae
 		{
 			ServiceLocator::GetSoundSystem().MuteUnmuteSound();
 		}
+	};
+
+	class ConfirmCommand final : public Command
+	{
+	public:
+		ConfirmCommand(IObserver* observer) : Command()
+		{
+			m_subject->AddObserver(observer);
+		}
+
+		void Execute() override
+		{
+			Event e{ make_sdbm_hash("OnConfirmPressed") };
+			m_subject->NotifyObservers(e);
+		}
+
+	private:
+		std::unique_ptr<Subject> m_subject{ std::make_unique<Subject>(nullptr) };
+	};
+
+	class NextCommand final : public Command
+	{
+	public:
+		NextCommand(IObserver* observer) : Command()
+		{
+			m_subject->AddObserver(observer);
+		}
+
+		void Execute() override
+		{
+			Event e{ make_sdbm_hash("OnNextPressed") };
+			m_subject->NotifyObservers(e);
+		}
+
+	private:
+		std::unique_ptr<Subject> m_subject{ std::make_unique<Subject>(nullptr) };
+	};
+
+	class PrevCommand final : public Command
+	{
+	public:
+		PrevCommand(IObserver* observer) : Command()
+		{
+			m_subject->AddObserver(observer);
+		}
+
+		void Execute() override
+		{
+			Event e{ make_sdbm_hash("OnPreviousPressed") };
+			m_subject->NotifyObservers(e);
+		}
+
+	private:
+		std::unique_ptr<Subject> m_subject{ std::make_unique<Subject>(nullptr) };
 	};
 }
 
