@@ -1,4 +1,6 @@
 #include "SceneManager.h"
+
+#include "InputManager.h"
 #include "Scene.h"
 
 void dae::SceneManager::Update()
@@ -45,6 +47,7 @@ void dae::SceneManager::SetActiveScene(SceneName sceneName)
 	size_t prevScene = m_activeSceneIdx;
 	m_activeSceneIdx = sceneIdx;
 
+	dae::InputManager::GetInstance().ClearCommands();
 	m_scenes[m_activeSceneIdx]->Load();
 	m_scenes[prevScene]->UnLoad();
 }

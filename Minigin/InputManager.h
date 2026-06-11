@@ -4,7 +4,7 @@
 #include "Singleton.h"
 #include <memory>
 #include "Commands.h"
-
+#include <SDL3/SDL.h>
 #ifndef __EMSCRIPTEN__
 #include "Windows.h"
 #include "Xinput.h"
@@ -33,6 +33,7 @@ namespace dae
 		InputManager();
 		bool ProcessInput();
 		void BindCommand(std::unique_ptr<Command>&& command, SDL_Scancode scanCode, SDL_EventType eventType);
+		void ClearCommands();
 #ifndef __EMSCRIPTEN__
 		void BindCommand(std::unique_ptr<Command>&& command, SHORT button, int controllerId);
 #endif

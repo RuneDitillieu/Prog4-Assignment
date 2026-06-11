@@ -103,3 +103,12 @@ void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SHORT bu
 	}
 }
 #endif
+
+void dae::InputManager::ClearCommands()
+{
+	m_commandsKeyboard.clear();
+#ifndef __EMSCRIPTEN__
+	m_commandsController.clear();
+#endif
+
+}
