@@ -34,7 +34,15 @@ static void load()
 	dae::ServiceLocator::GetSoundSystem().Init();
 	QBert::Utils::AddSounds();
 
-	std::function<void(dae::Scene&)> loadFunc = [](dae::Scene& scene)
+	std::function<void(dae::Scene&)>loadFunc = [](dae::Scene& scene)
+	{
+		QBert::Utils::CreateSelectionScreenUI(scene);
+	};
+
+	auto& scene = dae::SceneManager::GetInstance().CreateScene(dae::SceneName(QBert::SceneName::IntroScene), loadFunc);
+	scene.Load();
+
+	loadFunc = [](dae::Scene& scene)
 	{
 		// font
 		auto font = dae::ResourceManager::GetInstance().LoadFont("QBertFont.ttf", 20);
@@ -77,8 +85,7 @@ static void load()
 		QBert::Utils::CreateUi(scene);
 	};
 
-	auto& scene = dae::SceneManager::GetInstance().CreateScene(dae::SceneName(QBert::SceneName::SinglePlayerScene), loadFunc);
-	scene.Load();
+	/*auto& scene =*/ dae::SceneManager::GetInstance().CreateScene(dae::SceneName(QBert::SceneName::SinglePlayerScene), loadFunc);
 }
 
 int main(int, char*[]) {

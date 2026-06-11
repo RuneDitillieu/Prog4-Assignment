@@ -2,6 +2,7 @@
 
 #include <SDL3/SDL.h>
 
+#include "ArrowAnimComponent.h"
 #include "GameObject.h"
 #include "RenderComponent.h"
 #include "Scene.h"
@@ -17,11 +18,14 @@
 #include "QBertCommands.h"
 #include "DiscActor.h"
 #include "CoilyActor.h"
+#include "GameModeSelectionComp.h"
 #include "HealthComponent.h"
 #include "LevelManager.h"
 #include "LivesDisplayComponent.h"
+#include "ResourceManager.h"
 #include "SlickSamActor.h"
 #include "Tags.h"
+#include "TextComponent.h"
 #include "UggWrongwayActor.h"
 
 dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool revertableTiles, int startTile, int winTile, int intermediateTile)
@@ -456,4 +460,42 @@ std::unique_ptr<dae::GameObject> QBert::Utils::CreateUggWrongway(LevelBase* leve
 	{
 		return CreateWrongway(level, playerMove);
 	}
+}
+
+void QBert::Utils::CreateSelectionScreenUI(dae::Scene& scene)
+{
+	auto title = std::make_unique<dae::GameObject>();
+	auto rc = title->AddComponent(std::make_unique<dae::RenderComponent>(title.get(), "Fonts.png"));
+	title->AddComponent(std::make_unique<dae::SpriteComp>(title.get(), rc, "Fonts.png", 1, 1,
+		rc->GetSize().x / 20.f * 9.f, rc->GetSize().y / 4, glm::vec2(0, rc->GetSize().y / 2), false));
+	title->SetScale(5.f);
+	title->SetLocalPosition(180, 100);
+
+	std::vector<dae::TextComponent*> textComps{};
+	textComps.reserve(3);
+
+	auto font = dae::ResourceManager::GetInstance().LoadFont("QBertFont.ttf", 18);
+	auto go = std::make_unique<dae::GameObject>();
+	auto tc = go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Start Single Player game", font, SDL_Color(255, 120, 0, 255)));
+	textComps.emplace_back(tc);
+	go->SetLocalPosition(180, 350);
+	scene.Add(std::move(go));
+
+	go = std::make_unique<dae::GameObject>();
+	tc = go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Start Coop game", font, SDL_Color(77, 206, 77, 255)));
+	textComps.emplace_back(tc);
+	go->SetLocalPosition(180, 410);
+	scene.Add(std::move(go));
+
+	go = std::make_unique<dae::GameObject>();
+	tc = go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Start Versus game", font, SDL_Color(77, 206, 77, 255)));
+	textComps.emplace_back(tc);
+	go->SetLocalPosition(180, 470);
+	scene.Add(std::move(go));
+
+	auto sc = title->AddComponent(std::make_unique<GameModeSelectionComp>(title.get(), textComps));
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(sc), SDL_SCANCODE_UP, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(sc), SDL_SCANCODE_DOWN, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(sc), SDL_SCANCODE_SPACE, SDL_EVENT_KEY_DOWN);
+	scene.Add(std::move(title));
 }

@@ -40,6 +40,8 @@ namespace QBert::Utils
 	std::unique_ptr<dae::GameObject> CreateWrongway(LevelBase* level, QBertMoveComp* playerMove);
 
 	std::unique_ptr<dae::GameObject> CreateUggWrongway(LevelBase* level, QBertMoveComp* playerMove);
+
+	void CreateSelectionScreenUI(dae::Scene& scene);
 }
 
 #endif // !INITUTILS_H

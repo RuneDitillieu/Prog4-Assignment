@@ -42,7 +42,9 @@ void dae::SceneManager::SetActiveScene(SceneName sceneName)
 
 	if (m_scenes.size() <= sceneIdx) return;
 
-	m_scenes[sceneIdx]->Load();
-	m_scenes[m_activeSceneIdx]->UnLoad();
+	size_t prevScene = m_activeSceneIdx;
 	m_activeSceneIdx = sceneIdx;
+
+	m_scenes[m_activeSceneIdx]->Load();
+	m_scenes[prevScene]->UnLoad();
 }
