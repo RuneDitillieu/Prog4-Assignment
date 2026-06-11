@@ -1,6 +1,7 @@
 #include "QBertScoreComponent.h"
 #include "GameObject.h"
 #include "LevelManager.h"
+#include "QBertHighscoreComponent.h"
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Tags.h"
@@ -12,35 +13,24 @@ QBert::ScoreComp::ScoreComp(dae::GameObject* pOwner, const std::vector<dae::Spri
 
 QBert::ScoreComp::~ScoreComp()
 {
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->RemoveObserver(this);
 	}
 
-	// auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
-	// for (auto coily : coilys)
-	// {
-	// 	coily->GetSubject()->RemoveObserver(this);
-	// }
-
-	//auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
-	//levelManager->GetOwner()->GetSubject()->RemoveObserver(this);
+	auto highscoreComp = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<QBertHighscoreComp>();
+	if (highscoreComp)
+		highscoreComp->PassScores(m_score);
 }
 
 void QBert::ScoreComp::Start()
 {
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->AddObserver(this);
 	}
-
-	// auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Coily));
-	// for (auto coily : coilys)
-	// {
-	// 	coily->GetSubject()->AddObserver(this);
-	// }
 
 	auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
 	levelManager->GetOwner()->GetSubject()->AddObserver(this);
