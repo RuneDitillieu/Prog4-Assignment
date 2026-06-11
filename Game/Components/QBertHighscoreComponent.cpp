@@ -9,11 +9,12 @@
 #include "Colors.h"
 
 QBert::QBertHighscoreComp::QBertHighscoreComp(dae::GameObject* pOwner, std::vector<dae::TextComponent*> hsTextComps,
-    std::vector<dae::TextComponent*> letterTextComps, std::vector<dae::GameObject*> arrows)
+    std::vector<dae::TextComponent*> letterTextComps, std::vector<dae::GameObject*> arrows,  dae::TextComponent* scoreTextComp)
     : Component(pOwner)
     , m_pHsTextComps(hsTextComps)
     , m_pLetterTextComps(letterTextComps)
     , m_arrows(arrows)
+    , m_pScoreTextComp(scoreTextComp)
 { }
 
 void QBert::QBertHighscoreComp::Start()
@@ -144,6 +145,19 @@ void QBert::QBertHighscoreComp::PassScores(int score1, int score2)
 {
     m_scoreP1 = score1;
     m_scoreP2 = score2;
+
+    std::string scoreStr{ };
+    if (m_scoreP1 < 10000)
+        scoreStr += "0";
+    if (m_scoreP1 < 1000)
+        scoreStr += "0";
+    if (m_scoreP1 < 100)
+        scoreStr += "0";
+    if (m_scoreP1 < 10)
+        scoreStr += "0";
+    scoreStr += std::to_string(m_scoreP1);
+
+    m_pScoreTextComp->SetText(scoreStr);
 }
 
 void QBert::QBertHighscoreComp::ReadHighscores()

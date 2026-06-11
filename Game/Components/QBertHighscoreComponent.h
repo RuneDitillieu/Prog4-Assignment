@@ -26,8 +26,9 @@ namespace QBert
     class QBertHighscoreComp final : public dae::Component, public dae::IObserver
     {
     public:
-        QBertHighscoreComp(dae::GameObject* pOwner, std::vector<dae::TextComponent*> hsTextComps
-            , std::vector<dae::TextComponent*> letterTextComps, std::vector<dae::GameObject*> arrows);
+        QBertHighscoreComp(dae::GameObject* pOwner, std::vector<dae::TextComponent*> hsTextComps,
+            std::vector<dae::TextComponent*> letterTextComps, std::vector<dae::GameObject*> arrows,
+            dae::TextComponent* scoreTextComp);
         ~QBertHighscoreComp() = default;
         QBertHighscoreComp(const QBertHighscoreComp& other) = delete;
         QBertHighscoreComp(QBertHighscoreComp&& other) = delete;
@@ -61,6 +62,7 @@ namespace QBert
         std::vector<dae::TextComponent*> m_pLetterTextComps;
         std::vector<dae::GameObject*> m_arrows;
         std::vector<Highscore> m_highscores{};
+        dae::TextComponent* m_pScoreTextComp;
     };
 }
 

@@ -31,8 +31,11 @@ void dae::AudioClip::Play(float volume)
 
     MIX_SetTrackGain(m_pTrack, volume);
 
-    bool playResult{ MIX_PlayTrack(m_pTrack, false) };
+    bool playResult = MIX_PlayTrack(m_pTrack, false);
     assert(playResult || "Failed to play sound");
+
+    // counts as not using variable in release
+    playResult;
 }
 
 

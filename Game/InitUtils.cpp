@@ -506,9 +506,9 @@ void QBert::Utils::CreateHighscoreScreenUI(dae::Scene& scene)
 	auto title = std::make_unique<dae::GameObject>();
 	title->AddComponent(std::make_unique<dae::TextComponent>(title.get(), "HIGH SCORES",
 		bigFont, QBert::PURPLE));
-	title->SetLocalPosition(150, 120);
+	title->SetLocalPosition(150, 100);
 
-	auto smallFont = dae::ResourceManager::GetInstance().LoadFont("QBertFont.ttf", 28);
+	auto normalFont = dae::ResourceManager::GetInstance().LoadFont("QBertFont.ttf", 28);
 
 	std::vector<dae::TextComponent*> hsTextComps{};
 	hsTextComps.reserve(5);
@@ -516,8 +516,8 @@ void QBert::Utils::CreateHighscoreScreenUI(dae::Scene& scene)
 	for (size_t Idx{ 0 }; Idx < 5; ++Idx)
 	{
 		auto go = std::make_unique<dae::GameObject>();
-		go->SetLocalPosition(240, 250 + (Idx * 50.f));
-		auto tc = go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), " ", smallFont, QBert::ORANGE));
+		go->SetLocalPosition(240, 220 + (Idx * 50.f));
+		auto tc = go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), " ", normalFont, QBert::ORANGE));
 		hsTextComps.emplace_back(tc);
 		scene.Add(std::move(go));
 	}
@@ -528,7 +528,7 @@ void QBert::Utils::CreateHighscoreScreenUI(dae::Scene& scene)
 	for (size_t Idx{ 0 }; Idx < 5; ++Idx)
 	{
 		auto go = std::make_unique<dae::GameObject>();
-		go->SetLocalPosition(250 + (Idx * 70.f), 600);
+		go->SetLocalPosition(250 + (Idx * 70.f), 620);
 		auto tc = go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), ".", bigFont, QBert::GREEN));
 		if (Idx == 0)
 		{
@@ -545,7 +545,7 @@ void QBert::Utils::CreateHighscoreScreenUI(dae::Scene& scene)
 	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), rc, "Triangles.png", 1, 1, rc->GetSize().x, rc->GetSize().y / 2,
 		glm::vec2(0, 0), false));
 	go->SetScale(2.f);
-	go->SetLocalPosition(255, 578);
+	go->SetLocalPosition(255, 598);
 	arrows.emplace_back(go.get());
 	scene.Add(std::move(go));
 
@@ -554,15 +554,34 @@ void QBert::Utils::CreateHighscoreScreenUI(dae::Scene& scene)
 	go->AddComponent(std::make_unique<dae::SpriteComp>(go.get(), rc, "Triangles.png", 1, 1, rc->GetSize().x, rc->GetSize().y / 2,
 		glm::vec2(0, rc->GetSize().y / 2), false));
 	go->SetScale(2.f);
-	go->SetLocalPosition(255, 660);
+	go->SetLocalPosition(255, 680);
 	arrows.emplace_back(go.get());
 	scene.Add(std::move(go));
 
-	auto hs = title->AddComponent(std::make_unique<QBertHighscoreComp>(title.get(), hsTextComps, letterTextComps, arrows));
+	go = std::make_unique<dae::GameObject>();
+	auto tc = go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), " ", normalFont, QBert::ORANGE));
+	go->SetLocalPosition(415, 710);
+
+	auto hs = title->AddComponent(std::make_unique<QBertHighscoreComp>(title.get(), hsTextComps,
+		letterTextComps, arrows, tc));
+
+	scene.Add(std::move(go));
+
+	auto smallFont = dae::ResourceManager::GetInstance().LoadFont("QBertFont.ttf", 16);
+
+	go = std::make_unique<dae::GameObject>();
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Your score", smallFont, QBert::PURPLE));
+	go->SetLocalPosition(230, 720);
+	scene.Add(std::move(go));
 
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(hs), SDL_SCANCODE_UP, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(hs), SDL_SCANCODE_DOWN, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(hs), SDL_SCANCODE_SPACE, SDL_EVENT_KEY_DOWN);
 
 	scene.Add(std::move(title));
+
+	go = std::make_unique<dae::GameObject>();
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), "Fill in your name to save your highscore", smallFont, QBert::PURPLE));
+	go->SetLocalPosition(90, 550);
+	scene.Add(std::move(go));
 }
