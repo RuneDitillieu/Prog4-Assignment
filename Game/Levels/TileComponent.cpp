@@ -34,6 +34,7 @@ void QBert::TileComp::ResetTile(const TileParams& tileParams)
 	m_middleTile = tileParams.middleTile;
 
 	m_currentTile = m_startTile;
+	m_pConnSprite->SetShouldUpdate(false);
 	m_pConnSprite->SetStartPos(glm::vec2(m_tileType * m_pConnSprite->GetSpriteSize().x, 0));
 	m_pConnSprite->SetCurFrame(m_currentTile);
 }
@@ -108,6 +109,12 @@ glm::vec3 QBert::TileComp::GetMiddlePos() const
 	glm::vec3 worldPos{ GetOwner()->GetWorldPosition().x,  GetOwner()->GetWorldPosition().y, 0 };
 	worldPos += m_middlePos;
 	return worldPos;
+}
+
+void QBert::TileComp::FlashColors() const
+{
+	m_pConnSprite->SetShouldUpdate(true);
+	m_pConnSprite->SetFrameDuration(0.1f);
 }
 
 std::type_index QBert::TileComp::GetType() const

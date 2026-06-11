@@ -204,6 +204,17 @@ void QBert::LevelBase::ResetBase(TileParams tileParams, const glm::vec2& tilePos
 	m_discs[1]->GetOwner()->IsEnabled(true);
 }
 
+void QBert::LevelBase::DoLevelCompletionAnim() const
+{
+	for (auto col : m_tiles)
+	{
+		for (auto tile : col)
+		{
+			tile->FlashColors();
+		}
+	}
+}
+
 std::type_index QBert::LevelBase::GetType() const
 {
 	return typeid(LevelBase);

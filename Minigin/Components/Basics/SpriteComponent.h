@@ -26,6 +26,8 @@ namespace dae
 		int GetCurFrame() { return m_curFrame; }
 		void Set(int cols, int rows, float frameW, float frameH, const glm::vec2& startPos, bool autoUpdate = true);
 		void SetStartPos(const glm::vec2& startPos);
+		void SetShouldUpdate(bool shouldAutoUpdate) { m_doUpdate = shouldAutoUpdate; }
+		void SetFrameDuration(float frameSec) { m_frameSec = frameSec; }
 
 		glm::vec2 GetSpriteSize() { return glm::vec2(m_frameW, m_frameH); }
 
@@ -42,7 +44,7 @@ namespace dae
 		float m_frameW;
 		float m_frameH;
 		float m_accuSec{ 0.f };
-		const float m_frameSec{ 0.2f };
+		float m_frameSec{ 0.2f };
 
 		glm::vec2 m_startPos;
 		bool m_doUpdate;

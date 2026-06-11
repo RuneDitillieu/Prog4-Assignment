@@ -43,11 +43,13 @@ namespace QBert
 
 	private:
 		void MarkAllCreaturesForRemoval() const;
+		void LoadLevelParams();
 
 		int m_currentRound{ 0 };
 		int m_currentLevel{ 0 };
 		int m_curLevelParams{ 0 };
 		float m_secPassed{ 0.f };
+		bool m_doingLevelTransition{ false };
 
 		LevelBase* m_pConnLevel;
 		std::vector<LevelParams> m_levelParams{};

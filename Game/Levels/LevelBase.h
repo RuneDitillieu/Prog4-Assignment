@@ -41,6 +41,8 @@ namespace QBert
 		void SetDiscs(std::vector<DiscActorComp*>&& discs);
 		int GetActiveDiscAmount() const;
 
+		void DoLevelCompletionAnim() const;
+
 		void ResetBase(TileParams tileParams, const glm::vec2& tilePos1, const glm::vec2& tilePos2);
 
 	private:

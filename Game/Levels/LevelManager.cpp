@@ -29,7 +29,7 @@ QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level)
 
 	auto activeScene = dae::SceneManager::GetInstance().GetActiveScene();
 
-	std::vector<QBert::DiscActorComp*> discs{};
+	std::vector<DiscActorComp*> discs{};
 	auto disc = Utils::CreateDisc(m_levelParams[0].discSpawns[0], m_pConnLevel);
 	discs.emplace_back(disc->GetComponent<DiscActorComp>());
 	activeScene->Add(std::move(disc));
@@ -59,6 +59,17 @@ void QBert::LevelManager::Start()
 void QBert::LevelManager::Update()
 {
 	m_secPassed += dae::DeltaTime::GetInstance().GetDeltaTime();
+
+	if (m_doingLevelTransition)
+	{
+		if (m_secPassed >= 3.f)
+		{
+			m_doingLevelTransition = false;
+			GoToNextLevel();
+		}
+
+		return;
+	}
 
 	auto activeScene = dae::SceneManager::GetInstance().GetActiveScene();
 
@@ -100,7 +111,9 @@ void QBert::LevelManager::Notify(dae::Event event, dae::Subject*)
 {
 	if (event.id == dae::make_sdbm_hash("LEVEL_COMPLETED"))
 	{
-		GoToNextLevel();
+		m_doingLevelTransition = true;
+		m_secPassed = 0.f;
+		m_pConnLevel->DoLevelCompletionAnim();
 
 		// notify score manager
 		GetOwner()->GetSubject()->NotifyObservers(event);
@@ -162,6 +175,11 @@ void QBert::LevelManager::MarkAllCreaturesForRemoval() const
 		uggWrongway->IsEnabled(false);
 		uggWrongway->MarkForRemoval();
 	}
+}
+
+void QBert::LevelManager::LoadLevelParams()
+{
+
 }
 
 std::type_index QBert::LevelManager::GetType() const

@@ -30,6 +30,7 @@ namespace QBert
 		TileComp& operator=(TileComp&& other) = delete;
 
 		glm::vec3 GetMiddlePos() const;
+		void FlashColors() const;
 
 		std::type_index GetType() const override;
 
