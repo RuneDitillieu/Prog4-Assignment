@@ -1,9 +1,9 @@
 ﻿#include "GameModeSelectionComp.h"
 
 #include "SceneManager.h"
-#include "Subject.h"
 #include "Tags.h"
 #include "TextComponent.h"
+#include "Colors.h"
 
 QBert::GameModeSelectionComp::GameModeSelectionComp(dae::GameObject* pOwner, const std::vector<dae::TextComponent*>& pTextComps)
     : Component(pOwner)
@@ -41,8 +41,8 @@ void QBert::GameModeSelectionComp::Notify(dae::Event event, dae::Subject*)
 
 void QBert::GameModeSelectionComp::UpdateSelectionColors()
 {
-    m_pConnTextComps[m_prevSelection]->SetColor(SDL_Color(77, 206, 77, 255));
-    m_pConnTextComps[m_selectedGameMode]->SetColor(SDL_Color(255, 120, 0, 255));
+    m_pConnTextComps[m_prevSelection]->SetColor(QBert::GREEN);
+    m_pConnTextComps[m_selectedGameMode]->SetColor(QBert::ORANGE);
 
     m_prevSelection = m_selectedGameMode;
 }

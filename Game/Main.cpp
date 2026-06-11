@@ -85,7 +85,14 @@ static void load()
 		QBert::Utils::CreateUi(scene);
 	};
 
-	/*auto& scene =*/ dae::SceneManager::GetInstance().CreateScene(dae::SceneName(QBert::SceneName::SinglePlayerScene), loadFunc);
+	dae::SceneManager::GetInstance().CreateScene(dae::SceneName(QBert::SceneName::SinglePlayerScene), loadFunc);
+
+	loadFunc = [](dae::Scene& scene)
+	{
+		QBert::Utils::CreateHighscoreScreenUI(scene);
+	};
+
+	dae::SceneManager::GetInstance().CreateScene(dae::SceneName(QBert::SceneName::HighscoreScene), loadFunc);
 }
 
 int main(int, char*[]) {

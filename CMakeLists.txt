@@ -251,7 +251,7 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
         Game/Components/QBertMoveComponent.cpp
         Game/Components/ArrowAnimComponent.cpp
         Game/Components/LivesDisplayComponent.cpp
-        #Game/Components/QBertHighscoreComponent.cpp
+        Game/Components/QBertHighscoreComponent.cpp
 
         Game/Levels/TileComponent.cpp
         Game/Levels/LevelBase.cpp
@@ -290,8 +290,7 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
         Game/States/UggWrongwayStates/JumpingUggWrongwayState.cpp
         Game/States/UggWrongwayStates/UggWrongwayState.cpp
         Game/States/UggWrongwayStates/StunnedUggWrongwayState.cpp
-        Game/Components/GameModeSelectionComp.cpp
-        Game/Components/GameModeSelectionComp.h)
+        Game/Components/GameModeSelectionComp.cpp)
 
 set(GAME_DIRS Game Game/Actors Game/Components Game/Levels Game/Managers
     Game/States Game/States/CoilyStates Game/States/QBertStates Game/States/DiscStates
