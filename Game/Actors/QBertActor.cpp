@@ -1,4 +1,6 @@
 #include "QBertActor.h"
+
+#include "LevelManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Tags.h"
@@ -30,6 +32,9 @@ void QBert::QBertActorComp::Start()
 	{
 		disc->GetSubject()->AddObserver(this);
 	}
+
+	auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
+	levelManager->GetOwner()->GetSubject()->AddObserver(this);
 }
 
 void QBert::QBertActorComp::Update()

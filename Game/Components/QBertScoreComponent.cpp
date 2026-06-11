@@ -19,6 +19,11 @@ QBert::ScoreComp::~ScoreComp()
 		qbert->GetSubject()->RemoveObserver(this);
 	}
 
+	if (dae::SceneManager::GetInstance().GetActiveScene()->GetSceneName() != dae::SceneName(SceneName::HighscoreScene))
+	{
+		return;
+	}
+
 	auto highscoreComp = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<QBertHighscoreComp>();
 	if (highscoreComp)
 		highscoreComp->PassScores(m_score);

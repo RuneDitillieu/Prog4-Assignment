@@ -1,5 +1,6 @@
 #include "CoilyActor.h"
 #include "GameObject.h"
+#include "LevelManager.h"
 #include "QBertActor.h"
 #include "QBertMoveComponent.h"
 #include "QBertScoreComponent.h"
@@ -22,6 +23,13 @@ QBert::CoilyActorComp::~CoilyActorComp()
 	{
 		qbert->GetSubject()->RemoveObserver(this);
 	}
+
+	if (dynamic_cast<StunnedCoilyState*>(m_pState.get())
+		|| dynamic_cast<FallingSnakeState*>(m_pState.get()))
+	{
+		auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
+		if (levelManager) levelManager->GetOwner()->GetSubject()->RemoveObserver(this);
+	}
 }
 
 void QBert::CoilyActorComp::Start()
@@ -36,6 +44,9 @@ void QBert::CoilyActorComp::Start()
 
 	auto score = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<ScoreComp>();
 	GetOwner()->GetSubject()->AddObserver(score);
+
+	auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
+	levelManager->GetOwner()->GetSubject()->AddObserver(this);
 }
 
 void QBert::CoilyActorComp::Update()

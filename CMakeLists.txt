@@ -290,7 +290,8 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
         Game/States/UggWrongwayStates/JumpingUggWrongwayState.cpp
         Game/States/UggWrongwayStates/UggWrongwayState.cpp
         Game/States/UggWrongwayStates/StunnedUggWrongwayState.cpp
-        Game/Components/GameModeSelectionComp.cpp)
+        Game/Components/GameModeSelectionComp.cpp
+        Game/States/QBertStates/QBertFrozenState.cpp)
 
 set(GAME_DIRS Game Game/Actors Game/Components Game/Levels Game/Managers
     Game/States Game/States/CoilyStates Game/States/QBertStates Game/States/DiscStates

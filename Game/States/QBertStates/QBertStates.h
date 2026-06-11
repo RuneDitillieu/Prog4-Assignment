@@ -86,13 +86,26 @@ namespace QBert
 		void OnEnter() override;
 		void OnExit() override;
 		std::unique_ptr<QBertState> Update() override;
-		std::unique_ptr<QBertState> OnNotify(dae::Event, dae::Subject*) override { return nullptr; };
 
 	private:
 		float m_secPassed{ 0.f };
 		const float m_maxSec{ 1.5f };
 
 		bool m_isFirstFrame{ true };
+	};
+
+	class FrozenQBertState final : public QBertState
+	{
+	public:
+		FrozenQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
+
+		void OnEnter() override;
+		void OnExit() override;
+		std::unique_ptr<QBertState> Update() override;
+
+	private:
+		float m_secPassed{ 0.f };
+		const float m_maxSec{ 1.5f };
 	};
 }
 

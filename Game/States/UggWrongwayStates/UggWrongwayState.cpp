@@ -41,7 +41,8 @@ std::unique_ptr<QBert::UggWrongwayState> QBert::UggWrongwayState::Update()
 
 std::unique_ptr<QBert::UggWrongwayState> QBert::UggWrongwayState::OnNotify(dae::Event event, dae::Subject*)
 {
-    if (event.id == dae::make_sdbm_hash("QBERT_KILLED"))
+    if (event.id == dae::make_sdbm_hash("QBERT_KILLED")
+        || event.id == dae::make_sdbm_hash("LEVEL_COMPLETED"))
     {
         return std::make_unique<StunnedUggWrongwayState>(m_uggWrongway, m_pConnSprite,
             m_pMoveComp, m_pConnLevel, m_pQBertMoveComp, m_goesRight);

@@ -44,6 +44,7 @@ namespace QBert
 	private:
 		void MarkAllCreaturesForRemoval() const;
 		void LoadLevelParams();
+		void FreezeCreatures() const;
 
 		int m_currentRound{ 0 };
 		int m_currentLevel{ 0 };
@@ -53,7 +54,7 @@ namespace QBert
 
 		LevelBase* m_pConnLevel;
 		std::vector<LevelParams> m_levelParams{};
-		std::vector<QBertMoveComp*> m_pPlayers{};
+		std::vector<QBertMoveComp*> m_pPlayersMove{};
 	};
 }
 

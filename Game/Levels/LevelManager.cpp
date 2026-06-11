@@ -52,7 +52,7 @@ void QBert::LevelManager::Start()
 	auto players = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
 	for (auto player : players)
 	{
-		m_pPlayers.emplace_back(player->GetComponent<QBertMoveComp>());
+		m_pPlayersMove.emplace_back(player->GetComponent<QBertMoveComp>());
 	}
 }
 
@@ -62,7 +62,7 @@ void QBert::LevelManager::Update()
 
 	if (m_doingLevelTransition)
 	{
-		if (m_secPassed >= 3.f)
+		if (m_secPassed >= 1.5f)
 		{
 			m_doingLevelTransition = false;
 			GoToNextLevel();
@@ -77,7 +77,7 @@ void QBert::LevelManager::Update()
 	{
 		if (coilySpawn >= 0 && m_secPassed >= coilySpawn)
 		{
-			auto coily = Utils::CreateCoily(m_pConnLevel, m_pPlayers[0]);
+			auto coily = Utils::CreateCoily(m_pConnLevel, m_pPlayersMove[0]);
 			coily->Start();
 			activeScene->Add(std::move(coily));
 			coilySpawn = -1;
@@ -88,7 +88,7 @@ void QBert::LevelManager::Update()
 	{
 		if (slickSamSpawn >= 0 && m_secPassed >= slickSamSpawn)
 		{
-			auto slickSam = Utils::CreateSlickSam(m_pConnLevel, m_pPlayers[0]);
+			auto slickSam = Utils::CreateSlickSam(m_pConnLevel, m_pPlayersMove[0]);
 			slickSam->Start();
 			activeScene->Add(std::move(slickSam));
 			slickSamSpawn = -1;
@@ -99,7 +99,7 @@ void QBert::LevelManager::Update()
 	{
 		if (uggWrongwaySpawn >= 0 && m_secPassed >= uggWrongwaySpawn)
 		{
-			auto uggWrongway = Utils::CreateUggWrongway(m_pConnLevel, m_pPlayers[0]);
+			auto uggWrongway = Utils::CreateUggWrongway(m_pConnLevel, m_pPlayersMove[0]);
 			uggWrongway->Start();
 			activeScene->Add(std::move(uggWrongway));
 			uggWrongwaySpawn = -1;
@@ -139,7 +139,7 @@ void QBert::LevelManager::GoToNextLevel()
 		m_secPassed = 0.f;
 		MarkAllCreaturesForRemoval();
 
-		for (auto player : m_pPlayers)
+		for (auto player : m_pPlayersMove)
 		{
 			player->Reset(glm::vec2(0, 0), false);
 		}
@@ -180,6 +180,14 @@ void QBert::LevelManager::MarkAllCreaturesForRemoval() const
 void QBert::LevelManager::LoadLevelParams()
 {
 
+}
+
+void QBert::LevelManager::FreezeCreatures() const
+{
+	for (auto player : m_pPlayersMove)
+	{
+		player->m_isEnabled = false;
+	}
 }
 
 std::type_index QBert::LevelManager::GetType() const

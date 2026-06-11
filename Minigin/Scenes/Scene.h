@@ -38,6 +38,8 @@ namespace dae
 		{
 			for (auto& object : m_objects)
 			{
+				if (object == nullptr) continue;
+
 				auto comp{ object->GetComponentInChildren<T>() };
 				if (comp != nullptr)
 				{

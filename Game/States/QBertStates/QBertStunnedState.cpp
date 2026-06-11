@@ -12,10 +12,6 @@ QBert::StunnedQBertState::StunnedQBertState(dae::GameObject* qbert, dae::SpriteC
 
 void QBert::StunnedQBertState::OnEnter()
 {
-	/*m_qbert->GetComponent<dae::HealthComponent>()->LoseLife();
-	dae::Event e{ dae::make_sdbm_hash("QBERT_KILLED") };
-	m_qbert->GetSubject()->NotifyObservers(e);*/
-
 	m_qbert->GetChildAt(0)->IsEnabled(true);
 	dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(QBert::Sound::Speech2));
 }
@@ -45,7 +41,7 @@ std::unique_ptr<QBert::QBertState> QBert::StunnedQBertState::Update()
 	m_secPassed += dae::DeltaTime::GetInstance().GetDeltaTime();
 	if (m_secPassed >= m_maxSec)
 	{
-		return std::make_unique<QBert::IdleQBertState>(m_qbert, m_pConnSpriteComp, m_pMoveComp, m_pConnLevel);
+		return std::make_unique<IdleQBertState>(m_qbert, m_pConnSpriteComp, m_pMoveComp, m_pConnLevel);
 	}
 
 	return nullptr;

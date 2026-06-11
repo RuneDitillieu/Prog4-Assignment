@@ -4,7 +4,7 @@
 #include "LevelBase.h"
 #include "TileComponent.h"
 
-QBert::DroppingQBertState::DroppingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBert::QBertMoveComp* moveComp, LevelBase* level)
+QBert::DroppingQBertState::DroppingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level)
 	: QBertState(qbert, spriteComp, moveComp, level)
 { }
 
@@ -19,7 +19,7 @@ std::unique_ptr<QBert::QBertState> QBert::DroppingQBertState::Update()
 	{
 		m_pMoveComp->m_isEnabled = true;
 		m_pMoveComp->Reset(glm::vec2(0, 0), true);
-		return std::make_unique<QBert::IdleQBertState>(m_qbert, m_pConnSpriteComp, m_pMoveComp, m_pConnLevel);
+		return std::make_unique<IdleQBertState>(m_qbert, m_pConnSpriteComp, m_pMoveComp, m_pConnLevel);
 	}
 
 	return nullptr;

@@ -28,7 +28,8 @@ std::unique_ptr<QBert::CoilyState> QBert::CoilyState::Update()
 
 std::unique_ptr<QBert::CoilyState> QBert::CoilyState::OnNotify(dae::Event event, dae::Subject*)
 {
-	if (event.id == dae::make_sdbm_hash("QBERT_KILLED"))
+	if (event.id == dae::make_sdbm_hash("QBERT_KILLED")
+		|| event.id == dae::make_sdbm_hash("LEVEL_COMPLETED"))
 	{
 		return std::make_unique<StunnedCoilyState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 	}

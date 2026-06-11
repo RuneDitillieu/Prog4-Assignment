@@ -28,9 +28,10 @@ std::unique_ptr<QBert::SlickSamState> QBert::SlickSamState::Update()
 
 std::unique_ptr<QBert::SlickSamState> QBert::SlickSamState::OnNotify(dae::Event event, dae::Subject*)
 {
-    if (event.id == dae::make_sdbm_hash("QBERT_KILLED"))
+    if (event.id == dae::make_sdbm_hash("QBERT_KILLED")
+        || event.id == dae::make_sdbm_hash("LEVEL_COMPLETED"))
     {
-        //return std::make_unique<QBert::Stun>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+        return std::make_unique<StunnedSlickSamState>(m_slickSam, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
     }
 
     return nullptr;

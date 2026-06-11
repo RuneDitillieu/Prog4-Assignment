@@ -1,6 +1,7 @@
 #include "SlickSamActor.h"
 
 #include "GameObject.h"
+#include "LevelManager.h"
 #include "QBertMoveComponent.h"
 #include "QBertScoreComponent.h"
 #include "SceneManager.h"
@@ -21,6 +22,13 @@ QBert::SlickSamActorComp::~SlickSamActorComp()
 	{
 		qbert->GetSubject()->RemoveObserver(this);
 	}
+
+	if (dynamic_cast<StunnedSlickSamState*>(m_pState.get())
+	|| dynamic_cast<FallingSlickSamState*>(m_pState.get()))
+	{
+		auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
+		if (levelManager) levelManager->GetOwner()->GetSubject()->RemoveObserver(this);
+	}
 }
 
 void QBert::SlickSamActorComp::Start()
@@ -34,6 +42,9 @@ void QBert::SlickSamActorComp::Start()
 
 	auto scoreComp = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<ScoreComp>();
 	GetOwner()->GetSubject()->AddObserver(scoreComp);
+
+	auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
+	levelManager->GetOwner()->GetSubject()->AddObserver(this);
 }
 
 void QBert::SlickSamActorComp::Update()
