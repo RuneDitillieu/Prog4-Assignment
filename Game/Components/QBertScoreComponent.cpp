@@ -28,7 +28,10 @@ QBert::ScoreComp::~ScoreComp()
 
 	auto highscoreComp = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<QBertHighscoreComp>();
 	if (highscoreComp)
-		highscoreComp->PassScores(m_score1, m_score2);
+	{
+		if (m_player2) highscoreComp->PassScores(m_score1, m_score2);
+		else highscoreComp->PassScores(m_score1);
+	}
 }
 
 void QBert::ScoreComp::Start()
@@ -41,6 +44,11 @@ void QBert::ScoreComp::Start()
 
 	m_player1 = qberts[0];
 	if (qberts.size() > 1) m_player2 = qberts[1];
+	else
+	{
+		auto coilyPlayer = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::PlayerCoily));
+		if (!coilyPlayer.empty()) m_player2 = coilyPlayer[0];
+	}
 
 	auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
 	levelManager->GetOwner()->GetSubject()->AddObserver(this);
@@ -63,10 +71,13 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject* subject)
 			m_score2 += m_tileScore;
 		}
 		break;
+
 	case dae::make_sdbm_hash("COILY_KILLED"):
 		m_score1 += m_coilyScore;
-		m_score2 += m_coilyScore;
+		if (m_player2->GetTag() != dae::Tag(Tag::PlayerCoily))
+			m_score2 += m_coilyScore;
 		break;
+
 	case dae::make_sdbm_hash("SAM_SLICK_KILLED"):
 		if (event.args->object == m_player1)
 		{
@@ -77,9 +88,19 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject* subject)
 			m_score2 += m_tileScore;
 		}
 		break;
+
+	case dae::make_sdbm_hash("QBERT_KILLED"):
+		if (subject->GetOwner() == m_player1
+			&& m_player2->GetTag() == dae::Tag(Tag::PlayerCoily))
+		{
+			m_score2 += m_coilyScore;
+		}
+		break;
+
 	case dae::make_sdbm_hash("LEVEL_COMPLETED"):
 		m_score1 += GetWinScore(event.args->nr);
-		m_score2 += GetWinScore(event.args->nr);
+		if (m_player2->GetTag() != dae::Tag(Tag::PlayerCoily))
+			m_score2 += GetWinScore(event.args->nr);
 		break;
 	}
 

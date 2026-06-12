@@ -22,6 +22,7 @@ namespace QBert::Utils
 
 	std::vector<dae::Component*> CreateUi(dae::Scene& scene, dae::TextComponent* player2ScoreText = nullptr, std::vector<dae::GameObject*> p2Lives = std::vector<dae::GameObject*>{});
 	std::vector<dae::Component*> CreateCoopUi(dae::Scene& scene);
+	std::vector<dae::Component*> CreateVersusUi(dae::Scene& scene);
 
 	void AddSounds();
 

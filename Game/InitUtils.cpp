@@ -280,6 +280,38 @@ std::vector<dae::Component*> QBert::Utils::CreateCoopUi(dae::Scene& scene)
 	return CreateUi(scene, tc, pLives);
 }
 
+std::vector<dae::Component*> QBert::Utils::CreateVersusUi(dae::Scene& scene)
+{
+	// animated text "Player"
+	auto playerText = std::make_unique<dae::GameObject>();
+	playerText->SetLocalPosition(560.f, 50.f);
+	playerText->SetScale(3.f);
+	auto rc = playerText->AddComponent(std::make_unique<dae::RenderComponent>(playerText.get(), "PlayerTextSprites.png"));
+	playerText->AddComponent(std::make_unique<dae::SpriteComp>(playerText.get(), rc, "PlayerTextSprites.png",
+		1, 6, rc->GetSize().x / 2.f, rc->GetSize().y / 6.f, glm::vec2(0, 0)));
+
+	// rect with player id
+	auto playerId = std::make_unique<dae::GameObject>();
+	playerId->SetLocalPosition(rc->GetSize().x / 2.f * 3.f + 20.f, -8.f);
+	playerId->SetScale(3.f);
+	rc = playerId->AddComponent(std::make_unique<dae::RenderComponent>(playerId.get(), "LevelUi.png"));
+	playerId->AddComponent(std::make_unique<dae::SpriteComp>(playerId.get(), rc, "LevelUi.png",
+		2, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(rc->GetSize().x / 5.f - 1.f, 0), false));
+	playerId.release()->SetParent(playerText.get(), false);
+
+	auto font = dae::ResourceManager::GetInstance().LoadFont("QBertFont.ttf", 20);
+
+	// score
+	auto score = std::make_unique<dae::GameObject>();
+	auto tc = score->AddComponent(std::make_unique<dae::TextComponent>(score.get(), "0", font, QBert::ORANGE));
+	score->SetLocalPosition(8.f, 40.f);
+	score.release()->SetParent(playerText.get(), false);
+
+	scene.Add(std::move(playerText));
+
+	return CreateUi(scene, tc);
+}
+
 void QBert::Utils::AddSounds()
 	{
 		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump1),
