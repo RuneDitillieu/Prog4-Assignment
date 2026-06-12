@@ -92,6 +92,7 @@ void QBert::LevelManager::Update()
 	// spawn enemies
 	auto activeScene = dae::SceneManager::GetInstance().GetActiveScene();
 
+	// coily
 	if (activeScene->GetSceneName() != dae::SceneName(SceneName::VersusScene))
 	{
 		for (auto& coilySpawn : m_levelParams[m_curLevelParams].coilySpawns)
@@ -106,6 +107,7 @@ void QBert::LevelManager::Update()
 		}
 	}
 
+	// slick & sam
 	for (auto& slickSamSpawn : m_levelParams[m_curLevelParams].samSlickSpawns)
 	{
 		if (slickSamSpawn >= 0 && m_secPassed >= slickSamSpawn)
@@ -117,6 +119,7 @@ void QBert::LevelManager::Update()
 		}
 	}
 
+	// ugg & wrongway
 	size_t amUWSpawns{ m_levelParams[m_curLevelParams].uggWrongwaySpawns.size() };
 	if (amUWSpawns == 0) return;
 

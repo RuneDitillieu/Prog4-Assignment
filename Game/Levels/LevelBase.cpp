@@ -11,6 +11,7 @@ QBert::LevelBase::LevelBase(dae::GameObject* pOwner, int tileType, bool revertab
 {
 	const size_t levelSize{ 7 };
 
+	// create columns
 	m_tiles.reserve(levelSize);
 	for (size_t idx{ 0 }; idx < levelSize; ++idx)
 	{
@@ -18,6 +19,7 @@ QBert::LevelBase::LevelBase(dae::GameObject* pOwner, int tileType, bool revertab
 		m_tiles[idx].reserve(levelSize - idx);
 	}
 
+	// create tiles
 	for (size_t colIdx{ 0 }; colIdx < levelSize; ++colIdx)
 	{
 		for (size_t rowIdx{ 0 }; rowIdx < levelSize; ++rowIdx)
@@ -97,10 +99,12 @@ bool QBert::LevelBase::RevertTile(int col, int row) const
 
 glm::vec3 QBert::LevelBase::GetMiddlePosOfTile(int col, int row) const
 {
+	// normal tile
 	if (GetTile(col, row))
 	{
 		return GetTile(col, row)->GetMiddlePos();
 	}
+	// tile with disc possibility
 	else if(col == -1 || row == -1)
 	{
 		glm::vec2 offset{ 0.f, 0.f};
@@ -117,6 +121,7 @@ glm::vec3 QBert::LevelBase::GetMiddlePosOfTile(int col, int row) const
 			+ glm::vec3((col + offset.x)  * 0.5f * m_tileSize + (row + offset.y) * -0.5f * m_tileSize, (col + offset.x) * 0.75f * m_tileSize + (row + offset.y) * 0.75f * m_tileSize, 0)
 			+ m_middlePosOffset;
 	}
+	// other
 	else
 	{
 		return GetOwner()->GetWorldPosition()

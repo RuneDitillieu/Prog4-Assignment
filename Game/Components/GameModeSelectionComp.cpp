@@ -23,6 +23,7 @@ void QBert::GameModeSelectionComp::Notify(dae::Event event, dae::Subject*)
     switch (event.id)
     {
     case dae::make_sdbm_hash("OnPreviousPressed"):
+        // update selection
         if (m_selectedGameMode == 0)
         {
             m_selectedGameMode = static_cast<uint16_t>(m_pConnTextComps.size() -1);
@@ -31,18 +32,22 @@ void QBert::GameModeSelectionComp::Notify(dae::Event event, dae::Subject*)
         {
             --m_selectedGameMode;
         }
+
         UpdateSelectionColors();
         m_secPassed = 0.f;
         break;
 
     case dae::make_sdbm_hash("OnNextPressed"):
+        // update selection
         ++m_selectedGameMode;
         m_selectedGameMode %= m_pConnTextComps.size();
+
         UpdateSelectionColors();
         m_secPassed = 0.f;
         break;
 
     case dae::make_sdbm_hash("OnConfirmPressed"):
+        // load scene
         SceneName sceneName = static_cast<SceneName>(m_selectedGameMode + 1);
         dae::SceneManager::GetInstance().SetActiveScene(dae::SceneName(sceneName));
         m_secPassed = 0.f;

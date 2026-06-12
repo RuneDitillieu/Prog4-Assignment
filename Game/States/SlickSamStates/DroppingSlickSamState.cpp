@@ -19,7 +19,8 @@ void QBert::DroppingSlickSamState::OnEnter()
 
 std::unique_ptr<QBert::SlickSamState> QBert::DroppingSlickSamState::Update()
 {
-    m_slickSam->SetLocalPosition(m_slickSam->GetLocalPosition() + glm::vec3(0, 300.f, 0) * dae::DeltaTime::GetInstance().GetDeltaTime());
+    m_slickSam->SetLocalPosition(m_slickSam->GetLocalPosition() + glm::vec3(0, 300.f, 0)
+        * dae::DeltaTime::GetInstance().GetDeltaTime());
 
     glm::vec3 coilyPos{ m_slickSam->GetLocalPosition() + m_pMoveComp->GetFeetPos() };
     int col{ static_cast<int>(m_pMoveComp->GetCurrentTile().x) };

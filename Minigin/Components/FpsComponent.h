@@ -29,10 +29,6 @@ namespace dae
     private:
         TextComponent* m_pConnectedTextComponent;
         std::vector<float> m_prev10FramesFps{};
-
-        /*float m_timer{};
-        int m_frameCount{};
-        float m_prevFps{};*/
     };
 }
 

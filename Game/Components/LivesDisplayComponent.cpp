@@ -12,7 +12,7 @@ QBert::LivesDisplay::LivesDisplay(dae::GameObject* pOwner, std::vector<dae::Game
 
 QBert::LivesDisplay::~LivesDisplay()
 {
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::QBert));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::QBert));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->RemoveObserver(this);
@@ -21,7 +21,7 @@ QBert::LivesDisplay::~LivesDisplay()
 
 void QBert::LivesDisplay::Start()
 {
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::QBert));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::QBert));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->AddObserver(this);
@@ -35,39 +35,32 @@ void QBert::LivesDisplay::Notify(dae::Event event, dae::Subject* subject)
 {
 	if (event.id == dae::make_sdbm_hash("ACTOR_LIVES_CHANGED"))
 	{
+		// update UI to represent player lives
 		if (subject->GetOwner() == m_player1)
 		{
-			int idx{ 0 };
-			for (auto lives : m_pLivesP1)
-			{
-				++idx;
-
-				if (idx <= event.args[0].nr)
-				{
-					lives->IsEnabled(true);
-				}
-				else
-				{
-					lives->IsEnabled(false);
-				}
-			}
+			UpdateUI(event.args[0].nr, m_pLivesP1);
 		}
 		else if (subject->GetOwner() == m_player2)
 		{
-			int idx{ 0 };
-			for (auto lives : m_pLivesP2)
-			{
-				++idx;
+			UpdateUI(event.args[0].nr, m_pLivesP2);
+		}
+	}
+}
 
-				if (idx <= event.args[0].nr)
-				{
-					lives->IsEnabled(true);
-				}
-				else
-				{
-					lives->IsEnabled(false);
-				}
-			}
+void QBert::LivesDisplay::UpdateUI(int amLives, const std::vector<dae::GameObject*>& livesVec) const
+{
+	int idx{ 0 };
+	for (auto lives : livesVec)
+	{
+		++idx;
+
+		if (idx <= amLives)
+		{
+			lives->IsEnabled(true);
+		}
+		else
+		{
+			lives->IsEnabled(false);
 		}
 	}
 }

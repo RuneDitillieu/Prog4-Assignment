@@ -20,7 +20,7 @@ dae::FpsComponent::FpsComponent(GameObject* pOwner, const std::string& text, std
 
 void dae::FpsComponent::Update()
 {
-    float deltaTime{ dae::DeltaTime::GetInstance().GetDeltaTime() };
+    float deltaTime{ DeltaTime::GetInstance().GetDeltaTime() };
 
     if (deltaTime > 0.001f && m_pConnectedTextComponent != nullptr)
     {
@@ -48,23 +48,6 @@ void dae::FpsComponent::Update()
         {
             m_prev10FramesFps.emplace_back(1.f / deltaTime);
         }
-
-        /*m_timer += deltaTime;
-        ++m_frameCount;
-
-        if (m_timer >= 0.5f)
-        {
-            float fps{ static_cast<float>(m_frameCount / m_timer) };
-
-            if (std::abs(fps - m_prevFps) > 0.1f)
-            {
-                m_pConnectedTextComponent->SetText(std::format("{:.1f} FPS", fps));
-                m_prevFps = fps;
-            }
-
-            m_timer = 0.0f;
-            m_frameCount = 0;
-        }*/
     }
 }
 

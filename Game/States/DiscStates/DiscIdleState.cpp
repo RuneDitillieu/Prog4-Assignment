@@ -1,7 +1,7 @@
 #include "DiscStates.h"
 
 QBert::IdleDiscState::IdleDiscState(dae::GameObject* disc)
-	: QBert::DiscState(disc)
+	: DiscState(disc)
 { }
 
 std::unique_ptr<QBert::DiscState> QBert::IdleDiscState::OnNotify(dae::Event event, dae::Subject*)
@@ -9,7 +9,7 @@ std::unique_ptr<QBert::DiscState> QBert::IdleDiscState::OnNotify(dae::Event even
 	if (event.id == dae::make_sdbm_hash("DISC_USED")
 		&& event.args->object == m_disc)
 	{
-		return std::make_unique<QBert::MovingDiscState>(m_disc);
+		return std::make_unique<MovingDiscState>(m_disc);
 	}
 
 	return nullptr;

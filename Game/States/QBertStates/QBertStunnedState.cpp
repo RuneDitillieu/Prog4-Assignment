@@ -6,14 +6,14 @@
 #include "Sounds.h"
 
 QBert::StunnedQBertState::StunnedQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp,
-	QBert::QBertMoveComp* moveComp, LevelBase* level)
+	QBertMoveComp* moveComp, LevelBase* level)
 	: QBertState(qbert, spriteComp, moveComp, level)
 { }
 
 void QBert::StunnedQBertState::OnEnter()
 {
 	m_qbert->GetChildAt(0)->IsEnabled(true);
-	dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(QBert::Sound::Speech2));
+	dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(Sound::Speech2));
 }
 
 void QBert::StunnedQBertState::OnExit()

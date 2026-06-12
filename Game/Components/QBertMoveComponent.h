@@ -31,6 +31,8 @@ namespace QBert
 		void Reset(const glm::vec2& tile, bool shouldTurn);
 
 	private:
+		void PlayJumpSound() const;
+
 		glm::vec3 m_QBertFeetPos;
 		glm::vec2 m_currentTile;
 		glm::vec2 m_goalTile;

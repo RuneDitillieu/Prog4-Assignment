@@ -12,8 +12,8 @@ namespace dae
 	class SpriteComp : public Component
 	{
 	public:
-		SpriteComp(dae::GameObject* pOwner, const std::string& fileName, int cols, int rows, bool autoUpdate = true);	// for evenly spaced sprites
-		SpriteComp(dae::GameObject* pOwner, dae::RenderComponent* pConnRenderComp, const std::string& fileName, int cols, int rows, 
+		SpriteComp(GameObject* pOwner, const std::string& fileName, int cols, int rows, bool autoUpdate = true);	// for evenly spaced sprites
+		SpriteComp(GameObject* pOwner, RenderComponent* pConnRenderComp, const std::string& fileName, int cols, int rows,
 			float frameW, float frameH, const glm::vec2& startPos, bool autoUpdate = true);	// for uneven/partial sprites
 		~SpriteComp() = default;
 		SpriteComp(const SpriteComp& other) = delete;
@@ -34,7 +34,7 @@ namespace dae
 		std::type_index GetType() const override;
 
 	private:
-		dae::RenderComponent* m_pConnectedRenderComponent;
+		RenderComponent* m_pConnectedRenderComponent;
 		std::string m_fileName;
 
 		int m_cols;

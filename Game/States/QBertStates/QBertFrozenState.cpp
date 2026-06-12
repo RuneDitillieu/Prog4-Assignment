@@ -1,13 +1,11 @@
 ﻿#include "QBertStates.h"
 #include "HealthComponent.h"
 #include "DeltaTime.h"
-#include "Events.h"
 #include "QBertMoveComponent.h"
 #include "ServiceLocator.h"
-#include "Sounds.h"
 
 QBert::FrozenQBertState::FrozenQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp,
-    QBert::QBertMoveComp* moveComp, LevelBase* level)
+    QBertMoveComp* moveComp, LevelBase* level)
     : QBertState(qbert, spriteComp, moveComp, level)
 { }
 

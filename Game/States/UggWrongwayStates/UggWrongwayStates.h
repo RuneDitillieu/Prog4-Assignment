@@ -61,7 +61,6 @@ namespace QBert
         FallingUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
             QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps, bool goesRight);
 
-        void OnEnter() override;
         std::unique_ptr<UggWrongwayState> Update() override;
     };
 

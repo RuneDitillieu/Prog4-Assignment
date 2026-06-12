@@ -7,10 +7,6 @@ QBert::FallingUggWrongwayState::FallingUggWrongwayState(dae::GameObject* uggWron
         : UggWrongwayState(uggWrongway, spriteComp, moveComp, level, qbertMoveComps, goesRight)
 { }
 
-void QBert::FallingUggWrongwayState::OnEnter()
-{
-}
-
 std::unique_ptr<QBert::UggWrongwayState> QBert::FallingUggWrongwayState::Update()
 {
     glm::vec3 fallingDir{ 0, -100, 0 };

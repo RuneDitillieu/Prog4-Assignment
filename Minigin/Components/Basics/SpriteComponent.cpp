@@ -4,7 +4,7 @@
 #include "RenderComponent.h"
 #include "GameObject.h"
 
-dae::SpriteComp::SpriteComp(dae::GameObject* pOwner, const std::string& fileName, int cols, int rows, bool autoUpdate)
+dae::SpriteComp::SpriteComp(GameObject* pOwner, const std::string& fileName, int cols, int rows, bool autoUpdate)
 	: Component(pOwner)
 	, m_fileName(fileName)
 	, m_cols(cols)
@@ -13,7 +13,7 @@ dae::SpriteComp::SpriteComp(dae::GameObject* pOwner, const std::string& fileName
 	, m_startPos(glm::vec2(0, 0))
 	, m_doUpdate(autoUpdate)
 { 
-	m_pConnectedRenderComponent = GetOwner()->GetComponent<dae::RenderComponent>();
+	m_pConnectedRenderComponent = GetOwner()->GetComponent<RenderComponent>();
 	if (m_pConnectedRenderComponent == nullptr)
 	{
 		m_pConnectedRenderComponent = GetOwner()->AddComponent(std::make_unique<RenderComponent>(GetOwner(), m_fileName));
@@ -23,7 +23,7 @@ dae::SpriteComp::SpriteComp(dae::GameObject* pOwner, const std::string& fileName
 	m_frameH = m_pConnectedRenderComponent->GetSize().y / m_rows;
 }
 
-dae::SpriteComp::SpriteComp(dae::GameObject* pOwner, dae::RenderComponent* pConnRenderComp, const std::string& fileName, 
+dae::SpriteComp::SpriteComp(GameObject* pOwner, RenderComponent* pConnRenderComp, const std::string& fileName,
 	int cols, int rows, float frameW, float frameH, const glm::vec2& startPos, bool autoUpdate)
 	: Component(pOwner)
 	, m_pConnectedRenderComponent(pConnRenderComp)

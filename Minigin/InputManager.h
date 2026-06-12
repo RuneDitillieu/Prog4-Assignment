@@ -6,7 +6,6 @@
 #include "Commands.h"
 #include <SDL3/SDL.h>
 #ifndef __EMSCRIPTEN__
-#include "Windows.h"
 #include "Xinput.h"
 #endif
 

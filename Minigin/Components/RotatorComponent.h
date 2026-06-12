@@ -2,7 +2,6 @@
 #define ROTATORCOMPONENT_H
 
 #include "Component.h"
-#include <glm/glm.hpp>
 
 namespace dae
 {

@@ -4,7 +4,7 @@
 #include "Tags.h"
 
 QBert::SlickSamState::SlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
-                                    QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps)
+     QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps)
     : m_slickSam(slickSam), m_pConnSprite(spriteComp), m_pMoveComp(moveComp), m_pConnLevel(level), m_pQBertMoveComps(qbertMoveComps)
 { }
 

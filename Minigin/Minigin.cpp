@@ -8,7 +8,6 @@
 #endif
 
 #include <SDL3/SDL.h>
-//#include <SDL3_image/SDL_image.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include "Minigin.h"
 #include "InputManager.h"
@@ -69,8 +68,6 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 
 	g_window = SDL_CreateWindow(
 		"Programming 4 assignment",
-		/*1024,
-		576*/
 		800,
 		800,
 		SDL_WINDOW_OPENGL
@@ -107,14 +104,10 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 void dae::Minigin::RunOneFrame()
 {
-	dae::DeltaTime::GetInstance().CalculateDeltaTime();
+	DeltaTime::GetInstance().CalculateDeltaTime();
 
 	// calc deltaTime
 	const uint64_t currentTime{ SDL_GetPerformanceCounter() };
-
-	//const auto currentTime{ std::chrono::high_resolution_clock::now() };
-	/*const float deltaTime{std::chrono::duration<float>(currentTime - m_prevTime).count()};
-	m_prevTime = currentTime*/;
 
 	// run frame
 	m_quit = !InputManager::GetInstance().ProcessInput();
@@ -128,9 +121,4 @@ void dae::Minigin::RunOneFrame()
 		+ (1000 / (maxFps))
 		- (SDL_GetPerformanceCounter() * 1000 / SDL_GetPerformanceFrequency()));
 	std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-
-	//const int maxFps{ 60 };
-	/*const std::chrono::milliseconds msPerFrame{ int(1000 / maxFps) };
-	std::chrono::duration<float, std::nano> sleepTime{ (currentTime + msPerFrame) - std::chrono::high_resolution_clock::now() };
-	std::this_thread::sleep_for(sleepTime);*/
 }

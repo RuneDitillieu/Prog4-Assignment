@@ -1,5 +1,4 @@
 ﻿#include <stdexcept>
-#include <cstring>
 #include <iostream>
 #include "Renderer.h"
 #include "SceneManager.h"

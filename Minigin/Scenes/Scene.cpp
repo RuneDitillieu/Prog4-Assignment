@@ -1,6 +1,5 @@
 #include <algorithm>
 #include "Scene.h"
-#include <algorithm>
 
 using namespace dae;
 
@@ -25,7 +24,8 @@ void Scene::UnLoad()
 void Scene::Add(std::unique_ptr<GameObject> object)
 {
 	assert(object != nullptr && "Cannot add a null GameObject to the scene.");
-	assert((std::find_if(m_objects.begin(), m_objects.end(), [&object] (auto& obj) { return obj.get() == object.get(); }) 
+	assert((std::find_if(m_objects.begin(), m_objects.end(),
+		[&object] (auto& obj) { return obj.get() == object.get(); })
 		== m_objects.end()) && "Cannot add a GameObject twice.");
 
 	if (object->GetParent())
@@ -114,7 +114,7 @@ void Scene::Render() const
 	}
 }
 
-std::vector<GameObject*> Scene::GetObjectsByTag(dae::Tag tag) const
+std::vector<GameObject*> Scene::GetObjectsByTag(Tag tag) const
 {
 	std::vector<GameObject*> vec{};
 
@@ -136,7 +136,7 @@ std::vector<GameObject*> Scene::GetObjectsByTag(dae::Tag tag) const
 	return vec;
 }
 
-[[nodiscard]] std::unique_ptr<GameObject> dae::Scene::GetGameObjectOwnership(GameObject* pObject)
+[[nodiscard]] std::unique_ptr<GameObject> Scene::GetGameObjectOwnership(GameObject* pObject)
 {
 	// get object
 	auto it = std::find_if(m_objects.begin(), m_objects.end(), [pObject](auto& obj) { return obj.get() == pObject; });

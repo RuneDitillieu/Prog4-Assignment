@@ -14,7 +14,7 @@ void dae::MovementComponent::Update()
 	if (length > 0.1f)
 		m_direction /= length;
 
-	GetOwner()->SetLocalPosition(GetOwner()->GetLocalPosition() + (m_direction * m_speed * dae::DeltaTime::GetInstance().GetDeltaTime()));
+	GetOwner()->SetLocalPosition(GetOwner()->GetLocalPosition() + (m_direction * m_speed * DeltaTime::GetInstance().GetDeltaTime()));
 
 	// reset direction bc need to stop moving when button isn't pressed
 	m_direction = glm::vec3(0, 0, 0);
@@ -27,5 +27,5 @@ void dae::MovementComponent::Move(const glm::vec3& direction)
 
 std::type_index dae::MovementComponent::GetType() const
 {
-	return typeid(dae::MovementComponent);
+	return typeid(MovementComponent);
 }

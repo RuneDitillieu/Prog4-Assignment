@@ -1,7 +1,7 @@
 #include "Subject.h"
 #include "IObserver.h"
 
-dae::Subject::Subject(dae::GameObject* pOwner)
+dae::Subject::Subject(GameObject* pOwner)
 	: m_pOwner(pOwner)
 { }
 

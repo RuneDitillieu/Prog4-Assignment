@@ -1,6 +1,6 @@
 #include "CircleColliderComponent.h"
 
-dae::CircleColliderComp::CircleColliderComp(dae::GameObject* pOwner, const glm::vec2& center, float radius)
+dae::CircleColliderComp::CircleColliderComp(GameObject* pOwner, const glm::vec2& center, float radius)
 	: ColliderComp(pOwner)
 	, m_collisionCenter(center)
 	, m_collisionRadius(radius)

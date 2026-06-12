@@ -49,7 +49,7 @@ namespace dae
 			return nullptr;
 		}
 
-		std::vector<GameObject*> GetObjectsByTag(dae::Tag tag) const;
+		std::vector<GameObject*> GetObjectsByTag(Tag tag) const;
 
 		void RequestReorderObjects() { m_reorderObjects = true; }
 		SceneName GetSceneName() const { return m_sceneName; }

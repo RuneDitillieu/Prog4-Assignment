@@ -25,6 +25,8 @@ namespace QBert
 		std::type_index GetType() const override;
 
 	private:
+		void UpdateUI(int amLives, const std::vector<dae::GameObject*>& livesVec) const;
+
 		std::vector<dae::GameObject*> m_pLivesP1;
 		dae::GameObject* m_player1{ nullptr };
 		std::vector<dae::GameObject*> m_pLivesP2;

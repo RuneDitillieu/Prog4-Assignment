@@ -15,6 +15,8 @@ QBert::ArrowAnimComp::ArrowAnimComp(dae::GameObject* pOwner, std::vector<dae::Ga
 void QBert::ArrowAnimComp::Update()
 {
 	m_secPassed += dae::DeltaTime::GetInstance().GetDeltaTime();
+
+	// disable all
 	if (m_secPassed >= m_secToWait * 3.f)
 	{
 		for (auto arrow : m_pArrows)
@@ -23,6 +25,7 @@ void QBert::ArrowAnimComp::Update()
 		}
 		m_secPassed -= m_secToWait * 3.f;
 	}
+	// enable inner ones
 	else if (m_secPassed >= m_secToWait * 2.f)
 	{
 		for (auto arrow : m_pArrows)
@@ -30,6 +33,7 @@ void QBert::ArrowAnimComp::Update()
 			arrow->IsEnabled(true);
 		}
 	}
+	// enable outer ones
 	else if (m_secPassed >= m_secToWait)
 	{
 		m_pArrows[0]->IsEnabled(true);

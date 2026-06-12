@@ -2,7 +2,7 @@
 #include "DeltaTime.h"
 
 QBert::DropOffDiscState::DropOffDiscState(dae::GameObject* disc)
-	: QBert::DiscState(disc)
+	: DiscState(disc)
 { }
 
 std::unique_ptr<QBert::DiscState> QBert::DropOffDiscState::Update()

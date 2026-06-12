@@ -7,7 +7,7 @@
 #include "SoundSystem.h"
 
 QBert::PlayerFallingSnakeState::PlayerFallingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
-                                                        QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
+    QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
 	: PlayerCoilyState(coily, spriteComp, moveComp, level, qbertMoveComp)
 { }
 

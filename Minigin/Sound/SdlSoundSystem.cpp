@@ -84,7 +84,7 @@ dae::SdlSoundSystem::~SdlSoundSystem()
     }
 }
 
-void dae::SdlSoundSystem::Play(const dae::SoundId id, const float volume)
+void dae::SdlSoundSystem::Play(const SoundId id, const float volume)
 {
     std::unique_lock<std::mutex> lock{ m_mutex };
     m_soundQueue.emplace(id, volume);

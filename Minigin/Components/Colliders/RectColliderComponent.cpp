@@ -1,6 +1,6 @@
 #include "RectColliderComponent.h"
 
-dae::RectColliderComp::RectColliderComp(dae::GameObject* pOwner, const glm::vec2& topLeft, const glm::vec2& bottomRight)
+dae::RectColliderComp::RectColliderComp(GameObject* pOwner, const glm::vec2& topLeft, const glm::vec2& bottomRight)
 	: ColliderComp(pOwner)
 	, m_topLeft(topLeft)
 	, m_bottomRight(bottomRight)

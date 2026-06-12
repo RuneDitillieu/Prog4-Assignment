@@ -27,12 +27,14 @@ QBert::TileComp::TileComp(dae::GameObject* pOwner, const TileParams& tileParams)
 
 void QBert::TileComp::ResetTile(const TileParams& tileParams)
 {
+	// set tile params
 	m_tileType = tileParams.tileType;
 	m_revertable = tileParams.revertable;
 	m_startTile = tileParams.startTile;
 	m_winTile = tileParams.winTile;
 	m_middleTile = tileParams.middleTile;
 
+	// reset tile
 	m_currentTile = m_startTile;
 	m_pConnSprite->SetShouldUpdate(false);
 	m_pConnSprite->SetStartPos(glm::vec2(m_tileType * m_pConnSprite->GetSpriteSize().x, 0));

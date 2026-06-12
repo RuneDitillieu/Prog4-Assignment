@@ -35,22 +35,22 @@ bool dae::InputManager::ProcessInput()
 				commandBinding.command->Execute();
 			}
 		}
-		// etc...
 		
-		//process event for IMGUI
+		// process event for IMGUI
 		ImGui_ImplSDL3_ProcessEvent(&e);
 	}
 
 #if defined(__EMSCRIPTEN__)
 	return true;
 #else
+
 	DWORD dwResult;
 	for (DWORD controllerId = 0; controllerId < XUSER_MAX_COUNT; controllerId++)
 	{
 		XINPUT_STATE state;
 		ZeroMemory(&state, sizeof(XINPUT_STATE));
 
-		// Simply get the state of the controller from XInput.
+		// get the state of the controller
 		dwResult = XInputGetState(controllerId, &state);
 
 		if (dwResult == ERROR_SUCCESS)

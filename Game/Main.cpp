@@ -13,15 +13,12 @@
 #include "Commands.h"
 #include "ServiceLocator.h"
 #include "SdlSoundSystem.h"
-
-#include "ComponentsInclude.h"
+#include "RenderComponent.h"
 
 #include "InitUtils.h"
-#include "DiscActor.h"
 #include "Tags.h"
 
 #include <filesystem>
-#include <iostream>
 
 namespace fs = std::filesystem;
 

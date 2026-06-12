@@ -10,7 +10,7 @@ dae::RotatorComponent::RotatorComponent(GameObject* pOwner, float clockwiseSpeed
 
 void dae::RotatorComponent::Update()
 {
-	m_angle += dae::DeltaTime::GetInstance().GetDeltaTime() * m_clockwiseSpeed;
+	m_angle += DeltaTime::GetInstance().GetDeltaTime() * m_clockwiseSpeed;
 
 	if (m_angle > 360)
 	{
@@ -21,8 +21,8 @@ void dae::RotatorComponent::Update()
 		m_angle += 360.f;
 	}
 
-	float x{ cos(m_angle) * m_distance };
-	float y{ sin(m_angle) * m_distance };
+	float x{ cosf(m_angle) * m_distance };
+	float y{ sinf(m_angle) * m_distance };
 	glm::vec3 newPos{ glm::vec3{ x, y, 0 } };
 	GetOwner()->SetLocalPosition(newPos);
 }
