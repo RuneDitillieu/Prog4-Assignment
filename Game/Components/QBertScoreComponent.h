@@ -3,8 +3,12 @@
 
 #include "IObserver.h"
 #include "Component.h"
-#include "SpriteComponent.h"
 #include "Events.h"
+
+namespace dae
+{
+	class TextComponent;
+}
 
 namespace QBert
 {
@@ -12,7 +16,7 @@ namespace QBert
 	class ScoreComp final : public dae::Component, public dae::IObserver
 	{
 	public:
-		ScoreComp(dae::GameObject* pOwner, const std::vector<dae::SpriteComp*>& numberSprites);
+		ScoreComp(dae::GameObject* pOwner, dae::TextComponent* score1Text, dae::TextComponent* score2Text = nullptr);
 		~ScoreComp();
 		ScoreComp(const ScoreComp& other) = delete;
 		ScoreComp(ScoreComp&& other) = delete;
@@ -28,17 +32,21 @@ namespace QBert
 	private:
 		int GetWinScore(int amDiscsUnused) const;
 
-		int m_score{ 0 };
+		int m_score1{ 0 };
+		int m_score2{ 0 };
+
+		dae::GameObject* m_player1{ nullptr };
+		dae::GameObject* m_player2{ nullptr };
 
 		const int m_tileScore{ 25 };
 		const int m_coilyScore{ 500 };
 		const int m_samSlickScore{ 300 };
-		const int m_greenBallScore{ 100 };
 		const int m_winScoreBase{ 750 }; 
 		const int m_levelScoreMultiplier{ 250 };
 		const int m_discScore{ 50 };
 
-		std::vector<dae::SpriteComp*> m_pConnSpriteComps;
+		dae::TextComponent* m_pScore1Text;
+		dae::TextComponent* m_pScore2Text;
 	};
 }
 

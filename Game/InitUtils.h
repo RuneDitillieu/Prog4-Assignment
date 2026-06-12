@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include "LevelBase.h"
 #include "QBertMoveComponent.h"
+#include "TextComponent.h"
 
 class GameObject;
 //class LevelBase;
@@ -19,7 +20,8 @@ namespace QBert::Utils
 
 	std::unique_ptr<dae::GameObject> CreateLifeComp(float y, bool enabled, std::vector<dae::GameObject*>& lives);
 
-	dae::SpriteComp* CreateUi(dae::Scene& scene);
+	dae::SpriteComp* CreateUi(dae::Scene& scene, dae::TextComponent* player2ScoreText = nullptr);
+	dae::SpriteComp* CreateCoopUi(dae::Scene& scene);
 
 	void AddSounds();
 

@@ -5,10 +5,12 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Tags.h"
+#include "TextComponent.h"
 
-QBert::ScoreComp::ScoreComp(dae::GameObject* pOwner, const std::vector<dae::SpriteComp*>& numberSprites)
+QBert::ScoreComp::ScoreComp(dae::GameObject* pOwner, dae::TextComponent* score1Text, dae::TextComponent* score2Text)
 	: dae::Component(pOwner)
-	, m_pConnSpriteComps(numberSprites)
+	, m_pScore1Text(score1Text)
+	, m_pScore2Text(score2Text)
 { }
 
 QBert::ScoreComp::~ScoreComp()
@@ -26,7 +28,7 @@ QBert::ScoreComp::~ScoreComp()
 
 	auto highscoreComp = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<QBertHighscoreComp>();
 	if (highscoreComp)
-		highscoreComp->PassScores(m_score);
+		highscoreComp->PassScores(m_score1, m_score2);
 }
 
 void QBert::ScoreComp::Start()
@@ -37,55 +39,54 @@ void QBert::ScoreComp::Start()
 		qbert->GetSubject()->AddObserver(this);
 	}
 
+	m_player1 = qberts[0];
+	if (qberts.size() > 1) m_player2 = qberts[1];
+
 	auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
 	levelManager->GetOwner()->GetSubject()->AddObserver(this);
 }
 
-void QBert::ScoreComp::Notify(dae::Event event, dae::Subject*)
+void QBert::ScoreComp::Notify(dae::Event event, dae::Subject* subject)
 {
-	int startScore{ m_score };
+	int startScore1{ m_score1 };
+	int startScore2{ m_score2 };
 
 	switch (event.id)
 	{
 	case dae::make_sdbm_hash("TILE_TURNED"):
-		m_score += m_tileScore;
+		if (subject->GetOwner() == m_player1)
+		{
+			m_score1 += m_tileScore;
+		}
+		else if (subject->GetOwner() == m_player2)
+		{
+			m_score2 += m_tileScore;
+		}
 		break;
 	case dae::make_sdbm_hash("COILY_KILLED"):
-		m_score += m_coilyScore;
+		m_score1 += m_coilyScore;
+		m_score2 += m_coilyScore;
 		break;
 	case dae::make_sdbm_hash("SAM_SLICK_KILLED"):
-		m_score += m_samSlickScore;
-		break;
-	case dae::make_sdbm_hash("BALL_CAUGHT"):
-		m_score += m_greenBallScore;
+		if (event.args->object == m_player1)
+		{
+			m_score1 += m_tileScore;
+		}
+		else if (event.args->object == m_player2)
+		{
+			m_score2 += m_tileScore;
+		}
 		break;
 	case dae::make_sdbm_hash("LEVEL_COMPLETED"):
-		m_score += GetWinScore(event.args->nr);
+		m_score1 += GetWinScore(event.args->nr);
+		m_score2 += GetWinScore(event.args->nr);
 		break;
 	}
 
-	if (startScore == m_score)
-		return;
+	if (startScore1 == m_score1 && startScore2 == m_score2) return;
 
-
-	int sizeChecker{ 10000 };
-	int divider{ 10 };
-	int idx{ static_cast<int>(m_pConnSpriteComps.size()) };
-	for (auto it = m_pConnSpriteComps.rbegin(); it != m_pConnSpriteComps.rend(); ++it) 
-	{
-		--idx;
-
-		if (m_score / sizeChecker != 0)
-		{
-			int digit{ (m_score % divider) / (divider / 10) };
-			m_pConnSpriteComps[idx]->GetOwner()->IsEnabled(true);
-			m_pConnSpriteComps[idx]->SetCurFrame(digit);
-
-			divider *= 10;
-		}
-
-		sizeChecker /= 10;
-	}
+	m_pScore1Text->SetText(std::to_string(m_score1));
+	if (m_pScore2Text) m_pScore2Text->SetText(std::to_string(m_score2));
 }
 
 int QBert::ScoreComp::GetWinScore(int amDiscsUnused) const

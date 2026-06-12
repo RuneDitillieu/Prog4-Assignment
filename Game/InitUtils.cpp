@@ -75,13 +75,13 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* t
 		return life;
 	}
 
-	dae::SpriteComp* QBert::Utils::CreateUi(dae::Scene& scene)
+	dae::SpriteComp* QBert::Utils::CreateUi(dae::Scene& scene, dae::TextComponent* player2ScoreText)
 	{
 		// TOP LEFT
 
 		// animated text "Player"
 		auto playerText = std::make_unique<dae::GameObject>();
-		playerText->SetLocalPosition(20.f, 80.f);
+		playerText->SetLocalPosition(20.f, 50.f);
 		playerText->SetScale(3.f);
 		auto rc = playerText->AddComponent(std::make_unique<dae::RenderComponent>(playerText.get(), "PlayerTextSprites.png"));
 		playerText->AddComponent(std::make_unique<dae::SpriteComp>(playerText.get(), rc, "PlayerTextSprites.png",
@@ -96,19 +96,18 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* t
 			2, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(0, 0), false));
 		playerId.release()->SetParent(playerText.get(), false);
 
-		std::vector<dae::SpriteComp*> numberSprites{};
-		numberSprites.reserve(5);
-		// score numbers
-		CreateNumberComp(8.f, 25.f, true, numberSprites).release()->SetParent(playerText.get(), false);
-		CreateNumberComp(28.f, 25.f, false, numberSprites).release()->SetParent(playerText.get(), false);
-		CreateNumberComp(48.f, 25.f, false, numberSprites).release()->SetParent(playerText.get(), false);
-		CreateNumberComp(68.f, 25.f, false, numberSprites).release()->SetParent(playerText.get(), false);
-		CreateNumberComp(88.f, 25.f, false, numberSprites).release()->SetParent(playerText.get(), false);
-		playerText->AddComponent(std::make_unique<QBert::ScoreComp>(playerText.get(), numberSprites));
+	auto font = dae::ResourceManager::GetInstance().LoadFont("QBertFont.ttf", 20);
+
+	auto score = std::make_unique<dae::GameObject>();
+	auto tc = score->AddComponent(std::make_unique<dae::TextComponent>(score.get(), "0", font, QBert::ORANGE));
+	score->SetLocalPosition(8.f, 40.f);
+	score.release()->SetParent(playerText.get(), false);
+
+	playerText->AddComponent(std::make_unique<QBert::ScoreComp>(playerText.get(), tc, player2ScoreText));
 
 		// text "Change to:"
 		auto changeToText = std::make_unique<dae::GameObject>();
-		changeToText->SetLocalPosition(3.f, 75.f);
+		changeToText->SetLocalPosition(3.f, 85.f);
 		changeToText->SetScale(3.f);
 		rc = changeToText->AddComponent(std::make_unique<dae::RenderComponent>(changeToText.get(), "LevelUi.png"));
 		changeToText->AddComponent(std::make_unique<dae::SpriteComp>(changeToText.get(), rc, "LevelUi.png",
@@ -197,7 +196,7 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* t
 
 		// text "Level:"
 		auto levelText = std::make_unique<dae::GameObject>();
-		levelText->SetLocalPosition(580.f, 150.f);
+		levelText->SetLocalPosition(560.f, 150.f);
 		levelText->SetScale(3.f);
 		rc = levelText->AddComponent(std::make_unique<dae::RenderComponent>(levelText.get(), "LevelUi.png"));
 		levelText->AddComponent(std::make_unique<dae::SpriteComp>(levelText.get(), rc, "LevelUi.png",
@@ -240,7 +239,40 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* t
 		return tileIconSprite;
 	}
 
-	void QBert::Utils::AddSounds()
+dae::SpriteComp* QBert::Utils::CreateCoopUi(dae::Scene& scene)
+{
+	// animated text "Player"
+	auto playerText = std::make_unique<dae::GameObject>();
+	playerText->SetLocalPosition(560.f, 50.f);
+	playerText->SetScale(3.f);
+	auto rc = playerText->AddComponent(std::make_unique<dae::RenderComponent>(playerText.get(), "PlayerTextSprites.png"));
+	playerText->AddComponent(std::make_unique<dae::SpriteComp>(playerText.get(), rc, "PlayerTextSprites.png",
+		1, 6, rc->GetSize().x / 2.f, rc->GetSize().y / 6.f, glm::vec2(0, 0)));
+
+	// rect with player id
+	auto playerId = std::make_unique<dae::GameObject>();
+	playerId->SetLocalPosition(rc->GetSize().x / 2.f * 3.f + 20.f, -8.f);
+	playerId->SetScale(3.f);
+	rc = playerId->AddComponent(std::make_unique<dae::RenderComponent>(playerId.get(), "LevelUi.png"));
+	playerId->AddComponent(std::make_unique<dae::SpriteComp>(playerId.get(), rc, "LevelUi.png",
+		2, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(rc->GetSize().x / 5.f, 0), false));
+	playerId.release()->SetParent(playerText.get(), false);
+
+	auto font = dae::ResourceManager::GetInstance().LoadFont("QBertFont.ttf", 20);
+
+	auto score = std::make_unique<dae::GameObject>();
+	auto tc = score->AddComponent(std::make_unique<dae::TextComponent>(score.get(), "0", font, QBert::ORANGE));
+	score->SetLocalPosition(8.f, 40.f);
+	score.release()->SetParent(playerText.get(), false);
+
+	scene.Add(std::move(playerText));
+
+	auto tileIcon = CreateUi(scene, tc);
+
+	return tileIcon;
+}
+
+void QBert::Utils::AddSounds()
 	{
 		dae::ServiceLocator::GetSoundSystem().AddSound(dae::SoundId(QBert::Sound::Jump1),
 			"./Data/Sounds/Jump-1.mp3", 0.5f);

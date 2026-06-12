@@ -22,6 +22,7 @@ std::unique_ptr<QBert::SlickSamState> QBert::SlickSamState::Update()
             if (glm::length(slickSamFootPos - qbertFootPos) <= 10.f)
             {
                 dae::Event e{ dae::make_sdbm_hash("SAM_SLICK_KILLED") };
+                e.args->object = qbertMove->GetOwner();
                 m_slickSam->GetSubject()->NotifyObservers(e);
                 m_slickSam->IsEnabled(false);
                 m_slickSam->MarkForRemoval();

@@ -70,7 +70,7 @@ static void load()
 	{
 		dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MuteCommand>(), SDL_SCANCODE_F2, SDL_EVENT_KEY_DOWN);
 
-		auto tileIconSprite = QBert::Utils::CreateUi(scene);
+		auto tileIconSprite = QBert::Utils::CreateCoopUi(scene);
 
 		// level
 		auto levelObj = QBert::Utils::CreateLevel(scene, tileIconSprite, 0, false, 0, 1);
