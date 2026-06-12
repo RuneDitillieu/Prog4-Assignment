@@ -146,9 +146,14 @@ void QBert::LevelManager::GoToNextLevel()
 		m_secPassed = 0.f;
 		MarkAllCreaturesForRemoval();
 
-		for (auto player : m_pPlayersMove)
+		if (m_pPlayersMove.size() == 1)
 		{
-			player->Reset(glm::vec2(0, 0), false);
+			m_pPlayersMove[0]->Reset(glm::vec2(0, 0), false);
+		}
+		else
+		{
+			m_pPlayersMove[0]->Reset(glm::vec2(0, 6), false);
+			m_pPlayersMove[1]->Reset(glm::vec2(6, 0), false);
 		}
 
 		m_pConnLevel->ResetBase(m_levelParams[m_curLevelParams].tileParams,

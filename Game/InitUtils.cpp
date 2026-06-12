@@ -255,7 +255,7 @@ dae::SpriteComp* QBert::Utils::CreateCoopUi(dae::Scene& scene)
 	playerId->SetScale(3.f);
 	rc = playerId->AddComponent(std::make_unique<dae::RenderComponent>(playerId.get(), "LevelUi.png"));
 	playerId->AddComponent(std::make_unique<dae::SpriteComp>(playerId.get(), rc, "LevelUi.png",
-		2, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(rc->GetSize().x / 5.f, 0), false));
+		2, 1, rc->GetSize().x / 5.f, rc->GetSize().y / 3.f, glm::vec2(rc->GetSize().x / 5.f - 1.f, 0), false));
 	playerId.release()->SetParent(playerText.get(), false);
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("QBertFont.ttf", 20);
