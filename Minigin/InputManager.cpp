@@ -11,7 +11,7 @@ dae::InputManager::InputManager()
 #ifndef __EMSCRIPTEN__
 	for (int idx{ 0 }; idx < 4; ++idx)
 	{
-		m_commandsController.emplace_back();
+		m_commandsController.push_back(std::vector<CommandBindingController>{});
 	}
 #endif
 }
@@ -89,6 +89,20 @@ void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SDL_Scan
 #ifndef __EMSCRIPTEN__
 void dae::InputManager::BindCommand(std::unique_ptr<Command>&& command, SHORT button, int controllerId)
 {
+	if (controllerId >= m_commandsController.size())
+	{
+		while (controllerId != m_commandsController.size())
+		{
+			std::vector<CommandBindingController> vec{};
+			m_commandsController.emplace_back(std::move(vec));
+		}
+
+		std::vector<CommandBindingController> vec = std::vector<CommandBindingController>{};
+		vec.emplace_back(CommandBindingController(std::move(command), button));
+		m_commandsController.emplace_back(std::move(vec));
+		return;
+	}
+
 	auto it = std::find_if(m_commandsController[controllerId].begin(), m_commandsController[controllerId].end(), [&command](const CommandBindingController& commandBinding) { return commandBinding.command == command; });
 
 	// if binding already exists, replace keybind
