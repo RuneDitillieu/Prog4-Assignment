@@ -74,8 +74,6 @@ bool QBert::TileComp::Turn()
 
 bool QBert::TileComp::Revert()
 {
-	if (!m_revertable) return false;
-
 	int curTile{ m_currentTile };
 
 	if (m_currentTile == m_startTile)

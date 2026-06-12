@@ -29,7 +29,7 @@ std::unique_ptr<QBert::SlickSamState> QBert::DroppingSlickSamState::Update()
     if (glm::length(coilyPos - tilePos) <= 5.f)
     {
         m_pMoveComp->m_isEnabled = true;
-        m_pMoveComp->Reset(glm::vec2(col, row), false);
+        m_pMoveComp->Reset(glm::vec2(col, row), true);
         return std::make_unique<IdleSlickSamState>(m_slickSam, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComps);
     }
 

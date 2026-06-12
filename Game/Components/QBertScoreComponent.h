@@ -26,7 +26,7 @@ namespace QBert
 		void Notify(dae::Event event, dae::Subject*) override;
 
 	private:
-		int GetWinScore() const;
+		int GetWinScore(int amDiscsUnused) const;
 
 		int m_score{ 0 };
 

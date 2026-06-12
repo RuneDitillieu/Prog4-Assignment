@@ -60,7 +60,7 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject*)
 		m_score += m_greenBallScore;
 		break;
 	case dae::make_sdbm_hash("LEVEL_COMPLETED"):
-		m_score += GetWinScore();
+		m_score += GetWinScore(event.args->nr);
 		break;
 	}
 
@@ -88,9 +88,9 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject*)
 	}
 }
 
-int QBert::ScoreComp::GetWinScore() const
+int QBert::ScoreComp::GetWinScore(int amDiscsUnused) const
 {
-	return static_cast<int>(m_winScoreBase + (m_levelScoreMultiplier /* * level number */) + m_discScore * 0 /*amount of discs unused */ );
+	return static_cast<int>(m_winScoreBase + (m_levelScoreMultiplier /* * level number */) + m_discScore * amDiscsUnused );
 }
 
 std::type_index QBert::ScoreComp::GetType() const
