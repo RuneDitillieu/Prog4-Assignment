@@ -4,14 +4,22 @@
 #include "Tags.h"
 #include "TextComponent.h"
 #include "Colors.h"
+#include "DeltaTime.h"
 
 QBert::GameModeSelectionComp::GameModeSelectionComp(dae::GameObject* pOwner, const std::vector<dae::TextComponent*>& pTextComps)
     : Component(pOwner)
     , m_pConnTextComps(pTextComps)
 { }
 
+void QBert::GameModeSelectionComp::Update()
+{
+    m_secPassed += dae::DeltaTime::GetInstance().GetDeltaTime();
+}
+
 void QBert::GameModeSelectionComp::Notify(dae::Event event, dae::Subject*)
 {
+    if (m_secPassed < 0.2f) return;
+
     switch (event.id)
     {
     case dae::make_sdbm_hash("OnPreviousPressed"):
@@ -24,17 +32,20 @@ void QBert::GameModeSelectionComp::Notify(dae::Event event, dae::Subject*)
             --m_selectedGameMode;
         }
         UpdateSelectionColors();
+        m_secPassed = 0.f;
         break;
 
     case dae::make_sdbm_hash("OnNextPressed"):
         ++m_selectedGameMode;
         m_selectedGameMode %= m_pConnTextComps.size();
         UpdateSelectionColors();
+        m_secPassed = 0.f;
         break;
 
     case dae::make_sdbm_hash("OnConfirmPressed"):
         SceneName sceneName = static_cast<SceneName>(m_selectedGameMode + 1);
         dae::SceneManager::GetInstance().SetActiveScene(dae::SceneName(sceneName));
+        m_secPassed = 0.f;
         break;
     }
 }

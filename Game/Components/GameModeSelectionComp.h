@@ -22,6 +22,7 @@ namespace QBert
         GameModeSelectionComp& operator=(const GameModeSelectionComp& other) = delete;
         GameModeSelectionComp& operator=(GameModeSelectionComp&& other) = delete;
 
+        void Update() override;
         void Notify(dae::Event event, dae::Subject*) override;
 
         std::type_index GetType() const override;
@@ -29,6 +30,7 @@ namespace QBert
     private:
         void UpdateSelectionColors();
 
+        float m_secPassed{ 0.f };
         uint16_t m_selectedGameMode{ 0 };
         uint16_t m_prevSelection{ 0 };
         std::vector<dae::TextComponent*> m_pConnTextComps;

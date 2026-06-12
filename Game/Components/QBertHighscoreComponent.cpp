@@ -7,9 +7,10 @@
 #include <fstream>
 
 #include "Colors.h"
+#include "DeltaTime.h"
 
 QBert::QBertHighscoreComp::QBertHighscoreComp(dae::GameObject* pOwner, std::vector<dae::TextComponent*> hsTextComps,
-    std::vector<dae::TextComponent*> letterTextComps, std::vector<dae::GameObject*> arrows,  dae::TextComponent* scoreTextComp)
+                                              std::vector<dae::TextComponent*> letterTextComps, std::vector<dae::GameObject*> arrows,  dae::TextComponent* scoreTextComp)
     : Component(pOwner)
     , m_pHsTextComps(hsTextComps)
     , m_pLetterTextComps(letterTextComps)
@@ -23,9 +24,14 @@ void QBert::QBertHighscoreComp::Start()
     SetTextComps();
 }
 
+void QBert::QBertHighscoreComp::Update()
+{
+    m_secPassed += dae::DeltaTime::GetInstance().GetDeltaTime();
+}
+
 void QBert::QBertHighscoreComp::Notify(dae::Event event, dae::Subject*)
 {
-    if (m_savedHighscore)
+    if (m_savedHighscore || m_secPassed < 0.1f)
         return;
 
     std::string c{};
@@ -44,6 +50,8 @@ void QBert::QBertHighscoreComp::Notify(dae::Event event, dae::Subject*)
         }
         c = m_curChar;
         m_pLetterTextComps[m_curLetterIdx]->SetText(c);
+
+        m_secPassed = 0.f;
         break;
     case dae::make_sdbm_hash("OnNextPressed"):
         if (m_curChar == '.')
@@ -58,9 +66,12 @@ void QBert::QBertHighscoreComp::Notify(dae::Event event, dae::Subject*)
         }
         c = m_curChar;
         m_pLetterTextComps[m_curLetterIdx]->SetText(c);
+
+        m_secPassed = 0.f;
         break;
     case dae::make_sdbm_hash("OnConfirmPressed"):
         ConfirmLetter();
+        m_secPassed = 0.f;
         break;
     }
 }

@@ -37,6 +37,7 @@ namespace QBert
 
         void Start() override;
 
+        void Update() override;
         void Notify(dae::Event event, dae::Subject*) override;
 
         void PassScores(int score1, int score2 = 0);
@@ -49,6 +50,8 @@ namespace QBert
         void ConfirmLetter();
         void SetHighscore();
         void SaveHighscore();
+
+        float m_secPassed{ 0.f };
 
         uint32_t m_scoreP1{ 0 };
         uint32_t m_scoreP2{ 0 };
