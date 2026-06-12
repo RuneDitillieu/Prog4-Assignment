@@ -50,6 +50,7 @@ namespace QBert
         void ConfirmLetter();
         void SetHighscore();
         void SaveHighscore();
+        void PrepareForNextPlayer();
 
         float m_secPassed{ 0.f };
 
@@ -60,6 +61,7 @@ namespace QBert
         char m_curChar{ 'a' };
         std::string m_name{};
         bool m_savedHighscore{ false };
+        bool m_savedSecondHighscore{ false };
 
         std::vector<dae::TextComponent*> m_pHsTextComps;
         std::vector<dae::TextComponent*> m_pLetterTextComps;

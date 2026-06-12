@@ -31,7 +31,7 @@ void QBert::QBertHighscoreComp::Update()
 
 void QBert::QBertHighscoreComp::Notify(dae::Event event, dae::Subject*)
 {
-    if (m_savedHighscore || m_secPassed < 0.1f)
+    if ((m_savedHighscore && m_savedSecondHighscore) || m_secPassed < 0.1f)
         return;
 
     std::string c{};
@@ -70,6 +70,7 @@ void QBert::QBertHighscoreComp::Notify(dae::Event event, dae::Subject*)
         m_secPassed = 0.f;
         break;
     case dae::make_sdbm_hash("OnConfirmPressed"):
+        if (m_secPassed < 0.3f) break;
         ConfirmLetter();
         m_secPassed = 0.f;
         break;
@@ -99,7 +100,9 @@ void QBert::QBertHighscoreComp::ConfirmLetter()
     }
     else if (m_curLetterIdx != 0)
     {
-        m_savedHighscore = true;
+        if (!m_savedHighscore) m_savedHighscore = true;
+        else m_savedSecondHighscore = true;
+
         if (m_curChar != '.')
         {
             m_name = m_name + m_curChar;
@@ -132,6 +135,47 @@ void QBert::QBertHighscoreComp::SetHighscore()
     m_highscores.emplace_back(Highscore{.fullString = highscore, .name = m_name, .score = m_scoreP1});
     SetTextComps();
     SaveHighscore();
+
+    if (m_scoreP2 != 0 && !m_savedSecondHighscore)
+    {
+        PrepareForNextPlayer();
+    }
+}
+
+void QBert::QBertHighscoreComp::PrepareForNextPlayer()
+{
+    glm::vec3 diff{ m_pLetterTextComps[m_curLetterIdx]->GetOwner()->GetLocalPosition()
+        - m_pLetterTextComps[0]->GetOwner()->GetLocalPosition() };
+    for (auto arrow : m_arrows)
+    {
+        arrow->IsEnabled(true);
+        arrow->SetLocalPosition(arrow->GetLocalPosition() - diff);
+    }
+
+    m_curChar = 'a';
+    m_curLetterIdx = 0;
+    for (auto letter : m_pLetterTextComps)
+    {
+        letter->SetText(".");
+    }
+
+    m_pLetterTextComps[0]->SetText("a");
+    m_pLetterTextComps[0]->SetColor(QBert::ORANGE);
+
+    std::string scoreStr{ };
+    if (m_scoreP2 < 10000)
+        scoreStr += "0";
+    if (m_scoreP2 < 1000)
+        scoreStr += "0";
+    if (m_scoreP2 < 100)
+        scoreStr += "0";
+    if (m_scoreP2 < 10)
+        scoreStr += "0";
+    scoreStr += std::to_string(m_scoreP2);
+
+    m_pScoreTextComp->SetText(scoreStr);
+
+    m_name = "";
 }
 
 void QBert::QBertHighscoreComp::SaveHighscore()
@@ -169,6 +213,10 @@ void QBert::QBertHighscoreComp::PassScores(int score1, int score2)
     scoreStr += std::to_string(m_scoreP1);
 
     m_pScoreTextComp->SetText(scoreStr);
+    if (m_scoreP2 == 0)
+    {
+        m_savedSecondHighscore = true;
+    }
 }
 
 void QBert::QBertHighscoreComp::ReadHighscores()
