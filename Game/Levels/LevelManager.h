@@ -52,6 +52,8 @@ namespace QBert
 		void LoadLevelParams();
 		void FreezeCreatures() const;
 
+		int m_curUggWrongwayIdx{ 0 };
+		float m_curUggWrongwayThreshold{ 0.f };
 		int m_currentRound{ 0 };
 		int m_currentLevel{ 0 };
 		int m_curLevelParams{ 0 };

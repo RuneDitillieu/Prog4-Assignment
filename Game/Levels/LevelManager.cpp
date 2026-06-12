@@ -23,7 +23,6 @@ QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level, dae
 
 	// 1 1
 	levelParams.coilySpawns = std::vector<float>{ 1.f };
-	levelParams.samSlickSpawns = std::vector<float>{ 3.f };
 	levelParams.discSpawns = std::vector<glm::vec2>{ {-1, 4}, {4, -1} };
 	levelParams.tileParams = TileParams{0, false, 0, 1};
 	m_levelParams.emplace_back(levelParams);
@@ -118,15 +117,18 @@ void QBert::LevelManager::Update()
 		}
 	}
 
-	for (auto& uggWrongwaySpawn : m_levelParams[m_curLevelParams].uggWrongwaySpawns)
+	size_t amUWSpawns{ m_levelParams[m_curLevelParams].uggWrongwaySpawns.size() };
+	if (amUWSpawns == 0) return;
+
+	float curSecNeeded{ m_levelParams[m_curLevelParams].uggWrongwaySpawns[m_curUggWrongwayIdx] };
+	if (m_secPassed >= curSecNeeded + m_curUggWrongwayThreshold)
 	{
-		if (uggWrongwaySpawn >= 0 && m_secPassed >= uggWrongwaySpawn)
-		{
-			auto uggWrongway = Utils::CreateUggWrongway(m_pConnLevel, m_pPlayersMove);
-			uggWrongway->Start();
-			activeScene->Add(std::move(uggWrongway));
-			uggWrongwaySpawn = -1;
-		}
+		auto uggWrongway = Utils::CreateUggWrongway(m_pConnLevel, m_pPlayersMove);
+		uggWrongway->Start();
+		activeScene->Add(std::move(uggWrongway));
+		++m_curUggWrongwayIdx;
+		m_curUggWrongwayIdx %= amUWSpawns;
+		m_curUggWrongwayThreshold += curSecNeeded;
 	}
 }
 
