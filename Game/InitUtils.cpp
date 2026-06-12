@@ -648,6 +648,7 @@ void QBert::Utils::CreateSelectionScreenUI(dae::Scene& scene)
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(sc), XINPUT_GAMEPAD_DPAD_UP, 0);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(sc), XINPUT_GAMEPAD_DPAD_DOWN, 0);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(sc), XINPUT_GAMEPAD_B, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(sc), XINPUT_GAMEPAD_A, 0);
 
 	scene.Add(std::move(title));
 }
@@ -733,6 +734,7 @@ void QBert::Utils::CreateHighscoreScreenUI(dae::Scene& scene)
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(hs), XINPUT_GAMEPAD_DPAD_UP, 0);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(hs), XINPUT_GAMEPAD_DPAD_DOWN, 0);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(hs), XINPUT_GAMEPAD_B, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(hs), XINPUT_GAMEPAD_A, 0);
 
 	scene.Add(std::move(title));
 
