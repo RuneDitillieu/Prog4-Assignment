@@ -11,10 +11,13 @@
 #include "SlickSamActor.h"
 #include "UggWrongwayActor.h"
 
-QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level, dae::SpriteComp* tileIconSprite)
+QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level, dae::SpriteComp* tileIconSprite,
+	dae::TextComponent* levelNrText, dae::TextComponent* roundNrText)
 	: dae::Component(pOwner)
 	, m_pConnLevel(level)
 	, m_pWinTileIndicator(tileIconSprite)
+	, m_pLevelNrText(levelNrText)
+	, m_pRoundNrText(roundNrText)
 {
 	LevelParams levelParams{};
 
@@ -142,6 +145,9 @@ void QBert::LevelManager::GoToNextLevel()
 	size_t Idx{ static_cast<size_t>(m_currentLevel * 3 + m_currentRound) };
 	if (Idx < m_levelParams.size())
 	{
+		m_pLevelNrText->SetText(std::to_string(m_currentLevel + 1));
+		m_pRoundNrText->SetText(std::to_string(m_currentRound + 1));
+
 		++m_curLevelParams;
 		m_secPassed = 0.f;
 		MarkAllCreaturesForRemoval();

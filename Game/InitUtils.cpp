@@ -28,7 +28,7 @@
 #include "UggWrongwayActor.h"
 #include "Colors.h"
 
-dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* tileIconSprite, int tileType, bool revertableTiles,
+dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, std::vector<dae::Component*> comps, int tileType, bool revertableTiles,
 	int startTile, int winTile, int intermediateTile)
 	{
 		auto go = std::make_unique<dae::GameObject>(dae::Tag(Tag::Level));
@@ -39,7 +39,9 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* t
 		scene.Add(std::move(go));
 
 		go = std::make_unique<dae::GameObject>();
-		go->AddComponent(std::make_unique<LevelManager>(go.get(), levelComp, tileIconSprite));
+		go->AddComponent(std::make_unique<LevelManager>(go.get(), levelComp,
+			dynamic_cast<dae::SpriteComp*>(comps[0]), dynamic_cast<dae::TextComponent*>(comps[1]),
+			dynamic_cast<dae::TextComponent*>(comps[2])));
 		dae::InputManager::GetInstance().BindCommand(std::make_unique<SkipLevelCommand>(go.get()), SDL_SCANCODE_F1, SDL_EVENT_KEY_DOWN);
 		scene.Add(std::move(go));
 
@@ -75,7 +77,7 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* t
 		return life;
 	}
 
-	dae::SpriteComp* QBert::Utils::CreateUi(dae::Scene& scene, dae::TextComponent* player2ScoreText, std::vector<dae::GameObject*> player2Lives)
+	std::vector<dae::Component*> QBert::Utils::CreateUi(dae::Scene& scene, dae::TextComponent* player2ScoreText, std::vector<dae::GameObject*> player2Lives)
 	{
 		// TOP LEFT
 
@@ -206,12 +208,13 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* t
 		// nr of the current level
 		auto levelNrText = std::make_unique<dae::GameObject>();
 		levelNrText->SetLocalPosition(100.f, -7.f);
-		levelNrText->SetScale(3.f);
-		rc = levelNrText->AddComponent(std::make_unique<dae::RenderComponent>(levelNrText.get(), "Fonts.png"));
-		auto levelNrSprite = levelNrText->AddComponent(std::make_unique<dae::SpriteComp>(levelNrText.get(), rc, "Fonts.png",
-			10, 1, rc->GetSize().x / 26.f, rc->GetSize().y / 8.f,
-			glm::vec2(0, 0), false));
-		levelNrSprite->SetCurFrame(1);
+		//levelNrText->SetScale(3.f);
+		// rc = levelNrText->AddComponent(std::make_unique<dae::RenderComponent>(levelNrText.get(), "Fonts.png"));
+		// auto levelNrSprite = levelNrText->AddComponent(std::make_unique<dae::SpriteComp>(levelNrText.get(), rc, "Fonts.png",
+		// 	10, 1, rc->GetSize().x / 26.f, rc->GetSize().y / 8.f,
+		// 	glm::vec2(0, 0), false));
+		// levelNrSprite->SetCurFrame(1);
+	auto levelNr = levelNrText->AddComponent(std::make_unique<dae::TextComponent>(levelNrText.get(), "1", font, QBert::ORANGE));
 		levelNrText.release()->SetParent(levelText.get(), false);
 
 		// text "Round:"
@@ -225,21 +228,23 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* t
 		// nr of the current round
 		auto roundNrText = std::make_unique<dae::GameObject>();
 		roundNrText->SetLocalPosition(100.f, -7.f);
-		roundNrText->SetScale(3.f);
-		rc = roundNrText->AddComponent(std::make_unique<dae::RenderComponent>(roundNrText.get(), "Fonts.png"));
-		auto roundNrSprite = roundNrText->AddComponent(std::make_unique<dae::SpriteComp>(roundNrText.get(), rc, "Fonts.png",
-			10, 1, rc->GetSize().x / 26.f, rc->GetSize().y / 8.f, glm::vec2(0, 0), false));
-		roundNrSprite->SetCurFrame(1);
+		//roundNrText->SetScale(3.f);
+		// rc = roundNrText->AddComponent(std::make_unique<dae::RenderComponent>(roundNrText.get(), "Fonts.png"));
+		// auto roundNrSprite = roundNrText->AddComponent(std::make_unique<dae::SpriteComp>(roundNrText.get(), rc, "Fonts.png",
+		// 	10, 1, rc->GetSize().x / 26.f, rc->GetSize().y / 8.f, glm::vec2(0, 0), false));
+		// roundNrSprite->SetCurFrame(1);
+	auto roundNr = roundNrText->AddComponent(std::make_unique<dae::TextComponent>(roundNrText.get(), "1", font, QBert::ORANGE));
+
 		roundNrText.release()->SetParent(roundText.get(), false);
 
 		roundText.release()->SetParent(levelText.get(), false);
 
 		scene.Add(std::move(levelText));
 
-		return tileIconSprite;
+		return std::vector<dae::Component*>{tileIconSprite, levelNr, roundNr };
 	}
 
-dae::SpriteComp* QBert::Utils::CreateCoopUi(dae::Scene& scene)
+std::vector<dae::Component*> QBert::Utils::CreateCoopUi(dae::Scene& scene)
 {
 	// animated text "Player"
 	auto playerText = std::make_unique<dae::GameObject>();
@@ -282,9 +287,7 @@ dae::SpriteComp* QBert::Utils::CreateCoopUi(dae::Scene& scene)
 
 	scene.Add(std::move(lives));
 
-	auto tileIcon = CreateUi(scene, tc, pLives);
-
-	return tileIcon;
+	return CreateUi(scene, tc, pLives);
 }
 
 void QBert::Utils::AddSounds()

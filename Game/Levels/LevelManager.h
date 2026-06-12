@@ -6,6 +6,11 @@
 #include "LevelBase.h"
 #include "TileComponent.h"
 
+namespace dae
+{
+	class TextComponent;
+}
+
 namespace QBert
 {
 	class QBertMoveComp;
@@ -23,7 +28,8 @@ namespace QBert
 	class LevelManager final : public dae::Component, public dae::IObserver
 	{
 	public:
-		LevelManager(dae::GameObject* pOwner, LevelBase* level, dae::SpriteComp* tileIconSprite);
+		LevelManager(dae::GameObject* pOwner, LevelBase* level, dae::SpriteComp* tileIconSprite,
+			dae::TextComponent* levelNrText, dae::TextComponent* roundNrText);
 		~LevelManager();
 		LevelManager(const LevelManager& other) = delete;
 		LevelManager(LevelManager&& other) = delete;
@@ -54,6 +60,8 @@ namespace QBert
 
 		LevelBase* m_pConnLevel;
 		dae::SpriteComp* m_pWinTileIndicator;
+		dae::TextComponent* m_pLevelNrText;
+		dae::TextComponent* m_pRoundNrText;
 		std::vector<LevelParams> m_levelParams{};
 		std::vector<QBertMoveComp*> m_pPlayersMove{};
 	};
