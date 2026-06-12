@@ -1,5 +1,9 @@
 #include "LevelManager.h"
 
+#include <filesystem>
+#include <fstream>
+#include <cassert>
+
 #include "CoilyActor.h"
 #include "DeltaTime.h"
 #include "GameObject.h"
@@ -12,26 +16,14 @@
 #include "UggWrongwayActor.h"
 
 QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level, dae::SpriteComp* tileIconSprite,
-	dae::TextComponent* levelNrText, dae::TextComponent* roundNrText)
+                                  dae::TextComponent* levelNrText, dae::TextComponent* roundNrText)
 	: dae::Component(pOwner)
 	, m_pConnLevel(level)
 	, m_pWinTileIndicator(tileIconSprite)
 	, m_pLevelNrText(levelNrText)
 	, m_pRoundNrText(roundNrText)
 {
-	LevelParams levelParams{};
-
-	// 1 1
-	levelParams.coilySpawns = std::vector<float>{ 1.f };
-	levelParams.discSpawns = std::vector<glm::vec2>{ {-1, 4}, {4, -1} };
-	levelParams.tileParams = TileParams{0, false, 0, 1};
-	m_levelParams.emplace_back(levelParams);
-
-	// 1 2
-	levelParams.coilySpawns = std::vector<float>{ 1.f };
-	levelParams.discSpawns = std::vector<glm::vec2>{{-1, 5}, {6, -1}};
-	levelParams.tileParams = TileParams{ 1, true, 1, 0 };
-	m_levelParams.emplace_back(levelParams);
+	LoadLevelParams();
 
 	auto activeScene = dae::SceneManager::GetInstance().GetActiveScene();
 
@@ -243,7 +235,105 @@ void QBert::LevelManager::MarkAllCreaturesForRemoval() const
 
 void QBert::LevelManager::LoadLevelParams()
 {
+#if __EMSCRIPTEN__
+	fs::path data_location = "";
+#else
+	std::filesystem::path data_location = "./Data/";
+	if(!std::filesystem::exists(data_location))
+		data_location = "../Data/";
+#endif
 
+	// open file
+	const auto fullPath = data_location/"LevelSetup.json";
+	std::ifstream levelSetupFile(fullPath.c_str(), std::ifstream::binary);
+	assert(levelSetupFile.is_open() || "Couldn't open file");
+
+	// create needed vars
+	Json::Value data;
+	Json::CharReaderBuilder readerBuilder;
+	std::string errs;
+
+	// parse and close file
+	Json::parseFromStream(readerBuilder, levelSetupFile, &data, &errs);
+	levelSetupFile.close();
+
+	assert(errs.empty() || "Failed to parse json data");
+
+	for (int Idx{ 1 }; Idx < 4; ++Idx)
+	{
+		std::string levelName{ "Level" + std::to_string(Idx) };
+		ParseLevel(data, levelName);
+	}
+}
+
+void QBert::LevelManager::ParseLevel(Json::Value& data, const std::string& levelName)
+{
+	for (int Idx{ 1 }; Idx < 4; ++Idx)
+	{
+		std::string roundName{ "Round" + std::to_string(Idx) };
+		ParseRound(data, levelName, roundName);
+	}
+}
+
+void QBert::LevelManager::ParseRound(Json::Value& data, const std::string& levelName, const std::string& roundName)
+{
+	Json::Value round = data[levelName][roundName];
+
+	LevelParams levelParams{};
+
+	// parse enemies
+	Json::Value coilySpawns = round["CoilySpawns"];
+	for (const auto& spawn : coilySpawns)
+	{
+		levelParams.coilySpawns.emplace_back(spawn.asFloat());
+	}
+
+	Json::Value SamSlickSpawns = round["SamSlickSpawns"];
+	for (const auto& spawn : SamSlickSpawns)
+	{
+		levelParams.samSlickSpawns.emplace_back(spawn.asFloat());
+	}
+
+	Json::Value UggWrongwaySpawns = round["UggWrongwaySpawns"];
+	for (const auto& spawn : UggWrongwaySpawns)
+	{
+		levelParams.uggWrongwaySpawns.emplace_back(spawn.asFloat());
+	}
+
+	// parse discs
+	glm::vec2 spawn{};
+	Json::Value DiscSpawn1 = round["DiscSpawn1"];
+	spawn.x = DiscSpawn1[0].asFloat();
+	spawn.y = DiscSpawn1[1].asFloat();
+	levelParams.discSpawns.emplace_back(spawn);
+
+	Json::Value DiscSpawn2 = round["DiscSpawn2"];
+	spawn.x = DiscSpawn2[0].asFloat();
+	spawn.y = DiscSpawn2[1].asFloat();
+	levelParams.discSpawns.emplace_back(spawn);
+
+	Json::Value DiscSpawn3 = round["DiscSpawn3"];
+	spawn.x = DiscSpawn3[0].asFloat();
+	spawn.y = DiscSpawn3[1].asFloat();
+	levelParams.discSpawns.emplace_back(spawn);
+
+	Json::Value DiscSpawn4 = round["DiscSpawn4"];
+	spawn.x = DiscSpawn4[0].asFloat();
+	spawn.y = DiscSpawn4[1].asFloat();
+	levelParams.discSpawns.emplace_back(spawn);
+
+	// tile params
+	TileParams tileParams{};
+	Json::Value TileParams = round["TileParams"];
+	tileParams.tileType = TileParams["TileType"].asInt();
+	tileParams.revertable = TileParams["Revertable"].asBool();
+	tileParams.startTile = TileParams["StartTile"].asInt();
+	tileParams.winTile = TileParams["WinTile"].asInt();
+	tileParams.middleTile = TileParams["MiddleTile"].asInt();
+
+	levelParams.tileParams = tileParams;
+
+	m_levelParams.emplace_back(levelParams);
 }
 
 void QBert::LevelManager::FreezeCreatures() const

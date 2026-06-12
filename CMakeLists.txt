@@ -55,13 +55,14 @@ add_library(${ENGINE_NAME} STATIC
  
   "Minigin/EventHandlers/Subject.cpp"
 
-  "Minigin/Sound/SdlSoundSystem.cpp" 
+  "Minigin/Sound/SdlSoundSystem.cpp"
+        "Minigin/Json/jsoncpp.cpp"
 )
 
 target_include_directories(${ENGINE_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/Minigin)
 
 set(ENGINE_DIRS Minigin/Components Minigin/Sound Minigin/EventHandlers Minigin/Scenes Minigin/Resources
-        Minigin/Components/Basics Minigin/Components/Colliders)
+        Minigin/Components/Basics Minigin/Components/Colliders Minigin/Json Minigin/Json/json)
 target_include_directories(${ENGINE_NAME} PUBLIC ${ENGINE_DIRS})
 
 # enable c++20 features

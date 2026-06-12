@@ -5,6 +5,7 @@
 #include "IObserver.h"
 #include "LevelBase.h"
 #include "TileComponent.h"
+#include "json/json.h"
 
 namespace dae
 {
@@ -50,6 +51,8 @@ namespace QBert
 	private:
 		void MarkAllCreaturesForRemoval() const;
 		void LoadLevelParams();
+		void ParseLevel(Json::Value& data, const std::string& levelName);
+		void ParseRound(Json::Value& data, const std::string& levelName, const std::string& roundName);
 		void FreezeCreatures() const;
 
 		int m_curUggWrongwayIdx{ 0 };
