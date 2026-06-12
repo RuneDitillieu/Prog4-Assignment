@@ -154,7 +154,7 @@ void QBert::LevelManager::GoToNextLevel()
 	}
 
 	// if last level hasn't been reached
-	size_t Idx{ static_cast<size_t>(m_currentLevel * 3 + m_currentRound) };
+	size_t Idx{ static_cast<size_t>(m_currentLevel * 4 + m_currentRound) };
 	if (Idx < m_levelParams.size())
 	{
 		++m_curLevelParams;
@@ -268,7 +268,7 @@ void QBert::LevelManager::LoadLevelParams()
 
 void QBert::LevelManager::ParseLevel(Json::Value& data, const std::string& levelName)
 {
-	for (int Idx{ 1 }; Idx < 4; ++Idx)
+	for (int Idx{ 1 }; Idx < 5; ++Idx)
 	{
 		std::string roundName{ "Round" + std::to_string(Idx) };
 		ParseRound(data, levelName, roundName);

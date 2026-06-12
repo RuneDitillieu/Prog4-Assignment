@@ -537,7 +537,8 @@ std::unique_ptr<dae::GameObject> QBert::Utils::CreateSlick(LevelBase* level, con
 		spawnTile.y = 1;
 	}
 
-	slick->AddComponent(std::make_unique<QBertMoveComp>(slick.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), spawnTile, false, true));
+	slick->AddComponent(std::make_unique<QBertMoveComp>(slick.get(),
+		glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), spawnTile, false, true));
 	slick->AddComponent(std::make_unique<SlickSamActorComp>(slick.get(), level, playersMoves));
 	slick->AddComponent(std::make_unique<dae::HealthComponent>(slick.get(), 1, 1, 1));
 
@@ -574,7 +575,8 @@ std::unique_ptr<dae::GameObject> QBert::Utils::CreateUgg(LevelBase* level, const
 		glm::vec2 texSize = rc->GetSize() * ugg->GetScale();
 		ugg->AddComponent(std::make_unique<dae::SpriteComp>(ugg.get(), "UggSprites.png", 8, 1, false));
 		ugg->AddComponent(std::make_unique<QBertMoveComp>(ugg.get(),
-			glm::vec3(texSize.x / 12 - (0.5f * 32 * 3), texSize.y / 8.f * 7.f - (0.75f * 32 * 3), 0), glm::vec2(6, 0), false, true));
+			glm::vec3(texSize.x / 12 - (0.5f * 32 * 3), texSize.y / 8.f * 7.f - (0.75f * 32 * 3), 0),
+			glm::vec2(6, 0), false, false));
 		ugg->AddComponent(std::make_unique<UggWrongwayActor>(ugg.get(), level, playersMoves, false));
 
 		return ugg;
@@ -590,7 +592,8 @@ std::unique_ptr<dae::GameObject> QBert::Utils::CreateWrongway(LevelBase* level, 
 	glm::vec2 texSize = rc->GetSize() * ugg->GetScale();
 	ugg->AddComponent(std::make_unique<dae::SpriteComp>(ugg.get(), "WrongwaySprites.png", 8, 1, false));
 	ugg->AddComponent(std::make_unique<QBertMoveComp>(ugg.get(),
-		glm::vec3(texSize.x / 20 - (-0.5f * 32 * 3), texSize.y / 10.f * 9.f - (0.75f * 32 * 3), 0), glm::vec2(0, 6), false, true));
+		glm::vec3(texSize.x / 20 - (-0.5f * 32 * 3), texSize.y / 10.f * 9.f - (0.75f * 32 * 3), 0),
+		glm::vec2(0, 6), false, false));
 	ugg->AddComponent(std::make_unique<UggWrongwayActor>(ugg.get(), level, playersMoves, true));
 
 	return ugg;
