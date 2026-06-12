@@ -74,8 +74,12 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject* subject)
 
 	case dae::make_sdbm_hash("COILY_KILLED"):
 		m_score1 += m_coilyScore;
-		if (m_player2->GetTag() != dae::Tag(Tag::PlayerCoily))
+
+		if (m_player2 &&
+			m_player2->GetTag() != dae::Tag(Tag::PlayerCoily))
+		{
 			m_score2 += m_coilyScore;
+		}
 		break;
 
 	case dae::make_sdbm_hash("SAM_SLICK_KILLED"):
@@ -91,6 +95,7 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject* subject)
 
 	case dae::make_sdbm_hash("QBERT_KILLED"):
 		if (subject->GetOwner() == m_player1
+			&& m_player2
 			&& m_player2->GetTag() == dae::Tag(Tag::PlayerCoily))
 		{
 			m_score2 += m_coilyScore;
@@ -99,7 +104,7 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject* subject)
 
 	case dae::make_sdbm_hash("LEVEL_COMPLETED"):
 		m_score1 += GetWinScore(event.args->nr);
-		if (m_player2->GetTag() != dae::Tag(Tag::PlayerCoily))
+		if (m_player2 && m_player2->GetTag() != dae::Tag(Tag::PlayerCoily))
 			m_score2 += GetWinScore(event.args->nr);
 		break;
 	}
