@@ -18,7 +18,6 @@ std::unique_ptr<QBert::SlickSamState> QBert::StunnedSlickSamState::Update()
     m_secPassed += dae::DeltaTime::GetInstance().GetDeltaTime();
     if (m_secPassed >= m_maxSec)
     {
-        m_slickSam->MarkForRemoval();
         m_slickSam->IsEnabled(false);
     }
 

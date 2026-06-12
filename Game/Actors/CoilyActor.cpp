@@ -23,13 +23,6 @@ QBert::CoilyActorComp::~CoilyActorComp()
 	{
 		qbert->GetSubject()->RemoveObserver(this);
 	}
-
-	if (dynamic_cast<StunnedCoilyState*>(m_pState.get())
-		|| dynamic_cast<FallingSnakeState*>(m_pState.get()))
-	{
-		auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
-		if (levelManager) levelManager->GetOwner()->GetSubject()->RemoveObserver(this);
-	}
 }
 
 void QBert::CoilyActorComp::Start()

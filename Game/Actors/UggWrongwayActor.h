@@ -12,7 +12,7 @@ namespace QBert
     class QBertMoveComp;
     class LevelBase;
 
-    class UggWrongwayActor final : public dae::Component, dae::IObserver
+    class UggWrongwayActor final : public dae::Component, public dae::IObserver
     {
     public:
         UggWrongwayActor(dae::GameObject* pOwner, LevelBase* pLevel, const std::vector<QBertMoveComp*>& qbertMoves, bool goesRight);

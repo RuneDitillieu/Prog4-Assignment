@@ -1,5 +1,6 @@
 #include "LevelManager.h"
 
+#include "CoilyActor.h"
 #include "DeltaTime.h"
 #include "GameObject.h"
 #include "SceneManager.h"
@@ -7,6 +8,8 @@
 #include "QBertMoveComponent.h"
 #include "InitUtils.h"
 #include "DiscActor.h"
+#include "SlickSamActor.h"
+#include "UggWrongwayActor.h"
 
 QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level, dae::SpriteComp* tileIconSprite)
 	: dae::Component(pOwner)
@@ -164,6 +167,7 @@ void QBert::LevelManager::MarkAllCreaturesForRemoval() const
 	auto coilys = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Coily));
 	for (auto coily : coilys)
 	{
+		GetOwner()->GetSubject()->RemoveObserver(coily->GetComponent<CoilyActorComp>());
 		coily->IsEnabled(false);
 		coily->MarkForRemoval();
 	}
@@ -171,6 +175,7 @@ void QBert::LevelManager::MarkAllCreaturesForRemoval() const
 	auto slickSams = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::SlickSam));
 	for (auto slickSam : slickSams)
 	{
+		GetOwner()->GetSubject()->RemoveObserver(slickSam->GetComponent<SlickSamActorComp>());
 		slickSam->IsEnabled(false);
 		slickSam->MarkForRemoval();
 	}
@@ -178,6 +183,7 @@ void QBert::LevelManager::MarkAllCreaturesForRemoval() const
 	auto uggWrongways = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::UggWrongway));
 	for (auto uggWrongway : uggWrongways)
 	{
+		GetOwner()->GetSubject()->RemoveObserver(uggWrongway->GetComponent<UggWrongwayActor>());
 		uggWrongway->IsEnabled(false);
 		uggWrongway->MarkForRemoval();
 	}

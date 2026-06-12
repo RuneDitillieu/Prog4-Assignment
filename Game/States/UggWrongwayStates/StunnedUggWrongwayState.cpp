@@ -18,7 +18,6 @@ std::unique_ptr<QBert::UggWrongwayState> QBert::StunnedUggWrongwayState::Update(
     m_secPassed += dae::DeltaTime::GetInstance().GetDeltaTime();
     if (m_secPassed >= m_maxSec)
     {
-        m_uggWrongway->MarkForRemoval();
         m_uggWrongway->IsEnabled(false);
     }
 

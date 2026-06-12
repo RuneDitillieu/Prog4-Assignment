@@ -24,13 +24,6 @@ QBert::UggWrongwayActor::~UggWrongwayActor()
     {
         qbert->GetSubject()->RemoveObserver(this);
     }
-
-    if (dynamic_cast<StunnedUggWrongwayState*>(m_pState.get())
-    || dynamic_cast<FallingUggWrongwayState*>(m_pState.get()))
-    {
-        auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
-        if (levelManager) levelManager->GetOwner()->GetSubject()->RemoveObserver(this);
-    }
 }
 
 void QBert::UggWrongwayActor::Start()

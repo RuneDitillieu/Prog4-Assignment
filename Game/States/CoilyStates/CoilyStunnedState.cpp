@@ -17,7 +17,6 @@ std::unique_ptr<QBert::CoilyState> QBert::StunnedCoilyState::Update()
 	m_secPassed += dae::DeltaTime::GetInstance().GetDeltaTime();
 	if (m_secPassed >= m_maxSec)
 	{
-		m_coily->MarkForRemoval();
 		m_coily->IsEnabled(false);
 	}
 

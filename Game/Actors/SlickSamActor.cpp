@@ -22,13 +22,6 @@ QBert::SlickSamActorComp::~SlickSamActorComp()
 	{
 		qbert->GetSubject()->RemoveObserver(this);
 	}
-
-	if (dynamic_cast<StunnedSlickSamState*>(m_pState.get())
-	|| dynamic_cast<FallingSlickSamState*>(m_pState.get()))
-	{
-		auto levelManager = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<LevelManager>();
-		if (levelManager) levelManager->GetOwner()->GetSubject()->RemoveObserver(this);
-	}
 }
 
 void QBert::SlickSamActorComp::Start()
