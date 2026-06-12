@@ -12,7 +12,7 @@ namespace QBert
 	class LivesDisplay final : public dae::Component, public dae::IObserver
 	{
 	public:
-		LivesDisplay(dae::GameObject* pOwner, std::vector<dae::GameObject*> lives);
+		LivesDisplay(dae::GameObject* pOwner, std::vector<dae::GameObject*> livesP1, std::vector<dae::GameObject*> livesP2);
 		~LivesDisplay();
 		LivesDisplay(const LivesDisplay& other) = delete;
 		LivesDisplay(LivesDisplay&& other) = delete;
@@ -25,7 +25,10 @@ namespace QBert
 		std::type_index GetType() const override;
 
 	private:
-		std::vector<dae::GameObject*> m_pLives;
+		std::vector<dae::GameObject*> m_pLivesP1;
+		dae::GameObject* m_player1{ nullptr };
+		std::vector<dae::GameObject*> m_pLivesP2;
+		dae::GameObject* m_player2{ nullptr };
 	};
 }
 

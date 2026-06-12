@@ -75,7 +75,7 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* t
 		return life;
 	}
 
-	dae::SpriteComp* QBert::Utils::CreateUi(dae::Scene& scene, dae::TextComponent* player2ScoreText)
+	dae::SpriteComp* QBert::Utils::CreateUi(dae::Scene& scene, dae::TextComponent* player2ScoreText, std::vector<dae::GameObject*> player2Lives)
 	{
 		// TOP LEFT
 
@@ -188,7 +188,7 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* t
 		CreateLifeComp(200.f, true, pLives).release()->SetParent(lives.get(), false);
 		CreateLifeComp(250.f, true, pLives).release()->SetParent(lives.get(), false);
 
-		lives->AddComponent(std::make_unique<QBert::LivesDisplay>(lives.get(), pLives));
+		lives->AddComponent(std::make_unique<QBert::LivesDisplay>(lives.get(), pLives, player2Lives));
 
 		scene.Add(std::move(lives));
 
@@ -267,7 +267,22 @@ dae::SpriteComp* QBert::Utils::CreateCoopUi(dae::Scene& scene)
 
 	scene.Add(std::move(playerText));
 
-	auto tileIcon = CreateUi(scene, tc);
+	auto lives = std::make_unique<dae::GameObject>();
+	lives->SetLocalPosition(750.f, 260.f);
+
+	std::vector<dae::GameObject*> pLives{};
+	pLives.reserve(5);
+
+	CreateLifeComp(0.f, true, pLives).release()->SetParent(lives.get(), false);
+	CreateLifeComp(50.f, true, pLives).release()->SetParent(lives.get(), false);
+	CreateLifeComp(100.f, true, pLives).release()->SetParent(lives.get(), false);
+	CreateLifeComp(150.f, true, pLives).release()->SetParent(lives.get(), false);
+	CreateLifeComp(200.f, true, pLives).release()->SetParent(lives.get(), false);
+	CreateLifeComp(250.f, true, pLives).release()->SetParent(lives.get(), false);
+
+	scene.Add(std::move(lives));
+
+	auto tileIcon = CreateUi(scene, tc, pLives);
 
 	return tileIcon;
 }

@@ -20,7 +20,7 @@ namespace QBert::Utils
 
 	std::unique_ptr<dae::GameObject> CreateLifeComp(float y, bool enabled, std::vector<dae::GameObject*>& lives);
 
-	dae::SpriteComp* CreateUi(dae::Scene& scene, dae::TextComponent* player2ScoreText = nullptr);
+	dae::SpriteComp* CreateUi(dae::Scene& scene, dae::TextComponent* player2ScoreText = nullptr, std::vector<dae::GameObject*> p2Lives = std::vector<dae::GameObject*>{});
 	dae::SpriteComp* CreateCoopUi(dae::Scene& scene);
 
 	void AddSounds();
