@@ -13,7 +13,7 @@ namespace QBert
 	class CoilyActorComp final : public dae::Component, public dae::IObserver
 	{
     public:
-        CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel, QBertMoveComp* qbertMove);
+        CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel, const std::vector<QBertMoveComp*>& qbertMoves);
         ~CoilyActorComp();
         CoilyActorComp(const CoilyActorComp& other) = delete;
         CoilyActorComp(CoilyActorComp&& other) = delete;

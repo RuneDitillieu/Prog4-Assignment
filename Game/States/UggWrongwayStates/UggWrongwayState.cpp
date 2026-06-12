@@ -3,9 +3,9 @@
 #include "QBertMoveComponent.h"
 
 QBert::UggWrongwayState::UggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
-    QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp, bool goesRight)
+    QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps, bool goesRight)
     : m_uggWrongway(uggWrongway), m_pConnSprite(spriteComp), m_pMoveComp(moveComp), m_pConnLevel(level),
-    m_pQBertMoveComp(qbertMoveComp), m_goesRight(goesRight)
+    m_pQBertMoveComps(qbertMoveComps), m_goesRight(goesRight)
 { }
 
 std::unique_ptr<QBert::UggWrongwayState> QBert::UggWrongwayState::Update()
@@ -20,19 +20,24 @@ std::unique_ptr<QBert::UggWrongwayState> QBert::UggWrongwayState::Update()
         offset.x = 1;
     }
 
-    if(m_pMoveComp->GetGoalTile() + offset == m_pQBertMoveComp->GetCurrentTile()
-            || m_pMoveComp->GetCurrentTile() + offset == m_pQBertMoveComp->GetGoalTile())
+    for (auto qbertMove : m_pQBertMoveComps)
     {
-        glm::vec3 uggWrongwayFootPos{ m_uggWrongway->GetWorldPosition() /*+ m_pMoveComp->GetFeetPos()*/ };
-        glm::vec3 qbertFootPos{ m_pQBertMoveComp->GetOwner()->GetWorldPosition() /*+ m_pQBertMoveComp->GetFeetPos()*/ };
+        if (qbertMove == nullptr) continue;
 
-        if (glm::length(uggWrongwayFootPos - qbertFootPos) <= 10.f)
+        if(m_pMoveComp->GetGoalTile() + offset == qbertMove->GetCurrentTile()
+                || m_pMoveComp->GetCurrentTile() + offset == qbertMove->GetGoalTile())
         {
-            dae::Event e{ dae::make_sdbm_hash("ACTOR_HIT") };
-            e.args->object = m_pQBertMoveComp->GetOwner();
-            m_uggWrongway->GetSubject()->NotifyObservers(e);
-            return std::make_unique<StunnedUggWrongwayState>(m_uggWrongway, m_pConnSprite, m_pMoveComp,
-                m_pConnLevel, m_pQBertMoveComp, m_goesRight);
+            glm::vec3 uggWrongwayFootPos{ m_uggWrongway->GetWorldPosition() };
+            glm::vec3 qbertFootPos{ qbertMove->GetOwner()->GetWorldPosition() };
+
+            if (glm::length(uggWrongwayFootPos - qbertFootPos) <= 10.f)
+            {
+                dae::Event e{ dae::make_sdbm_hash("ACTOR_HIT") };
+                e.args->object = qbertMove->GetOwner();
+                m_uggWrongway->GetSubject()->NotifyObservers(e);
+                return std::make_unique<StunnedUggWrongwayState>(m_uggWrongway, m_pConnSprite, m_pMoveComp,
+                    m_pConnLevel, m_pQBertMoveComps, m_goesRight);
+            }
         }
     }
 
@@ -45,7 +50,7 @@ std::unique_ptr<QBert::UggWrongwayState> QBert::UggWrongwayState::OnNotify(dae::
         || event.id == dae::make_sdbm_hash("LEVEL_COMPLETED"))
     {
         return std::make_unique<StunnedUggWrongwayState>(m_uggWrongway, m_pConnSprite,
-            m_pMoveComp, m_pConnLevel, m_pQBertMoveComp, m_goesRight);
+            m_pMoveComp, m_pConnLevel, m_pQBertMoveComps, m_goesRight);
     }
 
     return nullptr;

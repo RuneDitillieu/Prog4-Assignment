@@ -4,8 +4,9 @@
 #include "LevelBase.h"
 #include "SceneManager.h"
 
-QBert::IdleEggState::IdleEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
-	: CoilyState(coily, spriteComp, moveComp, level, qbertMoveComp)
+QBert::IdleEggState::IdleEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp,
+	LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps)
+	: CoilyState(coily, spriteComp, moveComp, level, qbertMoveComps)
 {}
 
 void QBert::IdleEggState::OnEnter()
@@ -29,11 +30,11 @@ std::unique_ptr<QBert::CoilyState> QBert::IdleEggState::Update()
 
 	if (m_secPassed >= m_idleSec && !hasReachedBottom)
 	{
-		return std::make_unique<JumpingEggState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+		return std::make_unique<JumpingEggState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComps);
 	}
 	else if(m_secPassed >= m_idleSec * 3.f)
 	{
-		return std::make_unique<IdleSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+		return std::make_unique<IdleSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComps);
 	}
 
 	return nullptr;

@@ -4,8 +4,8 @@
 #include "SpriteComponent.h"
 
 QBert::JumpingSlickSamState::JumpingSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp,
-    LevelBase* level, QBertMoveComp* qbertMoveComp)
-    : SlickSamState(slickSam, spriteComp, moveComp, level, qbertMoveComp)
+    LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps)
+    : SlickSamState(slickSam, spriteComp, moveComp, level, qbertMoveComps)
 { }
 
 void QBert::JumpingSlickSamState::OnEnter()
@@ -33,7 +33,7 @@ std::unique_ptr<QBert::SlickSamState> QBert::JumpingSlickSamState::Update()
 
     if (!m_pMoveComp->IsMoving())
     {
-        return std::make_unique<IdleSlickSamState>(m_slickSam, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+        return std::make_unique<IdleSlickSamState>(m_slickSam, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComps);
     }
 
     return nullptr;
@@ -48,7 +48,7 @@ std::unique_ptr<QBert::SlickSamState> QBert::JumpingSlickSamState::OnNotify(dae:
         && subject == m_slickSam->GetSubject())
     {
         m_pMoveComp->m_isEnabled = false;
-        return std::make_unique<FallingSlickSamState>(m_slickSam, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+        return std::make_unique<FallingSlickSamState>(m_slickSam, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComps);
     }
 
     return nullptr;

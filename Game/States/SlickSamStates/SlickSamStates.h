@@ -14,7 +14,7 @@ namespace QBert
 	{
 	public:
 		SlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 		virtual ~SlickSamState() = default;
 		virtual void OnEnter() {};
 		virtual void OnExit() {};
@@ -26,14 +26,14 @@ namespace QBert
 		dae::SpriteComp* m_pConnSprite;
 		QBertMoveComp* m_pMoveComp;
 		LevelBase* m_pConnLevel;
-		QBertMoveComp* m_pQBertMoveComp;
+		std::vector<QBertMoveComp*> m_pQBertMoveComps;
 	};
 
 	class DroppingSlickSamState final : public SlickSamState
 	{
 	public:
 		DroppingSlickSamState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		std::unique_ptr<SlickSamState> Update() override;
@@ -43,7 +43,7 @@ namespace QBert
 	{
 	public:
 		IdleSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		std::unique_ptr<SlickSamState> Update() override;
@@ -57,7 +57,7 @@ namespace QBert
 	{
 	public:
 		JumpingSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		std::unique_ptr<SlickSamState> Update() override;
@@ -68,7 +68,7 @@ namespace QBert
 	{
 	public:
 		FallingSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		std::unique_ptr<SlickSamState> Update() override;
@@ -78,7 +78,7 @@ namespace QBert
 	{
 	public:
 		StunnedSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		std::unique_ptr<SlickSamState> Update() override;

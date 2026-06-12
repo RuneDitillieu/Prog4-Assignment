@@ -77,7 +77,7 @@ void QBert::LevelManager::Update()
 	{
 		if (coilySpawn >= 0 && m_secPassed >= coilySpawn)
 		{
-			auto coily = Utils::CreateCoily(m_pConnLevel, m_pPlayersMove[0]);
+			auto coily = Utils::CreateCoily(m_pConnLevel, m_pPlayersMove);
 			coily->Start();
 			activeScene->Add(std::move(coily));
 			coilySpawn = -1;
@@ -88,7 +88,7 @@ void QBert::LevelManager::Update()
 	{
 		if (slickSamSpawn >= 0 && m_secPassed >= slickSamSpawn)
 		{
-			auto slickSam = Utils::CreateSlickSam(m_pConnLevel, m_pPlayersMove[0]);
+			auto slickSam = Utils::CreateSlickSam(m_pConnLevel, m_pPlayersMove);
 			slickSam->Start();
 			activeScene->Add(std::move(slickSam));
 			slickSamSpawn = -1;
@@ -99,7 +99,7 @@ void QBert::LevelManager::Update()
 	{
 		if (uggWrongwaySpawn >= 0 && m_secPassed >= uggWrongwaySpawn)
 		{
-			auto uggWrongway = Utils::CreateUggWrongway(m_pConnLevel, m_pPlayersMove[0]);
+			auto uggWrongway = Utils::CreateUggWrongway(m_pConnLevel, m_pPlayersMove);
 			uggWrongway->Start();
 			activeScene->Add(std::move(uggWrongway));
 			uggWrongwaySpawn = -1;

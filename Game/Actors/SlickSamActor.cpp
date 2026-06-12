@@ -7,11 +7,11 @@
 #include "SceneManager.h"
 #include "Tags.h"
 
-QBert::SlickSamActorComp::SlickSamActorComp(dae::GameObject* pOwner, LevelBase* pLevel, QBertMoveComp* qbertMove)
+QBert::SlickSamActorComp::SlickSamActorComp(dae::GameObject* pOwner, LevelBase* pLevel, const std::vector<QBertMoveComp*>& qbertMoves)
 	: Component(pOwner)
 {
 	m_pState = std::make_unique<DroppingSlickSamState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>(),
-	GetOwner()->GetComponent<QBertMoveComp>(), pLevel, qbertMove);
+	GetOwner()->GetComponent<QBertMoveComp>(), pLevel, qbertMoves);
 	m_pState->OnEnter();
 }
 

@@ -5,8 +5,8 @@
 #include "SpriteComponent.h"
 
 QBert::IdleSlickSamState::IdleSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
-    QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
-        : SlickSamState(slickSam, spriteComp, moveComp, level, qbertMoveComp)
+    QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps)
+        : SlickSamState(slickSam, spriteComp, moveComp, level, qbertMoveComps)
 {}
 
 void QBert::IdleSlickSamState::OnEnter()
@@ -26,7 +26,7 @@ std::unique_ptr<QBert::SlickSamState> QBert::IdleSlickSamState::Update()
 
     if (m_secPassed >= m_idleSec)
     {
-        return std::make_unique<JumpingSlickSamState>(m_slickSam, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+        return std::make_unique<JumpingSlickSamState>(m_slickSam, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComps);
     }
 
     return nullptr;

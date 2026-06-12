@@ -3,13 +3,22 @@
 #include "LevelBase.h"
 
 QBert::JumpingSnakeState::JumpingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
-	QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
-	: CoilyState(coily, spriteComp, moveComp, level, qbertMoveComp)
+	QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps)
+	: CoilyState(coily, spriteComp, moveComp, level, qbertMoveComps)
 { }
 
 void QBert::JumpingSnakeState::OnEnter()
 {
-	glm::vec2 moveDir{ m_pQBertMoveComp->GetCurrentTile() - m_pMoveComp->GetCurrentTile() };
+	// default target first player
+	glm::vec2 moveDir{ m_pQBertMoveComps[0]->GetCurrentTile() - m_pMoveComp->GetCurrentTile() };
+
+	// if there is a second player and they're closer, target them instead
+	if (m_pQBertMoveComps.size() > 1
+		&& glm::length(m_pQBertMoveComps[1]->GetCurrentTile() - m_pMoveComp->GetCurrentTile())
+		< glm::length(m_pQBertMoveComps[0]->GetCurrentTile() - m_pMoveComp->GetCurrentTile()))
+	{
+		moveDir = m_pQBertMoveComps[1]->GetCurrentTile() - m_pMoveComp->GetCurrentTile();
+	}
 
 	if (moveDir.x == 0 && moveDir.y == 0)
 	{
@@ -73,7 +82,7 @@ std::unique_ptr<QBert::CoilyState> QBert::JumpingSnakeState::Update()
 
 	if (!m_pMoveComp->IsMoving())
 	{
-		return std::make_unique<IdleSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+		return std::make_unique<IdleSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComps);
 	}
 
 	return nullptr;
@@ -88,7 +97,7 @@ std::unique_ptr<QBert::CoilyState> QBert::JumpingSnakeState::OnNotify(dae::Event
 		&& subject == m_coily->GetSubject())
 	{
 		m_pMoveComp->m_isEnabled = false;
-		return std::make_unique<FallingSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+		return std::make_unique<FallingSnakeState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComps);
 	}
 
 	return nullptr;

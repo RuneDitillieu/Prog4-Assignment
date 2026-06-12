@@ -3,8 +3,8 @@
 #include "QBertMoveComponent.h"
 
 QBert::JumpingUggWrongwayState::JumpingUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
-    QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp, bool goesRight)
-        : UggWrongwayState(uggWrongway, spriteComp, moveComp, level, qbertMoveComp, goesRight)
+    QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps, bool goesRight)
+        : UggWrongwayState(uggWrongway, spriteComp, moveComp, level, qbertMoveComps, goesRight)
 {}
 
 void QBert::JumpingUggWrongwayState::OnEnter()
@@ -51,7 +51,7 @@ std::unique_ptr<QBert::UggWrongwayState> QBert::JumpingUggWrongwayState::Update(
     if (!m_pMoveComp->IsMoving())
     {
         return std::make_unique<IdleUggWrongwayState>(m_uggWrongway, m_pConnSprite,
-            m_pMoveComp, m_pConnLevel, m_pQBertMoveComp, m_goesRight);
+            m_pMoveComp, m_pConnLevel, m_pQBertMoveComps, m_goesRight);
     }
 
     return nullptr;
@@ -67,7 +67,7 @@ std::unique_ptr<QBert::UggWrongwayState> QBert::JumpingUggWrongwayState::OnNotif
     {
         m_pMoveComp->m_isEnabled = false;
         return std::make_unique<FallingUggWrongwayState>(m_uggWrongway, m_pConnSprite,
-            m_pMoveComp, m_pConnLevel, m_pQBertMoveComp, m_goesRight);
+            m_pMoveComp, m_pConnLevel, m_pQBertMoveComps, m_goesRight);
     }
 
     return nullptr;

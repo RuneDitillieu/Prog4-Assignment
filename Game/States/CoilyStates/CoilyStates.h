@@ -15,7 +15,7 @@ namespace QBert
 	{
 	public:
 		CoilyState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 		virtual ~CoilyState() = default;
 		virtual void OnEnter() { };
 		virtual void OnExit() { };
@@ -27,7 +27,7 @@ namespace QBert
 		dae::SpriteComp* m_pConnSprite;
 		QBertMoveComp* m_pMoveComp;
 		LevelBase* m_pConnLevel;
-		QBertMoveComp* m_pQBertMoveComp;
+		std::vector<QBertMoveComp*> m_pQBertMoveComps;
 	};
 
 
@@ -37,7 +37,7 @@ namespace QBert
 	{
 	public:
 		DroppingEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		std::unique_ptr<CoilyState> Update() override;
@@ -47,7 +47,7 @@ namespace QBert
 	{
 	public:
 		IdleEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		void OnExit() override;
@@ -62,7 +62,7 @@ namespace QBert
 	{
 	public:
 		JumpingEggState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		std::unique_ptr<CoilyState> Update() override;
@@ -75,7 +75,7 @@ namespace QBert
 	{
 	public:
 		IdleSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		std::unique_ptr<CoilyState> Update() override;
@@ -89,7 +89,7 @@ namespace QBert
 	{
 	public:
 		JumpingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		std::unique_ptr<CoilyState> Update() override;
@@ -100,7 +100,7 @@ namespace QBert
 	{
 	public:
 		FallingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp, 
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		std::unique_ptr<CoilyState> Update() override;
@@ -110,7 +110,7 @@ namespace QBert
 	{
 	public:
 		StunnedCoilyState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
-			QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp);
+			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
 		std::unique_ptr<CoilyState> Update() override;

@@ -4,8 +4,8 @@
 #include "QBertMoveComponent.h"
 
 QBert::StunnedUggWrongwayState::StunnedUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
-    QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp, bool goesRight)
-        : UggWrongwayState(uggWrongway, spriteComp, moveComp, level, qbertMoveComp, goesRight)
+    QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps, bool goesRight)
+        : UggWrongwayState(uggWrongway, spriteComp, moveComp, level, qbertMoveComps, goesRight)
 { }
 
 void QBert::StunnedUggWrongwayState::OnEnter()

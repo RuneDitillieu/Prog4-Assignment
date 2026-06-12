@@ -9,11 +9,11 @@
 #include "Tags.h"
 #include "UggWrongwayStates.h"
 
-QBert::UggWrongwayActor::UggWrongwayActor(dae::GameObject* pOwner, LevelBase* pLevel, QBertMoveComp* qbertMove, bool goesRight)
+QBert::UggWrongwayActor::UggWrongwayActor(dae::GameObject* pOwner, LevelBase* pLevel, const std::vector<QBertMoveComp*>& qbertMoves, bool goesRight)
     : Component(pOwner)
 {
     m_pState = std::make_unique<IdleUggWrongwayState>(GetOwner(), GetOwner()->GetComponent<dae::SpriteComp>(),
-    GetOwner()->GetComponent<QBertMoveComp>(), pLevel, qbertMove, goesRight);
+    GetOwner()->GetComponent<QBertMoveComp>(), pLevel, qbertMoves, goesRight);
     m_pState->OnEnter();
 }
 

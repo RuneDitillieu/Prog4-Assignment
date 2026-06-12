@@ -4,8 +4,8 @@
 #include "Scene.h"
 
 QBert::FallingSlickSamState::FallingSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
-    QBertMoveComp* moveComp, LevelBase* level, QBertMoveComp* qbertMoveComp)
-    : SlickSamState(slickSam, spriteComp, moveComp, level, qbertMoveComp)
+    QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps)
+    : SlickSamState(slickSam, spriteComp, moveComp, level, qbertMoveComps)
 { }
 
 void QBert::FallingSlickSamState::OnEnter()
