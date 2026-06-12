@@ -12,14 +12,14 @@ class GameObject;
 
 namespace QBert::Utils
 {
-	dae::GameObject* CreateLevel(dae::Scene& scene, int tileType, bool revertableTiles,
+	dae::GameObject* CreateLevel(dae::Scene& scene, dae::SpriteComp* tileIconSprite, int tileType, bool revertableTiles,
 		int startTile, int winTile, int intermediateTile = -1);
 
 	std::unique_ptr<dae::GameObject> CreateNumberComp(float x, float y, bool enabled, std::vector<dae::SpriteComp*>& numberSprites);
 
 	std::unique_ptr<dae::GameObject> CreateLifeComp(float y, bool enabled, std::vector<dae::GameObject*>& lives);
 
-	void CreateUi(dae::Scene& scene);
+	dae::SpriteComp* CreateUi(dae::Scene& scene);
 
 	void AddSounds();
 

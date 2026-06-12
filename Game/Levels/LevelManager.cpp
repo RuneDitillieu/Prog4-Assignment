@@ -8,9 +8,10 @@
 #include "InitUtils.h"
 #include "DiscActor.h"
 
-QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level)
+QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level, dae::SpriteComp* tileIconSprite)
 	: dae::Component(pOwner)
 	, m_pConnLevel(level)
+	, m_pWinTileIndicator(tileIconSprite)
 {
 	LevelParams levelParams{};
 
@@ -18,13 +19,13 @@ QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level)
 	levelParams.coilySpawns = std::vector<float>{ 1.f };
 	levelParams.samSlickSpawns = std::vector<float>{ 3.f };
 	levelParams.discSpawns = std::vector<glm::vec2>{ {-1, 4}, {4, -1} };
-	levelParams.tileParams = TileParams{0, false, 1, 0};
+	levelParams.tileParams = TileParams{0, false, 0, 1};
 	m_levelParams.emplace_back(levelParams);
 
 	// 1 2
 	levelParams.coilySpawns = std::vector<float>{ 1.f };
 	levelParams.discSpawns = std::vector<glm::vec2>{{-1, 5}, {6, -1}};
-	levelParams.tileParams = TileParams{ 1, false, 1, 0 };
+	levelParams.tileParams = TileParams{ 1, true, 1, 0 };
 	m_levelParams.emplace_back(levelParams);
 
 	auto activeScene = dae::SceneManager::GetInstance().GetActiveScene();
@@ -39,6 +40,8 @@ QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level)
 	activeScene->Add(std::move(disc));
 
 	m_pConnLevel->SetDiscs(std::move(discs));
+	m_pWinTileIndicator->SetStartPos(glm::vec2(m_pWinTileIndicator->GetSpriteSize().x * m_levelParams[0].tileParams.tileType,
+		m_pWinTileIndicator->GetSpriteSize().y * m_levelParams[0].tileParams.winTile));
 }
 
 QBert::LevelManager::~LevelManager()
@@ -116,6 +119,7 @@ void QBert::LevelManager::Notify(dae::Event event, dae::Subject*)
 		m_pConnLevel->DoLevelCompletionAnim();
 
 		// notify score manager
+		event.args->nr = m_pConnLevel->GetActiveDiscAmount();
 		GetOwner()->GetSubject()->NotifyObservers(event);
 	}
 }
@@ -146,6 +150,8 @@ void QBert::LevelManager::GoToNextLevel()
 
 		m_pConnLevel->ResetBase(m_levelParams[m_curLevelParams].tileParams,
 			m_levelParams[m_curLevelParams].discSpawns[0], m_levelParams[m_curLevelParams].discSpawns[1]);
+		m_pWinTileIndicator->SetStartPos(glm::vec2(m_pWinTileIndicator->GetSpriteSize().x * m_levelParams[m_curLevelParams].tileParams.tileType,
+			m_pWinTileIndicator->GetSpriteSize().y * m_levelParams[m_curLevelParams].tileParams.winTile));
 	}
 	else
 	{

@@ -28,7 +28,8 @@
 #include "UggWrongwayActor.h"
 #include "Colors.h"
 
-dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool revertableTiles, int startTile, int winTile, int intermediateTile)
+dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, dae::SpriteComp* tileIconSprite, int tileType, bool revertableTiles,
+	int startTile, int winTile, int intermediateTile)
 	{
 		auto go = std::make_unique<dae::GameObject>(dae::Tag(Tag::Level));
 		go->SetLocalPosition(350.f, 150.f);
@@ -38,7 +39,7 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool
 		scene.Add(std::move(go));
 
 		go = std::make_unique<dae::GameObject>();
-		go->AddComponent(std::make_unique<LevelManager>(go.get(), levelComp));
+		go->AddComponent(std::make_unique<LevelManager>(go.get(), levelComp, tileIconSprite));
 		dae::InputManager::GetInstance().BindCommand(std::make_unique<SkipLevelCommand>(go.get()), SDL_SCANCODE_F1, SDL_EVENT_KEY_DOWN);
 		scene.Add(std::move(go));
 
@@ -74,7 +75,7 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool
 		return life;
 	}
 
-	void QBert::Utils::CreateUi(dae::Scene& scene)
+	dae::SpriteComp* QBert::Utils::CreateUi(dae::Scene& scene)
 	{
 		// TOP LEFT
 
@@ -164,8 +165,8 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool
 		tileIcon->SetLocalPosition(53.f, 32.f);
 		tileIcon->SetScale(3.f);
 		rc = tileIcon->AddComponent(std::make_unique<dae::RenderComponent>(tileIcon.get(), "TileIcons.png"));
-		tileIcon->AddComponent(std::make_unique<dae::SpriteComp>(tileIcon.get(), rc, "TileIcons.png",
-			1, 1, rc->GetSize().x / 6, rc->GetSize().y / 2, glm::vec2{0, 0}, false));
+		auto tileIconSprite = tileIcon->AddComponent(std::make_unique<dae::SpriteComp>(tileIcon.get(), rc, "TileIcons.png",
+			1, 1, rc->GetSize().x / 6, rc->GetSize().y / 3, glm::vec2{0, rc->GetSize().y / 3 }, false));
 		tileIcon.release()->SetParent(changeToText.get(), false);
 
 		changeToText.release()->SetParent(playerText.get(), false);
@@ -235,6 +236,8 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool
 		roundText.release()->SetParent(levelText.get(), false);
 
 		scene.Add(std::move(levelText));
+
+		return tileIconSprite;
 	}
 
 	void QBert::Utils::AddSounds()

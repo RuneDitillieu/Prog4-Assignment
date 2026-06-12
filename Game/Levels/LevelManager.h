@@ -23,7 +23,7 @@ namespace QBert
 	class LevelManager final : public dae::Component, public dae::IObserver
 	{
 	public:
-		LevelManager(dae::GameObject* pOwner, LevelBase* level);
+		LevelManager(dae::GameObject* pOwner, LevelBase* level, dae::SpriteComp* tileIconSprite);
 		~LevelManager();
 		LevelManager(const LevelManager& other) = delete;
 		LevelManager(LevelManager&& other) = delete;
@@ -53,6 +53,7 @@ namespace QBert
 		bool m_doingLevelTransition{ false };
 
 		LevelBase* m_pConnLevel;
+		dae::SpriteComp* m_pWinTileIndicator;
 		std::vector<LevelParams> m_levelParams{};
 		std::vector<QBertMoveComp*> m_pPlayersMove{};
 	};

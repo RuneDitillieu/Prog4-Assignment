@@ -50,8 +50,10 @@ static void load()
 	{
 		dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MuteCommand>(), SDL_SCANCODE_F2, SDL_EVENT_KEY_DOWN);
 
+		auto tileIconSprite = QBert::Utils::CreateUi(scene);
+
 		// level
-		auto levelObj = QBert::Utils::CreateLevel(scene, 0, false, 0, 1);
+		auto levelObj = QBert::Utils::CreateLevel(scene, tileIconSprite, 0, false, 0, 1);
 		auto levelComp = levelObj->GetComponent<QBert::LevelBase>();
 
 		// player
@@ -59,8 +61,6 @@ static void load()
 		go = QBert::Utils::AddKeyboardBindings(std::move(go));
 		go = QBert::Utils::AddController1Bindings(std::move(go));
 		scene.Add(std::move(go));
-
-		QBert::Utils::CreateUi(scene);
 	};
 
 	dae::SceneManager::GetInstance().CreateScene(dae::SceneName(QBert::SceneName::SinglePlayerScene), loadFunc);
@@ -70,8 +70,10 @@ static void load()
 	{
 		dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MuteCommand>(), SDL_SCANCODE_F2, SDL_EVENT_KEY_DOWN);
 
+		auto tileIconSprite = QBert::Utils::CreateUi(scene);
+
 		// level
-		auto levelObj = QBert::Utils::CreateLevel(scene, 0, false, 0, 1);
+		auto levelObj = QBert::Utils::CreateLevel(scene, tileIconSprite, 0, false, 0, 1);
 		auto levelComp = levelObj->GetComponent<QBert::LevelBase>();
 
 		// player
@@ -83,8 +85,6 @@ static void load()
 		go = QBert::Utils::CreatePlayer(levelComp, glm::vec2(6, 0));
 		go = QBert::Utils::AddController1Bindings(std::move(go));
 		scene.Add(std::move(go));
-
-		QBert::Utils::CreateUi(scene);
 	};
 
 	dae::SceneManager::GetInstance().CreateScene(dae::SceneName(QBert::SceneName::CoopScene), loadFunc);
