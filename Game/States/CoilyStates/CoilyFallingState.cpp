@@ -2,9 +2,11 @@
 #include "DeltaTime.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "ServiceLocator.h"
+#include "Sounds.h"
 
 QBert::FallingSnakeState::FallingSnakeState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
-	QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps)
+                                            QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps)
 	: CoilyState(coily, spriteComp, moveComp, level, qbertMoveComps)
 { }
 
@@ -12,6 +14,7 @@ void QBert::FallingSnakeState::OnEnter()
 {
 	m_coily->SetRenderPriority(0);
 	dae::SceneManager::GetInstance().GetActiveScene()->RequestReorderObjects();
+	dae::ServiceLocator::GetSoundSystem().Play(dae::SoundId(Sound::CoilyFall));
 }
 
 std::unique_ptr<QBert::CoilyState> QBert::FallingSnakeState::Update()
