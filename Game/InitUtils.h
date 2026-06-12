@@ -23,23 +23,26 @@ namespace QBert::Utils
 
 	void AddSounds();
 
-	std::unique_ptr<dae::GameObject> CreatePlayer(LevelBase* level);
+	std::unique_ptr<dae::GameObject> CreatePlayer(LevelBase* level, const glm::vec2& startPos);
+	std::unique_ptr<dae::GameObject> AddKeyboardBindings(std::unique_ptr<dae::GameObject> player);
+	std::unique_ptr<dae::GameObject> AddController1Bindings(std::unique_ptr<dae::GameObject> player);
+	std::unique_ptr<dae::GameObject> AddController2Bindings(std::unique_ptr<dae::GameObject> player);
 
-	std::unique_ptr<dae::GameObject> CreateCoily(LevelBase* level, QBertMoveComp* playerMove);
+	std::unique_ptr<dae::GameObject> CreateCoily(LevelBase* level, const std::vector<QBertMoveComp*>& playerMoves);
 
 	std::unique_ptr<dae::GameObject> CreateDisc(const glm::vec2& tile, LevelBase* level);
 
-	std::unique_ptr<dae::GameObject> CreateSlick(LevelBase* level, QBertMoveComp* playerMove);
+	std::unique_ptr<dae::GameObject> CreateSlick(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves);
 
-	std::unique_ptr<dae::GameObject> CreateSam(LevelBase* level, QBertMoveComp* playerMove);
+	std::unique_ptr<dae::GameObject> CreateSam(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves);
 
-	std::unique_ptr<dae::GameObject> CreateSlickSam(LevelBase* level, QBertMoveComp* playerMove);
+	std::unique_ptr<dae::GameObject> CreateSlickSam(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves);
 
-	std::unique_ptr<dae::GameObject> CreateUgg(LevelBase* level, QBertMoveComp* playerMove);
+	std::unique_ptr<dae::GameObject> CreateUgg(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves);
 
-	std::unique_ptr<dae::GameObject> CreateWrongway(LevelBase* level, QBertMoveComp* playerMove);
+	std::unique_ptr<dae::GameObject> CreateWrongway(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves);
 
-	std::unique_ptr<dae::GameObject> CreateUggWrongway(LevelBase* level, QBertMoveComp* playerMove);
+	std::unique_ptr<dae::GameObject> CreateUggWrongway(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves);
 
 	void CreateSelectionScreenUI(dae::Scene& scene);
 

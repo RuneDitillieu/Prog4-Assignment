@@ -285,7 +285,7 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool
 			"./Data/Sounds/Prize.mp3", 0.5f);
 	}
 
-	std::unique_ptr<dae::GameObject> QBert::Utils::CreatePlayer(LevelBase* level)
+	std::unique_ptr<dae::GameObject> QBert::Utils::CreatePlayer(LevelBase* level, const glm::vec2& startPos)
 	{
 		auto player = std::make_unique<dae::GameObject>(dae::Tag(Tag::Player));
 		player->SetRenderPriority(2);
@@ -296,7 +296,7 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool
 		auto sprite = player->AddComponent(std::make_unique<dae::SpriteComp>(player.get(), "QBertSprites.png", 8, 1, false));
 		auto move = player->AddComponent(std::make_unique<QBertMoveComp>(player.get(),
 			glm::vec3((rc->GetSize().x / 8.f) * player->GetScale() / 2.f, (rc->GetSize().y * player->GetScale()) / 10.f * 9.f, 0),
-			glm::vec2(0, 0), true, false));
+			startPos, true, false));
 		sprite->SetCurFrame(5);
 		player->AddComponent(std::make_unique<QBertActorComp>(player.get(), sprite, move, level));
 
@@ -311,19 +311,52 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, int tileType, bool
 		speechBubble->IsEnabled(false);
 		speechBubble.release()->SetParent(player.get(), false);
 
-		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
-			glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
-		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
-			glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
-		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
-			glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
-		dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
-			glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
-
 		return player;
 	}
 
-std::unique_ptr<dae::GameObject> QBert::Utils::CreateCoily(LevelBase* level, QBertMoveComp* playerMove)
+std::unique_ptr<dae::GameObject> QBert::Utils::AddKeyboardBindings(std::unique_ptr<dae::GameObject> player)
+{
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
+			glm::vec3(0, -1, 0)), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
+		glm::vec3(0, 1, 0)), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
+		glm::vec3(-1, 0, 0)), SDL_SCANCODE_A, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBert::QBertMoveCommand>(player.get(),
+		glm::vec3(1, 0, 0)), SDL_SCANCODE_D, SDL_EVENT_KEY_DOWN);
+
+	return player;
+}
+
+std::unique_ptr<dae::GameObject> QBert::Utils::AddController1Bindings(std::unique_ptr<dae::GameObject> player)
+{
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(player.get(),
+		glm::vec3(0, -1, 0)), XINPUT_GAMEPAD_DPAD_UP, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(player.get(),
+		glm::vec3(0, 1, 0)), XINPUT_GAMEPAD_DPAD_DOWN, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(player.get(),
+		glm::vec3(-1, 0, 0)), XINPUT_GAMEPAD_DPAD_LEFT, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(player.get(),
+		glm::vec3(1, 0, 0)), XINPUT_GAMEPAD_DPAD_RIGHT, 0);
+
+	return player;
+}
+
+std::unique_ptr<dae::GameObject> QBert::Utils::AddController2Bindings(std::unique_ptr<dae::GameObject> player)
+{
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(player.get(),
+		glm::vec3(0, -1, 0)), XINPUT_GAMEPAD_DPAD_UP, 1);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(player.get(),
+		glm::vec3(0, 1, 0)), XINPUT_GAMEPAD_DPAD_DOWN, 1);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(player.get(),
+		glm::vec3(-1, 0, 0)), XINPUT_GAMEPAD_DPAD_LEFT, 1);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(player.get(),
+		glm::vec3(1, 0, 0)), XINPUT_GAMEPAD_DPAD_RIGHT, 1);
+
+	return player;
+}
+
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateCoily(LevelBase* level, const std::vector<QBertMoveComp*>& playerMoves)
 {
 	auto coily = std::make_unique<dae::GameObject>(dae::Tag(QBert::Tag::Coily));
 	coily->SetRenderPriority(2);
@@ -346,7 +379,7 @@ std::unique_ptr<dae::GameObject> QBert::Utils::CreateCoily(LevelBase* level, QBe
 
 	coily->AddComponent(std::make_unique<QBert::QBertMoveComp>(coily.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0),
 		spawnTile, false, false));
-	coily->AddComponent(std::make_unique<QBert::CoilyActorComp>(coily.get(), level, playerMove));
+	coily->AddComponent(std::make_unique<QBert::CoilyActorComp>(coily.get(), level, playerMoves));
 	coily->AddComponent(std::make_unique<dae::HealthComponent>(coily.get(), 1, 1, 1));
 
 	return coily;
@@ -369,7 +402,7 @@ std::unique_ptr<dae::GameObject> QBert::Utils::CreateCoily(LevelBase* level, QBe
 		return disc;
 	}
 
-std::unique_ptr<dae::GameObject> QBert::Utils::CreateSlick(LevelBase* level, QBertMoveComp* playerMove)
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateSlick(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves)
 {
 	auto slick = std::make_unique<dae::GameObject>(dae::Tag(Tag::SlickSam));
 	slick->SetRenderPriority(2);
@@ -391,33 +424,33 @@ std::unique_ptr<dae::GameObject> QBert::Utils::CreateSlick(LevelBase* level, QBe
 	}
 
 	slick->AddComponent(std::make_unique<QBertMoveComp>(slick.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0), spawnTile, false, true));
-	slick->AddComponent(std::make_unique<SlickSamActorComp>(slick.get(), level, playerMove));
+	slick->AddComponent(std::make_unique<SlickSamActorComp>(slick.get(), level, playersMoves));
 	slick->AddComponent(std::make_unique<dae::HealthComponent>(slick.get(), 1, 1, 1));
 
 	return slick;
 }
 
-	std::unique_ptr<dae::GameObject> QBert::Utils::CreateSam(LevelBase* level, QBertMoveComp* playerMove)
+	std::unique_ptr<dae::GameObject> QBert::Utils::CreateSam(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves)
 	{
-		auto sam = CreateSlick(level, playerMove);
+		auto sam = CreateSlick(level, playersMoves);
 		sam->GetComponent<dae::RenderComponent>()->SetTexture("SamSprites.png");
 		return sam;
 	}
 
-std::unique_ptr<dae::GameObject> QBert::Utils::CreateSlickSam(LevelBase* level, QBertMoveComp* playerMove)
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateSlickSam(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves)
 {
 	int randNr = rand() % 2;
 	if (randNr == 0)
 	{
-		return CreateSlick(level, playerMove);
+		return CreateSlick(level, playersMoves);
 	}
 	else
 	{
-		return CreateSam(level, playerMove);
+		return CreateSam(level, playersMoves);
 	}
 }
 
-std::unique_ptr<dae::GameObject> QBert::Utils::CreateUgg(LevelBase* level, QBertMoveComp* playerMove)
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateUgg(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves)
 {
 		auto ugg = std::make_unique<dae::GameObject>(dae::Tag(Tag::UggWrongway));
 		ugg->SetRenderPriority(2);
@@ -428,12 +461,12 @@ std::unique_ptr<dae::GameObject> QBert::Utils::CreateUgg(LevelBase* level, QBert
 		ugg->AddComponent(std::make_unique<dae::SpriteComp>(ugg.get(), "UggSprites.png", 8, 1, false));
 		ugg->AddComponent(std::make_unique<QBertMoveComp>(ugg.get(),
 			glm::vec3(texSize.x / 12 - (0.5f * 32 * 3), texSize.y / 8.f * 7.f - (0.75f * 32 * 3), 0), glm::vec2(6, 0), false, true));
-		ugg->AddComponent(std::make_unique<UggWrongwayActor>(ugg.get(), level, playerMove, false));
+		ugg->AddComponent(std::make_unique<UggWrongwayActor>(ugg.get(), level, playersMoves, false));
 
 		return ugg;
 }
 
-std::unique_ptr<dae::GameObject> QBert::Utils::CreateWrongway(LevelBase* level, QBertMoveComp* playerMove)
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateWrongway(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves)
 {
 	auto ugg = std::make_unique<dae::GameObject>(dae::Tag(Tag::UggWrongway));
 	ugg->SetRenderPriority(2);
@@ -444,21 +477,21 @@ std::unique_ptr<dae::GameObject> QBert::Utils::CreateWrongway(LevelBase* level, 
 	ugg->AddComponent(std::make_unique<dae::SpriteComp>(ugg.get(), "WrongwaySprites.png", 8, 1, false));
 	ugg->AddComponent(std::make_unique<QBertMoveComp>(ugg.get(),
 		glm::vec3(texSize.x / 20 - (-0.5f * 32 * 3), texSize.y / 10.f * 9.f - (0.75f * 32 * 3), 0), glm::vec2(0, 6), false, true));
-	ugg->AddComponent(std::make_unique<UggWrongwayActor>(ugg.get(), level, playerMove, true));
+	ugg->AddComponent(std::make_unique<UggWrongwayActor>(ugg.get(), level, playersMoves, true));
 
 	return ugg;
 }
 
-std::unique_ptr<dae::GameObject> QBert::Utils::CreateUggWrongway(LevelBase* level, QBertMoveComp* playerMove)
+std::unique_ptr<dae::GameObject> QBert::Utils::CreateUggWrongway(LevelBase* level, const std::vector<QBertMoveComp*>& playersMoves)
 {
 	int randNr = rand() % 2;
 	if (randNr == 0)
 	{
-		return CreateUgg(level, playerMove);
+		return CreateUgg(level, playersMoves);
 	}
 	else
 	{
-		return CreateWrongway(level, playerMove);
+		return CreateWrongway(level, playersMoves);
 	}
 }
 
@@ -497,6 +530,11 @@ void QBert::Utils::CreateSelectionScreenUI(dae::Scene& scene)
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(sc), SDL_SCANCODE_UP, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(sc), SDL_SCANCODE_DOWN, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(sc), SDL_SCANCODE_SPACE, SDL_EVENT_KEY_DOWN);
+
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(sc), XINPUT_GAMEPAD_DPAD_UP, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(sc), XINPUT_GAMEPAD_DPAD_DOWN, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(sc), XINPUT_GAMEPAD_B, 0);
+
 	scene.Add(std::move(title));
 }
 
@@ -577,6 +615,10 @@ void QBert::Utils::CreateHighscoreScreenUI(dae::Scene& scene)
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(hs), SDL_SCANCODE_UP, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(hs), SDL_SCANCODE_DOWN, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(hs), SDL_SCANCODE_SPACE, SDL_EVENT_KEY_DOWN);
+
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(hs), XINPUT_GAMEPAD_DPAD_UP, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(hs), XINPUT_GAMEPAD_DPAD_DOWN, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(hs), XINPUT_GAMEPAD_B, 0);
 
 	scene.Add(std::move(title));
 
