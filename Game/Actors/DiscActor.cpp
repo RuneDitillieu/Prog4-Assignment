@@ -17,7 +17,7 @@ QBert::DiscActorComp::DiscActorComp(dae::GameObject* pOwner, const glm::vec2& ti
 
 QBert::DiscActorComp::~DiscActorComp()
 {
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::QBert));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->RemoveObserver(this);
@@ -26,7 +26,7 @@ QBert::DiscActorComp::~DiscActorComp()
 
 void QBert::DiscActorComp::Start()
 {
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::QBert));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->AddObserver(this);

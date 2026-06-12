@@ -6,8 +6,9 @@ namespace QBert
 	enum class Tag
 	{
 		UnTagged,
-		Player,
+		QBert,
 		Coily,
+		PlayerCoily,
 		SlickSam,
 		UggWrongway,
 		Disc,

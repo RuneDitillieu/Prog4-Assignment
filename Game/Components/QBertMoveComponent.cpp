@@ -8,13 +8,15 @@
 #include "Sounds.h"
 #include "Events.h"
 
-QBert::QBertMoveComp::QBertMoveComp(dae::GameObject* pOwner, const glm::vec3& feetPos, const glm::vec2& startTile, bool canTurn, bool canRevert)
+QBert::QBertMoveComp::QBertMoveComp(dae::GameObject* pOwner, const glm::vec3& feetPos, const glm::vec2& startTile,
+	bool canTurn, bool canRevert, bool canStandOnDisc)
 	: dae::Component(pOwner)
 	, m_QBertFeetPos(feetPos)
 	, m_currentTile(startTile)
 	, m_goalTile(startTile)
 	, m_canTurnTiles(canTurn)
 	, m_canRevertTiles(canRevert)
+	, m_canStandOnDisc(canStandOnDisc)
 { 
 	m_pConnLevelComp = dae::SceneManager::GetInstance().GetActiveScene()->GetFirstObjectByType<QBert::LevelBase>();
 	m_goalPos = glm::vec3(m_pConnLevelComp->GetTile(static_cast<int>(startTile.x), static_cast<int>(startTile.y))->GetMiddlePos());
@@ -64,7 +66,7 @@ void QBert::QBertMoveComp::Update()
 				e.args->object = m_pConnLevelComp->GetDisc(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y));
 				GetOwner()->GetSubject()->NotifyObservers(e);
 			}
-			else
+			else if (!m_canStandOnDisc)
 			{
 				dae::Event e(dae::make_sdbm_hash("ACTOR_FELL"));
 				e.args->object = m_pConnLevelComp->GetDisc(static_cast<int>(m_currentTile.x), static_cast<int>(m_currentTile.y));

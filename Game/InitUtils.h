@@ -30,6 +30,8 @@ namespace QBert::Utils
 	std::unique_ptr<dae::GameObject> AddController1Bindings(std::unique_ptr<dae::GameObject> player);
 	std::unique_ptr<dae::GameObject> AddController2Bindings(std::unique_ptr<dae::GameObject> player);
 
+	std::unique_ptr<dae::GameObject> CreatePlayerCoily(LevelBase* level, QBertMoveComp* qbertMove);
+
 	std::unique_ptr<dae::GameObject> CreateCoily(LevelBase* level, const std::vector<QBertMoveComp*>& playerMoves);
 
 	std::unique_ptr<dae::GameObject> CreateDisc(const glm::vec2& tile, LevelBase* level);

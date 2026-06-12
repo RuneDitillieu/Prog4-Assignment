@@ -18,7 +18,7 @@ QBert::CoilyActorComp::CoilyActorComp(dae::GameObject* pOwner, LevelBase* pLevel
 
 QBert::CoilyActorComp::~CoilyActorComp()
 {
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::QBert));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->RemoveObserver(this);
@@ -28,7 +28,7 @@ QBert::CoilyActorComp::~CoilyActorComp()
 void QBert::CoilyActorComp::Start()
 {
 	GetOwner()->GetSubject()->AddObserver(this);
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::QBert));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->AddObserver(this);

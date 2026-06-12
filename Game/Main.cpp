@@ -83,11 +83,36 @@ static void load()
 		scene.Add(std::move(go));
 
 		go = QBert::Utils::CreatePlayer(levelComp, glm::vec2(6, 0));
+		go->GetComponent<dae::RenderComponent>()->SetTexture("QBertSpritesAlt.png");
 		go = QBert::Utils::AddController1Bindings(std::move(go));
 		scene.Add(std::move(go));
 	};
 
 	dae::SceneManager::GetInstance().CreateScene(dae::SceneName(QBert::SceneName::CoopScene), loadFunc);
+
+	// VERSUS SCENE
+	loadFunc = [](dae::Scene& scene)
+	{
+		dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::MuteCommand>(), SDL_SCANCODE_F2, SDL_EVENT_KEY_DOWN);
+
+		auto tileIconSprite = QBert::Utils::CreateUi(scene);
+
+		// level
+		auto levelObj = QBert::Utils::CreateLevel(scene, tileIconSprite, 0, false, 0, 1);
+		auto levelComp = levelObj->GetComponent<QBert::LevelBase>();
+
+		// player
+		auto go = QBert::Utils::CreatePlayer(levelComp, glm::vec2(0, 0));
+		auto qbertMove = go->GetComponent<QBert::QBertMoveComp>();
+		go = QBert::Utils::AddKeyboardBindings(std::move(go));
+		go = QBert::Utils::AddController2Bindings(std::move(go));
+		scene.Add(std::move(go));
+
+		go = QBert::Utils::CreatePlayerCoily(levelComp, qbertMove);
+		scene.Add(std::move(go));
+	};
+
+	dae::SceneManager::GetInstance().CreateScene(dae::SceneName(QBert::SceneName::VersusScene), loadFunc);
 
 	// HIGHSCORE SCENE
 	loadFunc = [](dae::Scene& scene)

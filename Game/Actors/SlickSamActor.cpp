@@ -17,7 +17,7 @@ QBert::SlickSamActorComp::SlickSamActorComp(dae::GameObject* pOwner, LevelBase* 
 
 QBert::SlickSamActorComp::~SlickSamActorComp()
 {
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::QBert));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->RemoveObserver(this);
@@ -27,7 +27,7 @@ QBert::SlickSamActorComp::~SlickSamActorComp()
 void QBert::SlickSamActorComp::Start()
 {
 	GetOwner()->GetSubject()->AddObserver(this);
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::QBert));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->AddObserver(this);

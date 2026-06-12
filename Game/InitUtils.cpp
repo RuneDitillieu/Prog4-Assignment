@@ -27,9 +27,10 @@
 #include "TextComponent.h"
 #include "UggWrongwayActor.h"
 #include "Colors.h"
+#include "PlayerCoilyActor.h"
 
 dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, std::vector<dae::Component*> comps, int tileType, bool revertableTiles,
-	int startTile, int winTile, int intermediateTile)
+                                           int startTile, int winTile, int intermediateTile)
 	{
 		auto go = std::make_unique<dae::GameObject>(dae::Tag(Tag::Level));
 		go->SetLocalPosition(350.f, 150.f);
@@ -208,13 +209,7 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, std::vector<dae::C
 		// nr of the current level
 		auto levelNrText = std::make_unique<dae::GameObject>();
 		levelNrText->SetLocalPosition(100.f, -7.f);
-		//levelNrText->SetScale(3.f);
-		// rc = levelNrText->AddComponent(std::make_unique<dae::RenderComponent>(levelNrText.get(), "Fonts.png"));
-		// auto levelNrSprite = levelNrText->AddComponent(std::make_unique<dae::SpriteComp>(levelNrText.get(), rc, "Fonts.png",
-		// 	10, 1, rc->GetSize().x / 26.f, rc->GetSize().y / 8.f,
-		// 	glm::vec2(0, 0), false));
-		// levelNrSprite->SetCurFrame(1);
-	auto levelNr = levelNrText->AddComponent(std::make_unique<dae::TextComponent>(levelNrText.get(), "1", font, QBert::ORANGE));
+		auto levelNr = levelNrText->AddComponent(std::make_unique<dae::TextComponent>(levelNrText.get(), "1", font, QBert::ORANGE));
 		levelNrText.release()->SetParent(levelText.get(), false);
 
 		// text "Round:"
@@ -228,12 +223,7 @@ dae::GameObject* QBert::Utils::CreateLevel(dae::Scene& scene, std::vector<dae::C
 		// nr of the current round
 		auto roundNrText = std::make_unique<dae::GameObject>();
 		roundNrText->SetLocalPosition(100.f, -7.f);
-		//roundNrText->SetScale(3.f);
-		// rc = roundNrText->AddComponent(std::make_unique<dae::RenderComponent>(roundNrText.get(), "Fonts.png"));
-		// auto roundNrSprite = roundNrText->AddComponent(std::make_unique<dae::SpriteComp>(roundNrText.get(), rc, "Fonts.png",
-		// 	10, 1, rc->GetSize().x / 26.f, rc->GetSize().y / 8.f, glm::vec2(0, 0), false));
-		// roundNrSprite->SetCurFrame(1);
-	auto roundNr = roundNrText->AddComponent(std::make_unique<dae::TextComponent>(roundNrText.get(), "1", font, QBert::ORANGE));
+		auto roundNr = roundNrText->AddComponent(std::make_unique<dae::TextComponent>(roundNrText.get(), "1", font, QBert::ORANGE));
 
 		roundNrText.release()->SetParent(roundText.get(), false);
 
@@ -340,7 +330,7 @@ void QBert::Utils::AddSounds()
 
 	std::unique_ptr<dae::GameObject> QBert::Utils::CreatePlayer(LevelBase* level, const glm::vec2& startPos)
 	{
-		auto player = std::make_unique<dae::GameObject>(dae::Tag(Tag::Player));
+		auto player = std::make_unique<dae::GameObject>(dae::Tag(Tag::QBert));
 		player->SetRenderPriority(2);
 		player->SetLocalPosition(100, 300);
 		player->SetScale(3.f);
@@ -409,9 +399,48 @@ std::unique_ptr<dae::GameObject> QBert::Utils::AddController2Bindings(std::uniqu
 	return player;
 }
 
+std::unique_ptr<dae::GameObject> QBert::Utils::CreatePlayerCoily(LevelBase* level, QBertMoveComp* qbertMove)
+{
+	auto playerCoily = std::make_unique<dae::GameObject>(dae::Tag(Tag::PlayerCoily));
+	playerCoily->SetRenderPriority(2);
+	auto rc = playerCoily->AddComponent(std::make_unique<dae::RenderComponent>(playerCoily.get(), "CoilySprites.png"));
+	playerCoily->SetLocalPosition(300, 300);
+	playerCoily->SetScale(3.f);
+
+	glm::vec2 texSize = rc->GetSize() * playerCoily->GetScale();
+	playerCoily->AddComponent(std::make_unique<dae::SpriteComp>(playerCoily.get(), "CoilySprites.png", 10, 1, false));
+
+	int randNr = rand() % 2;
+	glm::vec2 spawnTile{0, 0};
+	if (randNr == 0)
+	{
+		spawnTile.x = 1;
+	}
+	else
+	{
+		spawnTile.y = 1;
+	}
+
+	playerCoily->AddComponent(std::make_unique<QBertMoveComp>(playerCoily.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0),
+		spawnTile, false, false, true));
+	playerCoily->AddComponent(std::make_unique<PlayerCoilyActorComp>(playerCoily.get(), level, qbertMove));
+	playerCoily->AddComponent(std::make_unique<dae::HealthComponent>(playerCoily.get(), 1, 1, 1));
+
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(playerCoily.get(),
+		glm::vec3(0, -1, 0)), XINPUT_GAMEPAD_DPAD_UP, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(playerCoily.get(),
+		glm::vec3(0, 1, 0)), XINPUT_GAMEPAD_DPAD_DOWN, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(playerCoily.get(),
+		glm::vec3(-1, 0, 0)), XINPUT_GAMEPAD_DPAD_LEFT, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(playerCoily.get(),
+		glm::vec3(1, 0, 0)), XINPUT_GAMEPAD_DPAD_RIGHT, 0);
+
+	return playerCoily;
+}
+
 std::unique_ptr<dae::GameObject> QBert::Utils::CreateCoily(LevelBase* level, const std::vector<QBertMoveComp*>& playerMoves)
 {
-	auto coily = std::make_unique<dae::GameObject>(dae::Tag(QBert::Tag::Coily));
+	auto coily = std::make_unique<dae::GameObject>(dae::Tag(Tag::Coily));
 	coily->SetRenderPriority(2);
 	auto rc = coily->AddComponent(std::make_unique<dae::RenderComponent>(coily.get(), "CoilySprites.png"));
 	coily->SetLocalPosition(300, 300);

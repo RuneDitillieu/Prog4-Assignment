@@ -12,7 +12,7 @@ QBert::LivesDisplay::LivesDisplay(dae::GameObject* pOwner, std::vector<dae::Game
 
 QBert::LivesDisplay::~LivesDisplay()
 {
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::QBert));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->RemoveObserver(this);
@@ -21,7 +21,7 @@ QBert::LivesDisplay::~LivesDisplay()
 
 void QBert::LivesDisplay::Start()
 {
-	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::Player));
+	auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(QBert::Tag::QBert));
 	for (auto qbert : qberts)
 	{
 		qbert->GetSubject()->AddObserver(this);

@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Subject.h"
 #include "LevelManager.h"
+#include "PlayerCoilyActor.h"
 
 namespace QBert
 {
@@ -12,16 +13,16 @@ namespace QBert
 		QBertMoveCommand(dae::GameObject* actor, glm::vec3 moveDir)
 			: GameActorCommand(actor), m_moveDirection(moveDir)
 		{
-			auto qbert = actor->GetComponentInChildren<QBert::QBertActorComp>();
+			auto qbert = actor->GetComponentInChildren<QBertActorComp>();
 			if (qbert)
 			{
 				m_subject->AddObserver(qbert);
 			}
-			/*else
+			else
 			{
-				auto coily = actor->GetComponentInChildren<QBert::Coily>();
+				auto coily = actor->GetComponentInChildren<PlayerCoilyActorComp>();
 				m_subject->AddObserver(coily);
-			}*/
+			}
 		}
 		~QBertMoveCommand() = default;
 

@@ -12,7 +12,8 @@ namespace QBert
 	class QBertMoveComp final : public dae::Component
 	{
 	public:
-		QBertMoveComp(dae::GameObject* pOwner, const glm::vec3& feetPos, const glm::vec2& startTile, bool canTurn, bool canRevert);
+		QBertMoveComp(dae::GameObject* pOwner, const glm::vec3& feetPos, const glm::vec2& startTile,
+			bool canTurn, bool canRevert, bool canStandOnDisc = false);
 		~QBertMoveComp() = default;
 		QBertMoveComp(const QBertMoveComp& other) = delete;
 		QBertMoveComp(QBertMoveComp&& other) = delete;
@@ -37,6 +38,7 @@ namespace QBert
 
 		bool m_canTurnTiles;
 		bool m_canRevertTiles;
+		bool m_canStandOnDisc;
 
 		LevelBase* m_pConnLevelComp;
 		dae::SpriteComp* m_pConnSpriteComp;

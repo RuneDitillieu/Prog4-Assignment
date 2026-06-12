@@ -9,6 +9,7 @@ QBert::QBertActorComp::QBertActorComp(dae::GameObject* pOwner, dae::SpriteComp* 
 	: dae::Component(pOwner)
 { 
 	m_pState = std::make_unique<IdleQBertState>(pOwner, spriteComp, moveComp, pLevel);
+	m_pState->OnEnter();
 }
 
 QBert::QBertActorComp::~QBertActorComp()

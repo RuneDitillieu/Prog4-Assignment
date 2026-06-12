@@ -1,6 +1,7 @@
 ﻿#include "UggWrongwayStates.h"
 
 #include "QBertMoveComponent.h"
+#include "Tags.h"
 
 QBert::UggWrongwayState::UggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
     QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps, bool goesRight)
@@ -22,7 +23,7 @@ std::unique_ptr<QBert::UggWrongwayState> QBert::UggWrongwayState::Update()
 
     for (auto qbertMove : m_pQBertMoveComps)
     {
-        if (qbertMove == nullptr) continue;
+        if (qbertMove == nullptr || qbertMove->GetOwner()->GetTag() == dae::Tag(Tag::PlayerCoily)) continue;
 
         if(m_pMoveComp->GetGoalTile() + offset == qbertMove->GetCurrentTile()
                 || m_pMoveComp->GetCurrentTile() + offset == qbertMove->GetGoalTile())

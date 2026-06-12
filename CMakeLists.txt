@@ -246,12 +246,14 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
         Game/Actors/DiscActor.cpp
         Game/Actors/SlickSamActor.cpp
         Game/Actors/UggWrongwayActor.cpp
+        Game/Actors/PlayerCoilyActor.cpp
 
         Game/Components/QBertScoreComponent.cpp
         Game/Components/QBertMoveComponent.cpp
         Game/Components/ArrowAnimComponent.cpp
         Game/Components/LivesDisplayComponent.cpp
         Game/Components/QBertHighscoreComponent.cpp
+        Game/Components/GameModeSelectionComp.cpp
 
         Game/Levels/TileComponent.cpp
         Game/Levels/LevelBase.cpp
@@ -266,6 +268,19 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
         Game/States/CoilyStates/CoilyStunnedState.cpp
         Game/States/CoilyStates/CoilyDroppingEggState.cpp
 
+        Game/States/DiscStates/DiscIdleState.cpp
+        Game/States/DiscStates/DiscMovingState.cpp
+        Game/States/DiscStates/DiscDropOffState.cpp
+
+        Game/States/PlayerCoilyStates/PlayerCoilyIdleEggState.cpp
+        Game/States/PlayerCoilyStates/PlayerCoilyIdleSnakeState.cpp
+        Game/States/PlayerCoilyStates/PlayerCoilyJumpingEggState.cpp
+        Game/States/PlayerCoilyStates/PlayerCoilyJumpingSnakeState.cpp
+        Game/States/PlayerCoilyStates/PlayerCoilyFallingState.cpp
+        Game/States/PlayerCoilyStates/PlayerCoilyState.cpp
+        Game/States/PlayerCoilyStates/PlayerCoilyStunnedState.cpp
+        Game/States/PlayerCoilyStates/PlayerCoilyDroppingEggState.cpp
+
         Game/States/QBertStates/QBertJumpingState.cpp
         Game/States/QBertStates/QBertIdleState.cpp
         Game/States/QBertStates/QBertDroppingState.cpp
@@ -273,10 +288,7 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
         Game/States/QBertStates/QBertFallingState.cpp
         Game/States/QBertStates/QBertState.cpp
         Game/States/QBertStates/QBertStunnedState.cpp
-
-        Game/States/DiscStates/DiscIdleState.cpp
-        Game/States/DiscStates/DiscMovingState.cpp
-        Game/States/DiscStates/DiscDropOffState.cpp
+        Game/States/QBertStates/QBertFrozenState.cpp
 
         Game/States/SlickSamStates/IdleSlickSamState.cpp
         Game/States/SlickSamStates/JumpingSlickSamState.cpp
@@ -289,13 +301,11 @@ add_executable(${GAME_NAME} ${TARGET_PARAM}
         Game/States/UggWrongwayStates/FallingUggWrongwayState.cpp
         Game/States/UggWrongwayStates/JumpingUggWrongwayState.cpp
         Game/States/UggWrongwayStates/UggWrongwayState.cpp
-        Game/States/UggWrongwayStates/StunnedUggWrongwayState.cpp
-        Game/Components/GameModeSelectionComp.cpp
-        Game/States/QBertStates/QBertFrozenState.cpp)
+        Game/States/UggWrongwayStates/StunnedUggWrongwayState.cpp)
 
 set(GAME_DIRS Game Game/Actors Game/Components Game/Levels Game/Managers
     Game/States Game/States/CoilyStates Game/States/QBertStates Game/States/DiscStates
-    Game/States/SlickSamStates Game/States/UggWrongwayStates)
+    Game/States/SlickSamStates Game/States/UggWrongwayStates Game/States/PlayerCoilyStates)
 
 target_include_directories(${GAME_NAME} PRIVATE ${GAME_DIRS})
 target_compile_features(${GAME_NAME} PUBLIC cxx_std_20)

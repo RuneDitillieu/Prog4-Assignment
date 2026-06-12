@@ -40,7 +40,8 @@ namespace QBert
 	class JumpingQBertState final : public QBertState
 	{
 	public:
-		JumpingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level, const glm::vec3& moveDir);
+		JumpingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp,
+			LevelBase* level, const glm::vec3& moveDir);
 
 		void OnEnter() override;
 		std::unique_ptr<QBertState> Update() override;

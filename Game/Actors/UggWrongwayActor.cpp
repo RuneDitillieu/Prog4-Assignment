@@ -19,7 +19,7 @@ QBert::UggWrongwayActor::UggWrongwayActor(dae::GameObject* pOwner, LevelBase* pL
 
 QBert::UggWrongwayActor::~UggWrongwayActor()
 {
-    auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
+    auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::QBert));
     for (auto qbert : qberts)
     {
         qbert->GetSubject()->RemoveObserver(this);
@@ -29,7 +29,7 @@ QBert::UggWrongwayActor::~UggWrongwayActor()
 void QBert::UggWrongwayActor::Start()
 {
     GetOwner()->GetSubject()->AddObserver(this);
-    auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Player));
+    auto qberts = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::QBert));
     for (auto qbert : qberts)
     {
         qbert->GetSubject()->AddObserver(this);
