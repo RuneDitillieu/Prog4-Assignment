@@ -37,7 +37,7 @@
     "Round3": {
       "CoilySpawns": [ 4.5 ],
       "SamSlickSpawns": [],
-      "UggWrongwaySpawns": [ 1.5, 1.5 ],
+      "UggWrongwaySpawns": [ 2.5, 2.5 ],
       "DiscSpawn1": [ -1, 3 ],
       "DiscSpawn2": [ 5, -1 ],
       "DiscSpawn3": [ -1, -1 ],
@@ -194,7 +194,7 @@
     "Round4": {
       "CoilySpawns": [ 4.5, 24.0, 35.0 ],
       "SamSlickSpawns": [ 2.0, 20.0, 26.0 ],
-      "UggWrongwaySpawns": [ 6.5, 1.5, 1.5 ],
+      "UggWrongwaySpawns": [ 6.5, 2.5, 2.5 ],
       "DiscSpawn1": [ 1, -1 ],
       "DiscSpawn2": [ 4, -1 ],
       "DiscSpawn3": [ 6, -1 ],
