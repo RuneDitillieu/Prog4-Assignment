@@ -226,6 +226,9 @@ void QBert::LevelManager::GoToNextLevel()
 		m_pRoundNrText->SetText(std::to_string(m_currentRound + 1));
 		m_pWinTileIndicator->SetStartPos(glm::vec2(m_pWinTileIndicator->GetSpriteSize().x * m_levelParams[m_curLevelParams].tileParams.tileType,
 			m_pWinTileIndicator->GetSpriteSize().y * m_levelParams[m_curLevelParams].tileParams.winTile));
+
+		dae::Event e{ dae::make_sdbm_hash("LEVEL_CHANGED")};
+		GetOwner()->GetSubject()->NotifyObservers(e);
 	}
 	else
 	{

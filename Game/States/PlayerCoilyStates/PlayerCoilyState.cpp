@@ -34,6 +34,10 @@ std::unique_ptr<QBert::PlayerCoilyState> QBert::PlayerCoilyState::OnNotify(dae::
 	{
 		return std::make_unique<PlayerStunnedCoilyState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
 	}
+	else if (event.id == dae::make_sdbm_hash("LEVEL_CHANGED"))
+	{
+		return std::make_unique<PlayerDroppingEggState>(m_coily, m_pConnSprite, m_pMoveComp, m_pConnLevel, m_pQBertMoveComp);
+	}
 
 	return nullptr;
 }
