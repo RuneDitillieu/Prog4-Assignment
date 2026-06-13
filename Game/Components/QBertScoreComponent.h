@@ -16,7 +16,7 @@ namespace QBert
 	class ScoreComp final : public dae::Component, public dae::IObserver
 	{
 	public:
-		ScoreComp(dae::GameObject* pOwner, dae::TextComponent* score1Text, dae::TextComponent* score2Text = nullptr);
+		explicit ScoreComp(dae::GameObject* pOwner, dae::TextComponent* score1Text, dae::TextComponent* score2Text = nullptr);
 		~ScoreComp();
 		ScoreComp(const ScoreComp& other) = delete;
 		ScoreComp(ScoreComp&& other) = delete;

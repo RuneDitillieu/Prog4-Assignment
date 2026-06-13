@@ -17,7 +17,7 @@ namespace dae
 	class GameActorCommand : public Command
 	{
 	public:
-		GameActorCommand(GameObject* actor) : Command(), m_actor(actor) {}
+		explicit GameActorCommand(GameObject* actor) : Command(), m_actor(actor) {}
 		virtual ~GameActorCommand() = default;
 		
 	protected:
@@ -30,7 +30,7 @@ namespace dae
 	class MuteCommand final : public Command
 	{
 	public:
-		MuteCommand() : Command() {}
+		explicit MuteCommand() : Command() {}
 		void Execute() override
 		{
 			ServiceLocator::GetSoundSystem().MuteUnmuteSound();
@@ -40,7 +40,7 @@ namespace dae
 	class ConfirmCommand final : public Command
 	{
 	public:
-		ConfirmCommand(IObserver* observer) : Command()
+		explicit ConfirmCommand(IObserver* observer) : Command()
 		{
 			m_subject->AddObserver(observer);
 		}
@@ -58,7 +58,7 @@ namespace dae
 	class NextCommand final : public Command
 	{
 	public:
-		NextCommand(IObserver* observer) : Command()
+		explicit NextCommand(IObserver* observer) : Command()
 		{
 			m_subject->AddObserver(observer);
 		}
@@ -76,7 +76,7 @@ namespace dae
 	class PrevCommand final : public Command
 	{
 	public:
-		PrevCommand(IObserver* observer) : Command()
+		explicit PrevCommand(IObserver* observer) : Command()
 		{
 			m_subject->AddObserver(observer);
 		}
@@ -94,7 +94,7 @@ namespace dae
 	class StartCommand final : public Command
 	{
 	public:
-		StartCommand(IObserver* observer) : Command()
+		explicit StartCommand(IObserver* observer) : Command()
 		{
 			m_subject->AddObserver(observer);
 		}

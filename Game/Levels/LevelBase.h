@@ -22,7 +22,7 @@ namespace QBert
 	class LevelBase final : public dae::Component
 	{
 	public:
-		LevelBase(dae::GameObject* pOwner, int tileType, bool revertable, int start, int win, int middle = -1);
+		explicit LevelBase(dae::GameObject* pOwner, int tileType, bool revertable, int start, int win, int middle = -1);
 		~LevelBase() = default;
 		LevelBase(const LevelBase& other) = delete;
 		LevelBase(LevelBase&& other) = delete;

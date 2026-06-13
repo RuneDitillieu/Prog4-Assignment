@@ -10,7 +10,7 @@ namespace QBert
 	class QBertMoveCommand final : public dae::GameActorCommand
 	{
 	public:
-		QBertMoveCommand(dae::GameObject* actor, glm::vec3 moveDir)
+		explicit QBertMoveCommand(dae::GameObject* actor, glm::vec3 moveDir)
 			: GameActorCommand(actor), m_moveDirection(moveDir)
 		{
 			auto qbert = actor->GetComponentInChildren<QBertActorComp>();
@@ -41,7 +41,7 @@ namespace QBert
 	class SkipLevelCommand final : public dae::GameActorCommand
 	{
 	public:
-		SkipLevelCommand(dae::GameObject* actor)
+		explicit SkipLevelCommand(dae::GameObject* actor)
 			: GameActorCommand(actor)
 		{
 			m_levelManager = actor->GetComponent<LevelManager>();

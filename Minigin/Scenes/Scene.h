@@ -26,7 +26,7 @@ namespace dae
 
 		[[nodiscard]] std::unique_ptr<GameObject> GetGameObjectOwnership(GameObject* pObject);
 
-		Scene(SceneName sceneName, std::function<void(Scene&)> loadFunc);
+		explicit Scene(SceneName sceneName, std::function<void(Scene&)> loadFunc);
 		~Scene() = default;
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;

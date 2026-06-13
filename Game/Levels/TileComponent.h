@@ -21,8 +21,8 @@ namespace QBert
 	class TileComp final : public dae::Component
 	{
 	public:
-		TileComp(dae::GameObject* pOwner, int tileType, bool revertable, int start, int win, int middle = -1);
-		TileComp(dae::GameObject* pOwner, const TileParams& tileParams);
+		explicit TileComp(dae::GameObject* pOwner, int tileType, bool revertable, int start, int win, int middle = -1);
+		explicit TileComp(dae::GameObject* pOwner, const TileParams& tileParams);
 		~TileComp() = default;
 		TileComp(const TileComp& other) = delete;
 		TileComp(TileComp&& other) = delete;

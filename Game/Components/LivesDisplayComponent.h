@@ -12,7 +12,7 @@ namespace QBert
 	class LivesDisplay final : public dae::Component, public dae::IObserver
 	{
 	public:
-		LivesDisplay(dae::GameObject* pOwner, std::vector<dae::GameObject*> livesP1, std::vector<dae::GameObject*> livesP2);
+		explicit LivesDisplay(dae::GameObject* pOwner, std::vector<dae::GameObject*> livesP1, std::vector<dae::GameObject*> livesP2);
 		~LivesDisplay();
 		LivesDisplay(const LivesDisplay& other) = delete;
 		LivesDisplay(LivesDisplay&& other) = delete;

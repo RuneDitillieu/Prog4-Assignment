@@ -13,7 +13,7 @@ namespace QBert
     class UggWrongwayState
     {
     public:
-        UggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
+        explicit UggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
             QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps, bool goesRight);
         virtual ~UggWrongwayState() = default;
         virtual void OnEnter() {};
@@ -33,7 +33,7 @@ namespace QBert
     class IdleUggWrongwayState final : public UggWrongwayState
     {
     public:
-        IdleUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
+        explicit IdleUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
             QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps, bool goesRight);
 
         void OnEnter() override;
@@ -47,7 +47,7 @@ namespace QBert
     class JumpingUggWrongwayState final : public UggWrongwayState
     {
     public:
-        JumpingUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
+        explicit JumpingUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
             QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps, bool goesRight);
 
         void OnEnter() override;
@@ -58,7 +58,7 @@ namespace QBert
     class FallingUggWrongwayState final : public UggWrongwayState
     {
     public:
-        FallingUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
+        explicit FallingUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
             QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps, bool goesRight);
 
         std::unique_ptr<UggWrongwayState> Update() override;
@@ -67,7 +67,7 @@ namespace QBert
     class StunnedUggWrongwayState final : public UggWrongwayState
     {
     public:
-        StunnedUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
+        explicit StunnedUggWrongwayState(dae::GameObject* uggWrongway, dae::SpriteComp* spriteComp,
             QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps, bool goesRight);
 
         void OnEnter() override;

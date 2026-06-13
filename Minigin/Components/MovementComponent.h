@@ -11,7 +11,7 @@ namespace dae
 	class MovementComponent final : public Component
 	{
 	public:
-		MovementComponent(GameObject* pOwner, float movementSpeed = 1.f);
+		explicit MovementComponent(GameObject* pOwner, float movementSpeed = 1.f);
 		~MovementComponent() = default;
 		MovementComponent(const MovementComponent& other) = delete;
 		MovementComponent(MovementComponent&& other) = delete;

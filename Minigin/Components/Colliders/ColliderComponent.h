@@ -20,7 +20,7 @@ namespace dae
         virtual bool IsColliding(const glm::vec2& center, float radius) const = 0;
 
     protected:
-        ColliderComp(dae::GameObject* pOwner) : Component(pOwner) {}
+        explicit ColliderComp(dae::GameObject* pOwner) : Component(pOwner) {}
         bool m_isTrigger{ false };
 	};
 }

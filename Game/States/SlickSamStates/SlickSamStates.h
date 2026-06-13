@@ -13,7 +13,7 @@ namespace QBert
 	class SlickSamState
 	{
 	public:
-		SlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
+		explicit SlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
 			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 		virtual ~SlickSamState() = default;
 		virtual void OnEnter() {};
@@ -32,7 +32,7 @@ namespace QBert
 	class DroppingSlickSamState final : public SlickSamState
 	{
 	public:
-		DroppingSlickSamState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
+		explicit DroppingSlickSamState(dae::GameObject* coily, dae::SpriteComp* spriteComp,
 			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
@@ -42,7 +42,7 @@ namespace QBert
 	class IdleSlickSamState final : public SlickSamState
 	{
 	public:
-		IdleSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
+		explicit IdleSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
 			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
@@ -56,7 +56,7 @@ namespace QBert
 	class JumpingSlickSamState final : public SlickSamState
 	{
 	public:
-		JumpingSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
+		explicit JumpingSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
 			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
@@ -67,7 +67,7 @@ namespace QBert
 	class FallingSlickSamState final : public SlickSamState
 	{
 	public:
-		FallingSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
+		explicit FallingSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
 			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;
@@ -77,7 +77,7 @@ namespace QBert
 	class StunnedSlickSamState final : public SlickSamState
 	{
 	public:
-		StunnedSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
+		explicit StunnedSlickSamState(dae::GameObject* slickSam, dae::SpriteComp* spriteComp,
 			QBertMoveComp* moveComp, LevelBase* level, const std::vector<QBertMoveComp*>& qbertMoveComps);
 
 		void OnEnter() override;

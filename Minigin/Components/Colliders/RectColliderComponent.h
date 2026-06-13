@@ -9,7 +9,7 @@ namespace dae
 	class RectColliderComp : public ColliderComp
 	{
 	public:
-		RectColliderComp(GameObject* pOwner, const glm::vec2& topLeft, const glm::vec2& bottomRight);
+		explicit RectColliderComp(GameObject* pOwner, const glm::vec2& topLeft, const glm::vec2& bottomRight);
 		~RectColliderComp() = default;
 		RectColliderComp(const RectColliderComp& other) = delete;
 		RectColliderComp(RectColliderComp&& other) = delete;

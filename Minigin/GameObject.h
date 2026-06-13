@@ -17,8 +17,8 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		GameObject() = default;
-		GameObject(Tag tag) : m_tag(tag) {}
+		explicit GameObject() = default;
+		explicit GameObject(Tag tag) : m_tag(tag) {}
 		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;

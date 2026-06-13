@@ -11,7 +11,7 @@ namespace QBert
 	class DiscState
 	{
 	public:
-		DiscState(dae::GameObject* disc) : m_disc(disc) {}
+		explicit DiscState(dae::GameObject* disc) : m_disc(disc) {}
 		virtual ~DiscState() = default;
 		virtual void OnEnter() {};
 		virtual void OnExit() {};
@@ -25,7 +25,7 @@ namespace QBert
 	class IdleDiscState final : public DiscState
 	{
 	public:
-		IdleDiscState(dae::GameObject* disc);
+		explicit IdleDiscState(dae::GameObject* disc);
 
 		std::unique_ptr<DiscState> OnNotify(dae::Event event, dae::Subject*) override;
 	};
@@ -33,7 +33,7 @@ namespace QBert
 	class MovingDiscState final : public DiscState
 	{
 	public:
-		MovingDiscState(dae::GameObject* disc);
+		explicit MovingDiscState(dae::GameObject* disc);
 
 		void OnEnter() override;
 		std::unique_ptr<DiscState> Update() override;
@@ -46,7 +46,7 @@ namespace QBert
 	class DropOffDiscState final : public DiscState
 	{
 	public:
-		DropOffDiscState(dae::GameObject* disc);
+		explicit DropOffDiscState(dae::GameObject* disc);
 
 		std::unique_ptr<DiscState> Update() override;
 

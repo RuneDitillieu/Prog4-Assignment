@@ -19,7 +19,7 @@ namespace QBert
 	class DiscActorComp final : public dae::Component, public dae::IObserver
 	{
 	public:
-		DiscActorComp(dae::GameObject* pOwner, const glm::vec2& tile);
+		explicit DiscActorComp(dae::GameObject* pOwner, const glm::vec2& tile);
 		~DiscActorComp();
 		DiscActorComp(const DiscActorComp& other) = delete;
 		DiscActorComp(DiscActorComp&& other) = delete;

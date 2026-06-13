@@ -9,7 +9,7 @@ namespace dae
 	class CircleColliderComp : public ColliderComp
 	{
 	public:
-		CircleColliderComp(GameObject* pOwner, const glm::vec2& center, float radius);
+		explicit CircleColliderComp(GameObject* pOwner, const glm::vec2& center, float radius);
 		~CircleColliderComp() = default;
 		CircleColliderComp(const CircleColliderComp& other) = delete;
 		CircleColliderComp(CircleColliderComp&& other) = delete;

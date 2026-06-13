@@ -15,8 +15,8 @@ namespace dae
     class FpsComponent final : public Component
     {
     public:
-        FpsComponent(GameObject* pOwner, TextComponent* pConnectedTextComponent);
-        FpsComponent(GameObject* pOwner, const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color = { 255, 255, 255, 255 });
+        explicit FpsComponent(GameObject* pOwner, TextComponent* pConnectedTextComponent);
+        explicit FpsComponent(GameObject* pOwner, const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color = { 255, 255, 255, 255 });
         ~FpsComponent() = default;
         FpsComponent(const FpsComponent& other) = delete;
         FpsComponent(FpsComponent&& other) = delete;

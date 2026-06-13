@@ -10,7 +10,7 @@ namespace QBert
 	class ArrowAnimComp final : public dae::Component
 	{
 	public:
-		ArrowAnimComp(dae::GameObject* pOwner, std::vector<dae::GameObject*> arrows);
+		explicit ArrowAnimComp(dae::GameObject* pOwner, std::vector<dae::GameObject*> arrows);
 		~ArrowAnimComp() = default;
 		ArrowAnimComp(const ArrowAnimComp& other) = delete;
 		ArrowAnimComp(ArrowAnimComp&& other) = delete;

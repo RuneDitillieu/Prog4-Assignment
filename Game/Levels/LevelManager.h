@@ -30,7 +30,7 @@ namespace QBert
 	class LevelManager final : public dae::Component, public dae::IObserver
 	{
 	public:
-		LevelManager(dae::GameObject* pOwner, LevelBase* level, dae::SpriteComp* tileIconSprite,
+		explicit LevelManager(dae::GameObject* pOwner, LevelBase* level, dae::SpriteComp* tileIconSprite,
 			dae::TextComponent* levelNrText, dae::TextComponent* roundNrText);
 		~LevelManager();
 		LevelManager(const LevelManager& other) = delete;

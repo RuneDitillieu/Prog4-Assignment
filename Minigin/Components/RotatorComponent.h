@@ -9,7 +9,7 @@ namespace dae
 	class RotatorComponent final : public Component
 	{
 	public:
-		RotatorComponent(GameObject* pOwner, float clockwiseSpeed);
+		explicit RotatorComponent(GameObject* pOwner, float clockwiseSpeed);
 		~RotatorComponent() = default;
 		RotatorComponent(const RotatorComponent& other) = delete;
 		RotatorComponent(RotatorComponent&& other) = delete;

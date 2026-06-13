@@ -13,7 +13,7 @@ namespace QBert
 	class QBertState
 	{
 	public:
-		QBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
+		explicit QBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
 		virtual ~QBertState() = default;
 		virtual void OnEnter() {};
 		virtual void OnExit() {};
@@ -30,7 +30,7 @@ namespace QBert
 	class IdleQBertState final : public QBertState
 	{
 	public:
-		IdleQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
+		explicit IdleQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
 
 		void OnEnter() override;
 		std::unique_ptr<QBertState> Update() override;
@@ -40,7 +40,7 @@ namespace QBert
 	class JumpingQBertState final : public QBertState
 	{
 	public:
-		JumpingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp,
+		explicit JumpingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp,
 			LevelBase* level, const glm::vec3& moveDir);
 
 		void OnEnter() override;
@@ -54,7 +54,7 @@ namespace QBert
 	class TransportedQBertState final : public QBertState
 	{
 	public:
-		TransportedQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
+		explicit TransportedQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
 
 		void OnEnter() override;
 		void OnExit() override;
@@ -64,7 +64,7 @@ namespace QBert
 	class DroppingQBertState final : public QBertState
 	{
 	public:
-		DroppingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
+		explicit DroppingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
 
 		std::unique_ptr<QBertState> Update() override;
 	};
@@ -72,7 +72,7 @@ namespace QBert
 	class FallingQBertState final : public QBertState
 	{
 	public:
-		FallingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
+		explicit FallingQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
 
 		void OnEnter() override;
 		void OnExit() override;
@@ -82,7 +82,7 @@ namespace QBert
 	class StunnedQBertState final : public QBertState
 	{
 	public:
-		StunnedQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
+		explicit StunnedQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
 
 		void OnEnter() override;
 		void OnExit() override;
@@ -98,7 +98,7 @@ namespace QBert
 	class FrozenQBertState final : public QBertState
 	{
 	public:
-		FrozenQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
+		explicit FrozenQBertState(dae::GameObject* qbert, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* level);
 
 		void OnEnter() override;
 		void OnExit() override;

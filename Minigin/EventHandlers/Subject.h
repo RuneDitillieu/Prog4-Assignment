@@ -11,7 +11,7 @@ namespace dae
 	class Subject
 	{
 	public:
-		Subject(GameObject* pOwner);
+		explicit Subject(GameObject* pOwner);
 
 		void AddObserver(IObserver* observer);
 		void RemoveObserver(IObserver* observer);

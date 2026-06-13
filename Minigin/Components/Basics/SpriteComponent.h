@@ -12,8 +12,8 @@ namespace dae
 	class SpriteComp : public Component
 	{
 	public:
-		SpriteComp(GameObject* pOwner, const std::string& fileName, int cols, int rows, bool autoUpdate = true);	// for evenly spaced sprites
-		SpriteComp(GameObject* pOwner, RenderComponent* pConnRenderComp, const std::string& fileName, int cols, int rows,
+		explicit SpriteComp(GameObject* pOwner, const std::string& fileName, int cols, int rows, bool autoUpdate = true);	// for evenly spaced sprites
+		explicit SpriteComp(GameObject* pOwner, RenderComponent* pConnRenderComp, const std::string& fileName, int cols, int rows,
 			float frameW, float frameH, const glm::vec2& startPos, bool autoUpdate = true);	// for uneven/partial sprites
 		~SpriteComp() = default;
 		SpriteComp(const SpriteComp& other) = delete;

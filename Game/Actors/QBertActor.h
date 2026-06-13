@@ -14,7 +14,7 @@ namespace QBert
 	class QBertActorComp final : public dae::Component, public dae::IObserver
 	{
 	public:
-		QBertActorComp(dae::GameObject* pOwner, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* pLevel);
+		explicit QBertActorComp(dae::GameObject* pOwner, dae::SpriteComp* spriteComp, QBertMoveComp* moveComp, LevelBase* pLevel);
 		~QBertActorComp();
 		QBertActorComp(const QBertActorComp& other) = delete;
 		QBertActorComp(QBertActorComp&& other) = delete;

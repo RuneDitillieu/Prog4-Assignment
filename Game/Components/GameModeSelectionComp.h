@@ -15,7 +15,7 @@ namespace QBert
     class GameModeSelectionComp final : public dae::Component, public dae::IObserver
     {
     public:
-        GameModeSelectionComp(dae::GameObject* pOwner, const std::vector<dae::TextComponent*>& pTextComps);
+        explicit GameModeSelectionComp(dae::GameObject* pOwner, const std::vector<dae::TextComponent*>& pTextComps);
         ~GameModeSelectionComp() = default;
         GameModeSelectionComp(const GameModeSelectionComp& other) = delete;
         GameModeSelectionComp(GameModeSelectionComp&& other) = delete;

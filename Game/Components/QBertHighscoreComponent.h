@@ -26,7 +26,7 @@ namespace QBert
     class QBertHighscoreComp final : public dae::Component, public dae::IObserver
     {
     public:
-        QBertHighscoreComp(dae::GameObject* pOwner, std::vector<dae::TextComponent*> hsTextComps,
+        explicit QBertHighscoreComp(dae::GameObject* pOwner, std::vector<dae::TextComponent*> hsTextComps,
             std::vector<dae::TextComponent*> letterTextComps, std::vector<dae::GameObject*> arrows,
             dae::TextComponent* scoreTextComp);
         ~QBertHighscoreComp() = default;

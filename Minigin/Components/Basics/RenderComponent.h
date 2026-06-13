@@ -24,8 +24,8 @@ namespace dae
 
 		std::type_index GetType() const override;
 
-		RenderComponent(GameObject* pOwner, const std::string& filename);
-		RenderComponent(GameObject* pOwner);
+		explicit RenderComponent(GameObject* pOwner, const std::string& filename);
+		explicit RenderComponent(GameObject* pOwner);
 		~RenderComponent();
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;

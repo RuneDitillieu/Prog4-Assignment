@@ -15,7 +15,7 @@ namespace QBert
 	class SlickSamActorComp final : public dae::Component, public dae::IObserver
 	{
 	public:
-		SlickSamActorComp(dae::GameObject* pOwner, LevelBase* pLevel, const std::vector<QBertMoveComp*>& qbertMoves);
+		explicit SlickSamActorComp(dae::GameObject* pOwner, LevelBase* pLevel, const std::vector<QBertMoveComp*>& qbertMoves);
 		~SlickSamActorComp();
 		SlickSamActorComp(const SlickSamActorComp& other) = delete;
 		SlickSamActorComp(SlickSamActorComp&& other) = delete;
