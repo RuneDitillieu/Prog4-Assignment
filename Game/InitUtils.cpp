@@ -456,7 +456,6 @@ std::unique_ptr<dae::GameObject> QBert::Utils::CreatePlayerCoily(LevelBase* leve
 	playerCoily->AddComponent(std::make_unique<QBertMoveComp>(playerCoily.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0),
 		spawnTile, false, false, true));
 	playerCoily->AddComponent(std::make_unique<PlayerCoilyActorComp>(playerCoily.get(), level, qbertMove));
-	playerCoily->AddComponent(std::make_unique<dae::HealthComponent>(playerCoily.get(), 1, 1, 1));
 
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<QBertMoveCommand>(playerCoily.get(),
 		glm::vec3(0, -1, 0)), XINPUT_GAMEPAD_DPAD_UP, 0);
@@ -494,7 +493,6 @@ std::unique_ptr<dae::GameObject> QBert::Utils::CreateCoily(LevelBase* level, con
 	coily->AddComponent(std::make_unique<QBert::QBertMoveComp>(coily.get(), glm::vec3(texSize.x / 20, texSize.y / 10.f * 9.f, 0),
 		spawnTile, false, false));
 	coily->AddComponent(std::make_unique<QBert::CoilyActorComp>(coily.get(), level, playerMoves));
-	coily->AddComponent(std::make_unique<dae::HealthComponent>(coily.get(), 1, 1, 1));
 
 	return coily;
 }
@@ -749,6 +747,7 @@ void QBert::Utils::CreateHighscoreScreenUI(dae::Scene& scene)
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(hs), XINPUT_GAMEPAD_A, 0);
 
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::StartCommand>(hs), XINPUT_GAMEPAD_START, 0);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::StartCommand>(hs), XINPUT_GAMEPAD_BACK, 0);
 
 	scene.Add(std::move(title));
 

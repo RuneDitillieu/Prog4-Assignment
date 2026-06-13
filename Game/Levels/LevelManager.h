@@ -9,6 +9,7 @@
 
 namespace dae
 {
+	class HealthComponent;
 	class TextComponent;
 }
 
@@ -69,6 +70,7 @@ namespace QBert
 		dae::TextComponent* m_pRoundNrText;
 		std::vector<LevelParams> m_levelParams{};
 		std::vector<QBertMoveComp*> m_pPlayersMove{};
+		std::vector<dae::HealthComponent*> m_pPlayersHealth{};
 	};
 }
 

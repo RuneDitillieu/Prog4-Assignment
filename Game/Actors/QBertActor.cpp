@@ -14,14 +14,14 @@ QBert::QBertActorComp::QBertActorComp(dae::GameObject* pOwner, dae::SpriteComp* 
 
 QBert::QBertActorComp::~QBertActorComp()
 {
-	auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Disc));
-	for (auto disc : discs)
-	{
-		if (GetOwner()->GetParent() != disc)
-		{
-			disc->GetSubject()->RemoveObserver(this);
-		}
-	}
+	// auto discs = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::Disc));
+	// for (auto disc : discs)
+	// {
+	// 	if (GetOwner()->GetParent() != disc)
+	// 	{
+	// 		disc->GetSubject()->RemoveObserver(this);
+	// 	}
+	// }
 }
 
 void QBert::QBertActorComp::Start()

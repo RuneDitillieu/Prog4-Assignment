@@ -14,6 +14,7 @@
 #include "DiscActor.h"
 #include "SlickSamActor.h"
 #include "UggWrongwayActor.h"
+#include "HealthComponent.h"
 
 QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level, dae::SpriteComp* tileIconSprite,
                                   dae::TextComponent* levelNrText, dae::TextComponent* roundNrText)
@@ -73,11 +74,31 @@ void QBert::LevelManager::Start()
 		auto playerCoily = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByTag(dae::Tag(Tag::PlayerCoily));
 		if (!playerCoily.empty()) m_pPlayersMove.emplace_back(playerCoily[0]->GetComponent<QBertMoveComp>());
 	}
+
+	for (auto player : m_pPlayersMove)
+	{
+		if (player)
+		{
+			m_pPlayersHealth.emplace_back(player->GetOwner()->GetComponent<dae::HealthComponent>());
+		}
+	}
 }
 
 void QBert::LevelManager::Update()
 {
 	m_secPassed += dae::DeltaTime::GetInstance().GetDeltaTime();
+
+	bool isPlayerAlive{ false };
+	for (auto health : m_pPlayersHealth)
+	{
+		if (health && health->GetCurLives() > 0)
+			isPlayerAlive = true;
+	}
+
+	if (isPlayerAlive == false)
+	{
+		dae::SceneManager::GetInstance().SetActiveScene(dae::SceneName(SceneName::HighscoreScene));
+	}
 
 	// stop level transition
 	if (m_doingLevelTransition)

@@ -18,6 +18,7 @@ namespace dae
 
         int GetMaxHealth() { return m_maxHealth; }
         int GetCurHealth() { return m_curHealth; }
+        int GetCurLives() { return m_remainingLives; }
         void TakeDamage(int damage);
         void LoseLife();
         void GainLife(int amount = 1);

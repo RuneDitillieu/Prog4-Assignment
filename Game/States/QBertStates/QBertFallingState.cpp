@@ -24,7 +24,12 @@ void QBert::FallingQBertState::OnExit()
 {
 	m_pMoveComp->m_isEnabled = true;
 	m_pMoveComp->Reset(glm::vec2(0, 0), true);
-	m_qbert->GetComponent<dae::HealthComponent>()->LoseLife();
+	auto health = m_qbert->GetComponent<dae::HealthComponent>();
+	health->LoseLife();
+	if (health->GetCurLives() <= 0)
+	{
+		m_qbert->IsEnabled(false);
+	}
 	m_qbert->SetRenderPriority(2);
 	dae::SceneManager::GetInstance().GetActiveScene()->RequestReorderObjects();
 }

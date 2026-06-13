@@ -31,7 +31,13 @@ std::unique_ptr<QBert::QBertState> QBert::StunnedQBertState::Update()
 		// and then gets called OnNotify by us in the same frame,
 		// resulting in the deletion of that enemy's state before it exits its update function
 
-		m_qbert->GetComponent<dae::HealthComponent>()->LoseLife();
+		auto health = m_qbert->GetComponent<dae::HealthComponent>();
+		health->LoseLife();
+		if (health->GetCurLives() <= 0)
+		{
+			m_qbert->IsEnabled(false);
+		}
+
 		dae::Event e{ dae::make_sdbm_hash("QBERT_KILLED") };
 		m_qbert->GetSubject()->NotifyObservers(e);
 
