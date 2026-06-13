@@ -193,7 +193,7 @@ bool QBert::LevelBase::AreAllTilesCorrect() const
 	return true;
 }
 
-void QBert::LevelBase::ResetBase(TileParams tileParams, const glm::vec2& tilePos1, const glm::vec2& tilePos2)
+void QBert::LevelBase::ResetBase(TileParams tileParams, std::vector<glm::vec2> discSpawns)
 {
 	for (auto col : m_tiles)
 	{
@@ -203,10 +203,20 @@ void QBert::LevelBase::ResetBase(TileParams tileParams, const glm::vec2& tilePos
 		}
 	}
 
-	m_discs[0]->ResetDisc(tilePos1, this);
-	m_discs[0]->GetOwner()->IsEnabled(true);
-	m_discs[1]->ResetDisc(tilePos2, this);
-	m_discs[1]->GetOwner()->IsEnabled(true);
+	int Idx{ 0 };
+	for (auto spawn : m_discs)
+	{
+		spawn->ResetDisc(discSpawns[Idx], this);
+		if (discSpawns[Idx].x < 0 && discSpawns[Idx].y < 0)
+		{
+			spawn->GetOwner()->IsEnabled(false);
+		}
+		else
+		{
+			spawn->GetOwner()->IsEnabled(true);
+		}
+		++Idx;
+	}
 }
 
 void QBert::LevelBase::DoLevelCompletionAnim() const

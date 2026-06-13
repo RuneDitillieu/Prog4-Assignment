@@ -42,7 +42,7 @@ namespace QBert
 
 		void DoLevelCompletionAnim() const;
 
-		void ResetBase(TileParams tileParams, const glm::vec2& tilePos1, const glm::vec2& tilePos2);
+		void ResetBase(TileParams tileParams, std::vector<glm::vec2> discSpawns);
 
 	private:
 		bool AreAllTilesCorrect() const;

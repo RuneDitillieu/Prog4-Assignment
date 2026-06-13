@@ -37,6 +37,16 @@ QBert::LevelManager::LevelManager(dae::GameObject* pOwner, LevelBase* level, dae
 	discs.emplace_back(disc->GetComponent<DiscActorComp>());
 	activeScene->Add(std::move(disc));
 
+	disc = Utils::CreateDisc(m_levelParams[0].discSpawns[2], m_pConnLevel);
+	disc->IsEnabled(false);
+	discs.emplace_back(disc->GetComponent<DiscActorComp>());
+	activeScene->Add(std::move(disc));
+
+	disc = Utils::CreateDisc(m_levelParams[0].discSpawns[3], m_pConnLevel);
+	disc->IsEnabled(false);
+	discs.emplace_back(disc->GetComponent<DiscActorComp>());
+	activeScene->Add(std::move(disc));
+
 	// set level params
 	m_pConnLevel->SetDiscs(std::move(discs));
 	m_pWinTileIndicator->SetStartPos(glm::vec2(m_pWinTileIndicator->GetSpriteSize().x * m_levelParams[0].tileParams.tileType,
@@ -188,7 +198,7 @@ void QBert::LevelManager::GoToNextLevel()
 
 		// reset tiles to new params
 		m_pConnLevel->ResetBase(m_levelParams[m_curLevelParams].tileParams,
-			m_levelParams[m_curLevelParams].discSpawns[0], m_levelParams[m_curLevelParams].discSpawns[1]);
+			m_levelParams[m_curLevelParams].discSpawns);
 
 		// update UI
 		m_pLevelNrText->SetText(std::to_string(m_currentLevel + 1));
