@@ -90,6 +90,24 @@ namespace dae
 	private:
 		std::unique_ptr<Subject> m_subject{ std::make_unique<Subject>(nullptr) };
 	};
+
+	class StartCommand final : public Command
+	{
+	public:
+		StartCommand(IObserver* observer) : Command()
+		{
+			m_subject->AddObserver(observer);
+		}
+
+		void Execute() override
+		{
+			Event e{ make_sdbm_hash("OnStartPressed") };
+			m_subject->NotifyObservers(e);
+		}
+
+	private:
+		std::unique_ptr<Subject> m_subject{ std::make_unique<Subject>(nullptr) };
+	};
 }
 
 #endif // !COMMANDS_H

@@ -645,8 +645,12 @@ void QBert::Utils::CreateSelectionScreenUI(dae::Scene& scene)
 
 	auto sc = title->AddComponent(std::make_unique<GameModeSelectionComp>(title.get(), textComps));
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(sc), SDL_SCANCODE_UP, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(sc), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(sc), SDL_SCANCODE_DOWN, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(sc), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
+
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(sc), SDL_SCANCODE_SPACE, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(sc), SDL_SCANCODE_RETURN, SDL_EVENT_KEY_DOWN);
 
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(sc), XINPUT_GAMEPAD_DPAD_UP, 0);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(sc), XINPUT_GAMEPAD_DPAD_DOWN, 0);
@@ -731,13 +735,20 @@ void QBert::Utils::CreateHighscoreScreenUI(dae::Scene& scene)
 	scene.Add(std::move(go));
 
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(hs), SDL_SCANCODE_UP, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(hs), SDL_SCANCODE_W, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(hs), SDL_SCANCODE_DOWN, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(hs), SDL_SCANCODE_S, SDL_EVENT_KEY_DOWN);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(hs), SDL_SCANCODE_SPACE, SDL_EVENT_KEY_DOWN);
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(hs), SDL_SCANCODE_RETURN, SDL_EVENT_KEY_DOWN);
+
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::StartCommand>(hs), SDL_SCANCODE_ESCAPE, SDL_EVENT_KEY_DOWN);
 
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::PrevCommand>(hs), XINPUT_GAMEPAD_DPAD_UP, 0);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::NextCommand>(hs), XINPUT_GAMEPAD_DPAD_DOWN, 0);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(hs), XINPUT_GAMEPAD_B, 0);
 	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::ConfirmCommand>(hs), XINPUT_GAMEPAD_A, 0);
+
+	dae::InputManager::GetInstance().BindCommand(std::make_unique<dae::StartCommand>(hs), XINPUT_GAMEPAD_START, 0);
 
 	scene.Add(std::move(title));
 

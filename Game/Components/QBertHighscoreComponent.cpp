@@ -8,6 +8,8 @@
 
 #include "Colors.h"
 #include "DeltaTime.h"
+#include "SceneManager.h"
+#include "Tags.h"
 
 QBert::QBertHighscoreComp::QBertHighscoreComp(dae::GameObject* pOwner, std::vector<dae::TextComponent*> hsTextComps,
                                               std::vector<dae::TextComponent*> letterTextComps, std::vector<dae::GameObject*> arrows,  dae::TextComponent* scoreTextComp)
@@ -53,6 +55,7 @@ void QBert::QBertHighscoreComp::Notify(dae::Event event, dae::Subject*)
 
         m_secPassed = 0.f;
         break;
+
     case dae::make_sdbm_hash("OnNextPressed"):
         if (m_curChar == '.')
         {
@@ -69,10 +72,16 @@ void QBert::QBertHighscoreComp::Notify(dae::Event event, dae::Subject*)
 
         m_secPassed = 0.f;
         break;
+
     case dae::make_sdbm_hash("OnConfirmPressed"):
         if (m_secPassed < 0.3f) break;
         ConfirmLetter();
         m_secPassed = 0.f;
+        break;
+
+    case dae::make_sdbm_hash("OnStartPressed"):
+        if (m_secPassed < 0.3f) break;
+        dae::SceneManager::GetInstance().SetActiveScene(dae::SceneName(SceneName::IntroScene));
         break;
     }
 }
