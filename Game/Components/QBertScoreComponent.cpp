@@ -103,9 +103,9 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject* subject)
 		break;
 
 	case dae::make_sdbm_hash("LEVEL_COMPLETED"):
-		m_score1 += GetWinScore(event.args->nr);
+		m_score1 += GetWinScore(event.args[0].nr, event.args[1].nr);
 		if (m_player2 && m_player2->GetTag() != dae::Tag(Tag::PlayerCoily))
-			m_score2 += GetWinScore(event.args->nr);
+			m_score2 += GetWinScore(event.args[0].nr, event.args[1].nr);
 		break;
 	}
 
@@ -115,9 +115,9 @@ void QBert::ScoreComp::Notify(dae::Event event, dae::Subject* subject)
 	if (m_pScore2Text) m_pScore2Text->SetText(std::to_string(m_score2));
 }
 
-int QBert::ScoreComp::GetWinScore(int amDiscsUnused) const
+int QBert::ScoreComp::GetWinScore(int level, int amDiscsUnused) const
 {
-	return static_cast<int>(m_winScoreBase + (m_levelScoreMultiplier /* * level number */) + m_discScore * amDiscsUnused );
+	return static_cast<int>(m_winScoreBase + (m_levelScoreMultiplier * level) + m_discScore * amDiscsUnused );
 }
 
 std::type_index QBert::ScoreComp::GetType() const

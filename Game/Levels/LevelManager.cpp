@@ -167,7 +167,8 @@ void QBert::LevelManager::Notify(dae::Event event, dae::Subject*)
 		m_pConnLevel->DoLevelCompletionAnim();
 
 		// notify score manager
-		event.args->nr = m_pConnLevel->GetActiveDiscAmount();
+		event.args[0].nr = m_currentLevel * 4 + m_currentRound;
+		event.args[1].nr = m_pConnLevel->GetActiveDiscAmount();
 		GetOwner()->GetSubject()->NotifyObservers(event);
 	}
 }
